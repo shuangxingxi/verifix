@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>能力边界说明书 · 安全审计-测试-修复自运行 Agent</title>
+<style>
+  @page { size: A4 portrait; margin: 0; }
+  :root{ --ink:#0f2436; --ink2:#33506b; --muted:#6b7f94; --line:#d5dde6; --a:#14507e; --bg:#f6f9fb; }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:-apple-system,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;
+    color:var(--ink); background:#fff; -webkit-font-smoothing:antialiased;}
+  .page{width:210mm; height:297mm; padding:9mm 13mm 6mm; display:flex; flex-direction:column;}
+  /* header */
+  header{border-bottom:2px solid var(--ink); padding-bottom:2.6mm; display:flex;
+    justify-content:space-between; align-items:flex-end;}
+  h1{font-size:16pt; font-weight:700; letter-spacing:.4px;}
+  h1 small{font-size:8.5pt; font-weight:400; color:var(--muted); margin-left:5px; letter-spacing:0;}
+  .meta{text-align:right; font-size:6.8pt; color:var(--muted); line-height:1.55;}
+  .meta b{color:var(--ink2); font-weight:600;}
+  /* section */
+  section{margin-top:2.1mm;}
+  h2{font-size:8.2pt; font-weight:700; color:var(--ink); letter-spacing:.6px; margin-bottom:1.1mm;
+    display:flex; align-items:baseline; gap:2mm;}
+  h2 span{font-size:7pt; color:var(--a); font-family:ui-monospace,Consolas,monospace; font-weight:600;}
+  h2 em{font-style:normal; font-size:6.3pt; color:var(--muted); font-weight:400; letter-spacing:0;}
+  p,li{font-size:7.4pt; line-height:1.5; color:var(--ink2);}
+  b{color:var(--ink); font-weight:600;}
+  /* quote */
+  .quote{border-left:2.5px solid var(--a); background:var(--bg); padding:1.9mm 2.8mm; font-size:7.9pt;
+    line-height:1.58; color:var(--ink);}
+  .quote em{font-style:normal; color:var(--a); font-weight:700;}
+  /* code */
+  pre{background:#0f2436; color:#dbe7f1; font-family:ui-monospace,Consolas,monospace; font-size:6.9pt;
+    line-height:1.5; padding:2mm 2.8mm; border-radius:1px;}
+  pre b{color:#9cc4e0; font-weight:600;}
+  pre i{font-style:normal; color:#7d97ad;}
+  /* table */
+  table{border-collapse:collapse; width:100%; table-layout:fixed;}
+  th,td{border:1px solid var(--line); font-size:6.8pt; line-height:1.38; padding:1.0mm 1.7mm;
+    vertical-align:top; text-align:left; color:var(--ink2);}
+  thead th{background:#f4f7fa; color:var(--ink); font-weight:600; font-size:6.6pt;}
+  td.k{color:var(--ink); font-weight:600; font-size:7pt;}
+  td.c{text-align:center;}
+  /* scale */
+  .scale{display:flex; gap:2mm;}
+  .scale div{flex:1; border:1px solid var(--line); border-top:2px solid var(--a); padding:1.1mm 1.2mm; text-align:center;}
+  .scale b{display:block; font-size:10.5pt; font-family:ui-monospace,Consolas,monospace; line-height:1.05; color:var(--a);}
+  .scale span{font-size:6.1pt; color:var(--muted); display:block; margin-top:.4mm;}
+  ul.axes{list-style:none; font-size:6.8pt; line-height:1.52; color:var(--ink2); margin-top:1.4mm;}
+  ul.axes li{padding-left:0;}
+  ul.axes b{display:inline-block; width:11mm;}
+  /* metrics grid */
+  .mgrid{display:grid; grid-template-columns:repeat(3,1fr); gap:1.4mm;}
+  .mgrid div{border:1px solid var(--line); padding:1.05mm 1.7mm; display:flex; justify-content:space-between;
+    align-items:baseline; font-size:6.8pt; color:var(--ink2);}
+  .mgrid b{font-family:ui-monospace,Consolas,monospace; font-size:7.4pt; color:var(--a); font-weight:700;}
+  .mgrid div.hot{border-color:#9cbcd6; background:#eef4f9;}
+  /* footer */
+  footer{margin-top:auto; padding-top:2.4mm; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; font-size:6.4pt; color:var(--muted);}
+  .mono{font-family:ui-monospace,Consolas,monospace;}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <h1>能力边界说明书<small>Capability Boundary Statement</small></h1>
+    <div class="meta">
+      <b>安全审计 · 测试 · 修复 · 自运行全流程 Agent</b><br>
+      第十一届华为 ICT 大赛 创新赛 ｜ 赛题 2 · AgentArts<br>
+      v1.0 ｜ 2026-11-10 ｜ 配套：capability-matrix.html
+    </div>
+  </header>
+
+  <section>
+    <h2><span>01</span>一句话界定</h2>
+    <div class="quote">
+      本系统是一个<em>可验证的自动修复引擎</em>：以「仓库 + 可执行环境」为输入，以「带证据的补丁 + 门禁结论」为输出。安全只是它的第一个插件。<br>
+      它不是扫描器（只报不修），也不是代码生成器（改了但无法证明改对）。分界线是一条可执行的测试：<b>补丁必须让一条原本变红的测试变绿，且不弄红任何其他测试。</b>
+    </div>
+  </section>
+
+  <section>
+    <h2><span>02</span>边界法则<em>能力上限由「可测试性」而非模型强弱决定</em></h2>
+<pre><b>可测试性</b>  =  <b>可自动化的边界</b>
+
+能判定对错   →  Detect → Reproduce → Patch → Verify → Gate   <i>全闭环</i>
+只能人判断   →  止步 L2（仅报告 + 建议 diff）              <i>不改代码</i>
+判不了对错   →  不纳入覆盖范围                             <i>明确声明</i></pre>
+  </section>
+
+  <section>
+    <h2><span>03</span>四级能力定义</h2>
+    <table>
+      <colgroup><col style="width:11mm"><col style="width:53mm"><col style="width:28mm"><col></colgroup>
+      <thead><tr><th class="c">级别</th><th>定义</th><th>人的介入</th><th>典型形态</th></tr></thead>
+      <tbody>
+        <tr><td class="k c">A</td><td>检测 → 复现 → 修复 → 验证 → 门禁全自动</td><td>无（或仅事后抽检）</td><td>依赖 CVE 升级、注入类修复、配置基线对齐</td></tr>
+        <tr><td class="k c">B</td><td>自动产出候选补丁与证据，合并权在人</td><td>一次代码评审</td><td>弱加密迁移、SSRF 白名单、镜像重建</td></tr>
+        <tr><td class="k c">C</td><td>自动检测、定级、给修复建议，不改代码</td><td>全人工处置</td><td>竞态、契约级鉴权缺陷</td></tr>
+        <tr><td class="k c">✗</td><td>资产承载该缺陷，但明确不覆盖</td><td>—</td><td>业务逻辑漏洞、0day、内存安全类</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span>04</span>覆盖规模<em>资产 × 缺陷 × 触发 × 处置</em></h2>
+    <div class="scale">
+      <div><b>6</b><span>资产类型</span></div>
+      <div><b>12</b><span>缺陷类别（本轮交付 3）</span></div>
+      <div><b>5</b><span>闭环阶段</span></div>
+      <div><b>5</b><span>触发方式</span></div>
+      <div><b>4</b><span>处置级别</span></div>
+      <div><b>75%</b><span>A 类占比</span></div>
+    </div>
+    <ul class="axes">
+      <li><b>资产</b>应用代码 · 第三方依赖 · IaC 与云配置 · 容器镜像 · 密钥与凭据 · API 契约</li>
+      <li><b>缺陷</b>依赖 CVE · SQL 注入 · 命令注入 · 路径穿越 · 硬编码凭据 · 反序列化 · 弱加密 · 日志泄露 · SSRF · 配置基线 · 不安全随机数 · 竞态</li>
+      <li><b>触发</b>定时扫描 · PR/push 门禁 · CVE 订阅 · 运行时告警 · 人工提交</li>
+      <li><b>处置</b>L0 自动合并 · L1 开 PR 待人审 · L2 仅报告 · L3 拒绝处理</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2><span>05</span>明确不做，以及为什么<em>边界之外一律降级为 L2 报告并转人工，不产生任何自动写入</em></h2>
+    <table>
+      <colgroup><col style="width:56mm"><col></colgroup>
+      <thead><tr><th>不覆盖</th><th>理由（一句话）</th></tr></thead>
+      <tbody>
+        <tr><td class="k">业务逻辑漏洞（越权、价格篡改）</td><td>需要业务语义，无法自动生成「正确的业务预期」作为断言</td></tr>
+        <tr><td class="k">0day / 未知漏洞</td><td>无规则、无样本、无历史修复可比对，闭环缺第一环</td></tr>
+        <tr><td class="k">架构级缺陷（信任边界设计错）</td><td>不是几行代码能解决的，属设计决策，须人做</td></tr>
+        <tr><td class="k">内存安全类（UAF、缓冲区溢出）</td><td>需 sanitizer + fuzzing 长跑，属独立技术栈与工期</td></tr>
+        <tr><td class="k">供应链投毒（恶意依赖包）</td><td>需包信誉数据与行为沙箱，超出本引擎的证据模型</td></tr>
+        <tr><td class="k">密码协议实现正确性</td><td>需形式化验证，测试覆盖不到表述层</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span>06</span>降级与熔断<em>任何自动动作都可撤销</em></h2>
+    <table>
+      <colgroup><col style="width:30mm"><col></colgroup>
+      <tbody>
+        <tr><td class="k">最小改动约束</td><td>单次补丁 ≤ 30 行、≤ 3 个文件；超出即降 L2，不自动提交</td></tr>
+        <tr><td class="k">三重门禁</td><td>① 变更测试由「红→绿」验证　② 全量回归零失败　③ 复扫告警数不增加；任一不满足即回滚</td></tr>
+        <tr><td class="k">分级治理</td><td>低危 + 有测试 + 改动 ≤ 3 行 → L0；中危或大改动 → L1；高危且方案不确定 → L2；判不了对错 → L3</td></tr>
+        <tr><td class="k">熔断</td><td>同类缺陷连续 3 次修复失败 → 停用该类处置并告警；失败指纹入黑名单，不重复尝试</td></tr>
+        <tr><td class="k">成本闸门</td><td>单 issue ≤ 5 次模型调用、≤ 0.5 元；超限转人工</td></tr>
+        <tr><td class="k">全链路留痕</td><td>who / what / why / evidence 四要素落库，任一自动动作可追溯、可撤销</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2><span>07</span>可复跑指标<em>第三方按文档即可复现</em></h2>
+    <div class="mgrid">
+      <div class="hot"><span>有效告警率</span><b>20% → ≥60%</b></div>
+      <div class="hot"><span>MTTR</span><b>3天 → ≤10min</b></div>
+      <div class="hot"><span>连续自运行</span><b>≥72h</b></div>
+      <div><span>漏洞检出率</span><b>≥80%</b></div>
+      <div><span>复现成功率</span><b>≥70%</b></div>
+      <div><span>一次修复通过率</span><b>≥60%</b></div>
+      <div><span>回归破坏率</span><b>≤5%</b></div>
+      <div><span>自动处置率</span><b>≥70%</b></div>
+      <div><span>人工介入率</span><b>≤30%</b></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><span>08</span>结论</h2>
+    <div class="quote" style="font-size:7.5pt; line-height:1.55; padding:1.7mm 2.6mm;">
+      能力地图覆盖 <b>6 类资产 × 12 类缺陷 × 5 种触发 × 4 级处置</b>；<b>本轮交付 Python × 3 类</b>，在「可用测试判定对错」的边界内实现无人干预闭环；边界之外（业务逻辑、0day、架构设计、内存安全）明确降级为人工处置，并以分级治理、三重门禁与自动回滚保证任何自动动作都可撤销。<br>
+      边界清晰不是能力不足的证明，而是工程可信的前提——<b>一个敢说清自己做不到什么的自动化系统，才敢让它自己跑。</b>
+    </div>
+  </section>
+
+  <footer>
+    <span>配套材料：主矩阵 12×5（60 格，A 45 / B 9 / C 6）＋ 附矩阵 6×12（19 格有效覆盖）</span>
+    <span class="mono">deliverables / capability-boundary.html</span>
+  </footer>
+
+</div>
+</body>
+</html>

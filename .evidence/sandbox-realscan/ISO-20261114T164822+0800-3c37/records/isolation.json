@@ -1,0 +1,51 @@
+{
+  "iso_id": "ISO-20261114T164822+0800-3c37",
+  "exec_identity": "uid=10001,gid=10001",
+  "exec_domain": "CONTAINER_EXEC",
+  "visible_roots": [
+    "/cases"
+  ],
+  "probes": [
+    {
+      "probe": "enumerate",
+      "result": "DENIED",
+      "denial_kind": "PATH_NOT_EXIST"
+    },
+    {
+      "probe": "open",
+      "result": "DENIED",
+      "denial_kind": "PATH_NOT_EXIST"
+    },
+    {
+      "probe": "relative",
+      "result": "DENIED",
+      "denial_kind": "PATH_NOT_EXIST"
+    },
+    {
+      "probe": "traversal",
+      "result": "DENIED",
+      "denial_kind": "PATH_NOT_EXIST"
+    },
+    {
+      "probe": "symlink",
+      "result": "DENIED",
+      "denial_kind": "PATH_NOT_EXIST"
+    },
+    {
+      "probe": "decoy_expected",
+      "result": "DENIED",
+      "denial_kind": "PATH_NOT_EXIST"
+    },
+    {
+      "probe": "decoy_shadow",
+      "result": "DENIED",
+      "denial_kind": "PERMISSION_DENIED"
+    }
+  ],
+  "denial_kind": "PATH_NOT_EXIST",
+  "exec_success_count": 0,
+  "enforcement_mode": "MANDATORY_SELF_CHECK",
+  "publishable": true,
+  "failure_kind": null,
+  "audit_ref": ".evidence\\sandbox-realscan\\.work\\ISO-20261114T164822+0800-3c37\\audit\\access.jsonl#run_ref=ISO-20261114T164822+0800-3c37"
+}

@@ -1,0 +1,6 @@
+# cwd=E:\shuangxingxi\ICT_agent
+wsl.exe -d Debian -u root -- docker version --format '{{.Server.Version}}'
+# cwd=E:\shuangxingxi\ICT_agent
+wsl.exe -d Debian -u root -- docker info --format '{{.Driver}}|{{.CgroupVersion}}'
+# cwd=E:\shuangxingxi\ICT_agent
+wsl.exe -d Debian -u root -- docker image inspect --format '{{.Id}}' verifix-sandbox:1.0.0

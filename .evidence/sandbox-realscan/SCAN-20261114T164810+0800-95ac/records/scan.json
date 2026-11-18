@@ -1,0 +1,426 @@
+{
+  "scan_id": "SCAN-20261114T164810+0800-95ac",
+  "target": "verifix-target",
+  "target_version": "1.0.0",
+  "target_view_digest": "7ef1e5ed21cb733150a1a3604be4a7dcf4af10aa97aed731cc4fb9b0067b283d",
+  "listen_port": 41157,
+  "port_source": "DYNAMIC",
+  "network_mode": "NONE_LOOPBACK",
+  "sandbox_scope": true,
+  "scope": {
+    "defect_classes": [
+      "C01",
+      "C02",
+      "C03",
+      "C05"
+    ],
+    "item_count": 15,
+    "full_count": 15,
+    "uncovered_classes": []
+  },
+  "detections": [
+    {
+      "detection_id": "D-01-C05-CRED",
+      "file": "app/config.py",
+      "line": 1,
+      "rule_id": "C05-CRED",
+      "defect_class": "C05",
+      "source_kind": "REAL_CONTAINER",
+      "exec_location": "CONTAINER",
+      "snippet_masked": "SECRET_KEY = \"***\"",
+      "rule_basis": "CWE-798"
+    },
+    {
+      "detection_id": "D-02-C05-CRED",
+      "file": "app/config.py",
+      "line": 2,
+      "rule_id": "C05-CRED",
+      "defect_class": "C05",
+      "source_kind": "REAL_CONTAINER",
+      "exec_location": "CONTAINER",
+      "snippet_masked": "DB_PASSWORD = \"***\"",
+      "rule_basis": "CWE-798"
+    },
+    {
+      "detection_id": "D-03-C02-SQL",
+      "file": "app/main.py",
+      "line": 31,
+      "rule_id": "C02-SQL",
+      "defect_class": "C02",
+      "source_kind": "REAL_CONTAINER",
+      "exec_location": "CONTAINER",
+      "snippet_masked": "rows = conn.execute(\"SELECT id, name FROM users WHERE id = '%s'\" % uid).fetchall()",
+      "rule_basis": "CWE-89"
+    },
+    {
+      "detection_id": "D-04-C02-SQL",
+      "file": "app/main.py",
+      "line": 41,
+      "rule_id": "C02-SQL",
+      "defect_class": "C02",
+      "source_kind": "REAL_CONTAINER",
+      "exec_location": "CONTAINER",
+      "snippet_masked": "\"SELECT id FROM users WHERE name = '\" + username + \"' AND password = '\" + password + \"'\"",
+      "rule_basis": "CWE-89"
+    },
+    {
+      "detection_id": "D-05-C02-SQL",
+      "file": "app/main.py",
+      "line": 50,
+      "rule_id": "C02-SQL",
+      "defect_class": "C02",
+      "source_kind": "REAL_CONTAINER",
+      "exec_location": "CONTAINER",
+      "snippet_masked": "rows = conn.execute(\"SELECT id, name FROM users WHERE name LIKE '%\" + keyword + \"%'\").fetchall()",
+      "rule_basis": "CWE-89"
+    },
+    {
+      "detection_id": "D-06-C02-SQL",
+      "file": "app/main.py",
+      "line": 58,
+      "rule_id": "C02-SQL",
+      "defect_class": "C02",
+      "source_kind": "REAL_CONTAINER",
+      "exec_location": "CONTAINER",
+      "snippet_masked": "rows = conn.execute(\"SELECT id, amount FROM orders WHERE id = \" + order_id).fetchall()",
+      "rule_basis": "CWE-89"
+    },
+    {
+      "detection_id": "D-07-C02-SQL",
+      "file": "app/main.py",
+      "line": 66,
+      "rule_id": "C02-SQL",
+      "defect_class": "C02",
+      "source_kind": "REAL_CONTAINER",
+      "exec_location": "CONTAINER",
+      "snippet_masked": "rows = conn.execute(\"SELECT COUNT(*) FROM orders WHERE created_at = '\" + day + \"'\").fetchall()",
+      "rule_basis": "CWE-89"
+    },
+    {
+      "detection_id": "D-08-C02-SQL",
+      "file": "app/main.py",
+      "line": 74,
+      "rule_id": "C02-SQL",
+      "defect_class": "C02",
+      "source_kind": "REAL_CONTAINER",
+      "exec_location": "CONTAINER",
+      "snippet_masked": "rows = conn.execute(f\"SELECT user_id, email FROM profiles WHERE user_id = {user_id}\").fetchall()",
+      "rule_basis": "CWE-89"
+    },
+    {
+      "detection_id": "D-09-C03-CMD",
+      "file": "app/main.py",
+      "line": 81,
+      "rule_id": "C03-CMD",
+      "defect_class": "C03",
+      "source_kind": "REAL_CONTAINER",
+      "exec_location": "CONTAINER",
+      "snippet_masked": "output = os.popen(\"ping -c 1 \" + host).read()",
+      "rule_basis": "CWE-78"
+    },
+    {
+      "detection_id": "D-10-C03-CMD",
+      "file": "app/main.py",
+      "line": 87,
+      "rule_id": "C03-CMD",
+      "defect_class": "C03",
+      "source_kind": "REAL_CONTAINER",
+      "exec_location": "CONTAINER",
+      "snippet_masked": "result = subprocess.call(\"convert \" + name + \" out.jpg\", shell=True)",
+      "rule_basis": "CWE-78:shell=True"
+    },
+    {
+      "detection_id": "D-11-C03-CMD",
+      "file": "app/main.py",
+      "line": 93,
+      "rule_id": "C03-CMD",
+      "defect_class": "C03",
+      "source_kind": "REAL_CONTAINER",
+      "exec_location": "CONTAINER",
+      "snippet_masked": "output = os.popen(\"tar czf backup.tgz \" + folder).read()",
+      "rule_basis": "CWE-78"
+    },
+    {
+      "detection_id": "D-12-C03-CMD",
+      "file": "app/main.py",
+      "line": 99,
+      "rule_id": "C03-CMD",
+      "defect_class": "C03",
+      "source_kind": "REAL_CONTAINER",
+      "exec_location": "CONTAINER",
+      "snippet_masked": "completed = subprocess.run(\"deploy.sh \" + env, shell=True, capture_output=True, text=True)",
+      "rule_basis": "CWE-78:shell=True"
+    },
+    {
+      "detection_id": "D-13-C01-DEP",
+      "file": "requirements.txt",
+      "line": 2,
+      "rule_id": "C01-DEP",
+      "defect_class": "C01",
+      "source_kind": "REAL_CONTAINER",
+      "exec_location": "CONTAINER",
+      "snippet_masked": "requests==2.19.1",
+      "rule_basis": "CVE-2018-18074 NVD:CVE-2018-18074"
+    },
+    {
+      "detection_id": "D-14-C01-DEP",
+      "file": "requirements.txt",
+      "line": 3,
+      "rule_id": "C01-DEP",
+      "defect_class": "C01",
+      "source_kind": "REAL_CONTAINER",
+      "exec_location": "CONTAINER",
+      "snippet_masked": "PyYAML==5.1",
+      "rule_basis": "CVE-2020-1747 NVD:CVE-2020-1747"
+    },
+    {
+      "detection_id": "D-15-C01-DEP",
+      "file": "requirements.txt",
+      "line": 4,
+      "rule_id": "C01-DEP",
+      "defect_class": "C01",
+      "source_kind": "REAL_CONTAINER",
+      "exec_location": "CONTAINER",
+      "snippet_masked": "Jinja2==2.10.1",
+      "rule_basis": "CVE-2020-28493 NVD:CVE-2020-28493"
+    }
+  ],
+  "dynamic_checks": [
+    {
+      "check_id": "DYN-01",
+      "detection_id": "D-11-C03-CMD",
+      "endpoint": "/backup",
+      "method": "GET",
+      "normal_digest": "de18a9e4e32702586178a3ef38334aaee44ff29124add1e43c4e8e4ffd984b1a",
+      "injected_digest": "a3a937c750a1d6c5bc6e51ee1135b949c03764a609d1838665bdf66bde1a600b",
+      "behavior_diff": true,
+      "conclusion": "REPRODUCIBLE",
+      "duration_ms": 15,
+      "retries": 0
+    },
+    {
+      "check_id": "DYN-02",
+      "detection_id": "D-10-C03-CMD",
+      "endpoint": "/convert",
+      "method": "GET",
+      "normal_digest": "791b09bb61fe23d13b5b82bd2ac7f4e7784cd706630ad9e3155c109330cf0fce",
+      "injected_digest": "d24219f6de94b955cf36d25bd2aca88e2d35eef45b9317b7083f55ec8fe9653c",
+      "behavior_diff": true,
+      "conclusion": "REPRODUCIBLE",
+      "duration_ms": 3,
+      "retries": 0
+    },
+    {
+      "check_id": "DYN-03",
+      "detection_id": "D-12-C03-CMD",
+      "endpoint": "/deploy",
+      "method": "POST",
+      "normal_digest": "0b5284f44294afe8e83ee11f9bd2b649d73eb16b9e79b2929a6a42fa8dcc15d6",
+      "injected_digest": "a329b8cd7870b93e9a67f5d21392c334b1fd1032b465e219778397ac469c7139",
+      "behavior_diff": true,
+      "conclusion": "REPRODUCIBLE",
+      "duration_ms": 2,
+      "retries": 0
+    },
+    {
+      "check_id": "DYN-04",
+      "detection_id": "D-04-C02-SQL",
+      "endpoint": "/login",
+      "method": "POST",
+      "normal_digest": "51fe551145b4e1973312c10a17a5fb37f440e74d377834fb18d17b7d1f466c62",
+      "injected_digest": "7a5e5d56fad9a6a4cddcccfea9e8462b16f3925e864b1765ee7137afb8f73cd7",
+      "behavior_diff": true,
+      "conclusion": "REPRODUCIBLE",
+      "duration_ms": 1,
+      "retries": 0
+    },
+    {
+      "check_id": "DYN-05",
+      "detection_id": "D-06-C02-SQL",
+      "endpoint": "/order",
+      "method": "GET",
+      "normal_digest": "2c8a7c826e1131ffe10912df651e0cac43bda62af97f315bd8ca1bc5bdb69048",
+      "injected_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "behavior_diff": false,
+      "conclusion": "NOT_REPRODUCIBLE",
+      "duration_ms": 168,
+      "retries": 2
+    },
+    {
+      "check_id": "DYN-06",
+      "detection_id": "D-09-C03-CMD",
+      "endpoint": "/ping",
+      "method": "GET",
+      "normal_digest": "de18a9e4e32702586178a3ef38334aaee44ff29124add1e43c4e8e4ffd984b1a",
+      "injected_digest": "a3a937c750a1d6c5bc6e51ee1135b949c03764a609d1838665bdf66bde1a600b",
+      "behavior_diff": true,
+      "conclusion": "REPRODUCIBLE",
+      "duration_ms": 3,
+      "retries": 0
+    },
+    {
+      "check_id": "DYN-07",
+      "detection_id": "D-08-C02-SQL",
+      "endpoint": "/profile",
+      "method": "GET",
+      "normal_digest": "5ed05ee19e58aae7c91b46415d68e69c156237308f9831c84989d5a0325c8336",
+      "injected_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "behavior_diff": false,
+      "conclusion": "NOT_REPRODUCIBLE",
+      "duration_ms": 162,
+      "retries": 2
+    },
+    {
+      "check_id": "DYN-08",
+      "detection_id": "D-07-C02-SQL",
+      "endpoint": "/report",
+      "method": "GET",
+      "normal_digest": "3aa8ac761c5a23906d30fb86ca2db09c9b391142a956cdb4263570adb94bfbe6",
+      "injected_digest": "36111fdade3414ef5771f228d7990e459989a06874c5316b080715fa43efd732",
+      "behavior_diff": true,
+      "conclusion": "REPRODUCIBLE",
+      "duration_ms": 2,
+      "retries": 0
+    },
+    {
+      "check_id": "DYN-09",
+      "detection_id": "D-05-C02-SQL",
+      "endpoint": "/search",
+      "method": "GET",
+      "normal_digest": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "injected_digest": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "behavior_diff": false,
+      "conclusion": "NOT_REPRODUCIBLE",
+      "duration_ms": 2,
+      "retries": 0
+    },
+    {
+      "check_id": "DYN-10",
+      "detection_id": "D-03-C02-SQL",
+      "endpoint": "/user",
+      "method": "GET",
+      "normal_digest": "c2a57f644b0a03091a4894390a68c4549163c8feada32f042fb5129dda9bbc9c",
+      "injected_digest": "9d2892b6acb70c53357b1ae79b3c6232523e4201ca43f9da8c334c6e73b0ec27",
+      "behavior_diff": true,
+      "conclusion": "REPRODUCIBLE",
+      "duration_ms": 1,
+      "retries": 0
+    }
+  ],
+  "scan_verdict": "NOT_ESTABLISHED",
+  "verdict_missing": [
+    "behavior_diff_reproducible"
+  ],
+  "boundary_summary": {
+    "REAL_CONTAINER": 25,
+    "REAL_LOCAL": 0,
+    "RECORDED_STUB": 10,
+    "CLOUD_CREDENTIAL_MISSING": 1
+  },
+  "scan_phase_truth_reads": 0,
+  "stub_count": 10,
+  "cloud_section": "云凭据缺失，未验证",
+  "repeat_diff": [],
+  "interrupted_at": null,
+  "completed_count": 15,
+  "unverified_count": 0,
+  "evidence_ref": "SCAN-20261114T164810+0800-95ac/manifest.json",
+  "adopted_defaults": [
+    {
+      "q_id": "O-01",
+      "value": "10 judgement classes cover 11 policy keys",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "O-02",
+      "value": "synthetic .git fixture with mount trimming",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "O-03",
+      "value": "local alias allowed with registered image id",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "O-04",
+      "value": "cli and evidence only, no api routes added",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "O-05",
+      "value": "runtime flask independent, C01 static only",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "O-06",
+      "value": "host fallback enabled but marked REAL_LOCAL",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-01",
+      "value": "runtime root identity",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-02",
+      "value": "local build image with image id",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-03",
+      "value": "build time egress only, runtime none",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-04",
+      "value": "dynamic port allocation",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-05",
+      "value": "full scope 15 items",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-06",
+      "value": "host fallback accepted but excluded from sandbox evidence",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-07",
+      "value": "p4-05 timeout retest mandatory",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-08",
+      "value": "dual track probes, container domain publishable",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-09",
+      "value": "write new evidence root only",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-10",
+      "value": "cloud credential missing placeholder",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+# ── 1. 依赖缓存 ──
+# 排除可重新安装的依赖与字节码，避免约 84MB 依赖进入基线与后续提交
+frontend/node_modules/
+**/node_modules/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+# ── 2. 用户目录 ──
+# 排除浏览器用户数据（缓存、Cookie、配置），可重建且含本机隐私
+edgeprofile/
+edgeprofile*/
+*profile*/
+
+# ── 3. 运行产物 ──
+# 排除运行期工作目录、构建输出、数据库与备份包，均可由源码重建
+.evidence/**/.work/
+.evidence/**/fixtures/**/.git/
+frontend/dist/
+verifix-target/target.db
+verifix-target/backup.tgz
+.codeartsdoer/.codebase/
+.codeartsdoer/temp/
+*.log
+
+# ── 4. 凭据证书 ──
+# 排除实体环境文件、私钥与整目录证书材料；仅保留占位样例
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+deploy/certs/
+
+# ── 5. 答案 ──
+# 排除评测集、靶场真值与红队真值；既有 eval/.gitignore 亦为 *，此处显式重申
+eval/
+verifix-target/ground_truth.json
+.evidence/redteam-baseline/gt.txt
+
+# ── 6. 临时调试 ──
+# 排除一次性补丁脚本与调试抓取文本，属过程材料而非交付物
+/dom.txt
+/err.txt
+/.patch_fix*.py

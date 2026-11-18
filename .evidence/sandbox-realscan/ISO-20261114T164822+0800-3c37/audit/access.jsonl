@@ -1,0 +1,8 @@
+{"actor": "exec", "occurred_at": "2026-11-14T08:48:22.767181Z", "operation": "隔离桥接探针", "reason": "PATH_NOT_EXIST", "result": "拒绝", "run_ref": "ISO-20261114T164822+0800-3c37", "target_path": "enumerate"}
+{"actor": "exec", "occurred_at": "2026-11-14T08:48:22.769026Z", "operation": "隔离桥接探针", "reason": "PATH_NOT_EXIST", "result": "拒绝", "run_ref": "ISO-20261114T164822+0800-3c37", "target_path": "open"}
+{"actor": "exec", "occurred_at": "2026-11-14T08:48:22.769026Z", "operation": "隔离桥接探针", "reason": "PATH_NOT_EXIST", "result": "拒绝", "run_ref": "ISO-20261114T164822+0800-3c37", "target_path": "relative"}
+{"actor": "exec", "occurred_at": "2026-11-14T08:48:22.769026Z", "operation": "隔离桥接探针", "reason": "PATH_NOT_EXIST", "result": "拒绝", "run_ref": "ISO-20261114T164822+0800-3c37", "target_path": "traversal"}
+{"actor": "exec", "occurred_at": "2026-11-14T08:48:22.770528Z", "operation": "隔离桥接探针", "reason": "PATH_NOT_EXIST", "result": "拒绝", "run_ref": "ISO-20261114T164822+0800-3c37", "target_path": "symlink"}
+{"actor": "exec", "occurred_at": "2026-11-14T08:48:22.770528Z", "operation": "隔离桥接探针", "reason": "PATH_NOT_EXIST", "result": "拒绝", "run_ref": "ISO-20261114T164822+0800-3c37", "target_path": "decoy_expected"}
+{"actor": "exec", "occurred_at": "2026-11-14T08:48:22.771532Z", "operation": "隔离桥接探针", "reason": "PERMISSION_DENIED", "result": "拒绝", "run_ref": "ISO-20261114T164822+0800-3c37", "target_path": "decoy_shadow"}
+{"actor": "control", "occurred_at": "2026-11-14T08:48:22.771532Z", "operation": "隔离桥接探针", "reason": "control", "result": "成功", "run_ref": "ISO-20261114T164822+0800-3c37", "target_path": "positive_control"}

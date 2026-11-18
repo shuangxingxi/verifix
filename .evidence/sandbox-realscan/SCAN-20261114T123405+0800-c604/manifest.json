@@ -1,0 +1,30 @@
+{
+  "boundary_tags": [
+    "REAL_CONTAINER"
+  ],
+  "commands": [
+    "wsl.exe -d Debian -u root -- docker image inspect --format '{{.Id}}' realscan-probe:local",
+    "wsl.exe -d Debian -u root -- docker run -i --rm --network=none --read-only --cap-drop=ALL --security-opt=no-new-privileges --user=10001:10001 --memory=1024m --cpus=1 --pids-limit=128 --volume=.evidence\\sandbox-realscan\\.work\\SCAN-20261114T123405+0800-c604\\view:/src:ro --workdir=/src --entrypoint python realscan-probe:local - < scan_bundle/worker_bundle.py"
+  ],
+  "created_at": "2026-11-14T04:34:11.173546+00:00",
+  "evidence_id": "SCAN-20261114T123405+0800-c604",
+  "evidence_ref": "SCAN-20261114T123405+0800-c604/manifest.json",
+  "path": "SCAN-20261114T123405+0800-c604",
+  "raw_output_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "reuse_conditions": {
+    "dependency_versions": {
+      "flask": "3.1.3",
+      "python": "3.12"
+    },
+    "exec_domain": "CONTAINER",
+    "image_id": "recorded-in-scan-json",
+    "network_mode": "NONE_LOOPBACK"
+  },
+  "runtime_facts": {
+    "network_mode": "NONE_LOOPBACK",
+    "sandbox_scope": true
+  },
+  "sha256": "d8d822d3169a89a1e11eb1f443e7f64b1192ee9072f2435a58694a0586e798c5",
+  "size_bytes": 29098,
+  "verification_source": "REAL_EXECUTION"
+}

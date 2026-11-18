@@ -1,0 +1,345 @@
+{
+  "verification_id": "VER-20261114T123224+0800-6984",
+  "executed_at": "2026-11-14T04:33:29.970842Z",
+  "exec_domain": "RUNTIME_ROOT",
+  "policy_version": "1.0.0",
+  "policy_sha256": "bd62277bbae9d6ed146e92231b36bc2a3e5462e5aca715144ad8332384e36168",
+  "image": {
+    "policy_image": "verifix-sandbox:1.0.0",
+    "resolved_image": "verifix-sandbox:1.0.0",
+    "image_id": "sha256:9b090181ca17d65bda27764178b10b6f0bdbe8cf6b610a1b6964c31fca80a645",
+    "repo_digests": [],
+    "local_build": true,
+    "alias_used": false,
+    "source": "POLICY_IMAGE"
+  },
+  "privilege_route": "WSL_DISTRO_ROOT",
+  "capability": {
+    "docker_cli": "AVAILABLE",
+    "daemon": "AVAILABLE",
+    "socket_permission": "AVAILABLE",
+    "image_availability": "AVAILABLE",
+    "egress_network": "AVAILABLE",
+    "loopback": "UNAVAILABLE",
+    "detected_at": "2026-11-14T04:32:23.919894Z",
+    "exec_domain": "RUNTIME_ROOT",
+    "runtime": {
+      "network_mode": "NONE_LOOPBACK",
+      "read_only_rootfs": true,
+      "cap_drop": [
+        "ALL"
+      ],
+      "security_opts": [
+        "no-new-privileges"
+      ],
+      "user": "root",
+      "memory_bytes": 0,
+      "nano_cpus": 0,
+      "pids_limit": 0,
+      "tmpfs_mounts": [],
+      "docker_version": "26.1.5+dfsg1",
+      "runtime_driver": "unknown",
+      "cgroup_version": "unknown"
+    },
+    "details": [
+      "transport=wsl",
+      "exec_domain=RUNTIME_ROOT",
+      "privilege_route=WSL_DISTRO_ROOT",
+      "probe_elapsed_ms=5614"
+    ]
+  },
+  "checks": [
+    {
+      "check_id": "network-4a40",
+      "policy_key": "network",
+      "expected": "none",
+      "observed": "{\"detail\": \"[Errno 101] Network is unreachable\", \"error_type\": \"OSError\", \"ok\": false, \"target\": \"1.1.1.1:53\"}",
+      "judgement": "PASS",
+      "duration_ms": 453,
+      "evidence_ref": "raw/network.json",
+      "basis": "exit=0,timed_out=False",
+      "missing_reason": "",
+      "retest_hint": ""
+    },
+    {
+      "check_id": "source_mount-4bc0",
+      "policy_key": "source_mount",
+      "expected": "read-only",
+      "observed": "{\"root_error\": \"OSError\", \"root_write\": false, \"src_error\": \"OSError\", \"src_read\": true, \"src_write\": false, \"tmp_writable\": true, \"workspace_writable\": true}",
+      "judgement": "PASS",
+      "duration_ms": 443,
+      "evidence_ref": "raw/source_mount.json",
+      "basis": "exit=0,timed_out=False",
+      "missing_reason": "",
+      "retest_hint": ""
+    },
+    {
+      "check_id": "filesystem_writable_surface-4bc0",
+      "policy_key": "filesystem_writable_surface",
+      "expected": "policy",
+      "observed": "{\"root_error\": \"OSError\", \"root_write\": false, \"src_error\": \"OSError\", \"src_read\": true, \"src_write\": false, \"tmp_writable\": true, \"workspace_writable\": true}",
+      "judgement": "PASS",
+      "duration_ms": 443,
+      "evidence_ref": "raw/filesystem_writable_surface.json",
+      "basis": "exit=0,timed_out=False",
+      "missing_reason": "",
+      "retest_hint": ""
+    },
+    {
+      "check_id": "timeout_termination-VER-20261114T123224+0800-6984",
+      "policy_key": "timeout_termination",
+      "expected": "killed_at_60s",
+      "observed": "terminated_ms=62371,leaked=False",
+      "judgement": "PASS",
+      "duration_ms": 62371,
+      "evidence_ref": "VER-20261114T123224+0800-6984/raw/p4-05.log",
+      "basis": "synthetic infinite loop terminated by host budget with docker kill",
+      "missing_reason": "",
+      "retest_hint": ""
+    },
+    {
+      "check_id": "memory_limit-inspect",
+      "policy_key": "memory_limit",
+      "expected": "policy",
+      "observed": "",
+      "judgement": "PASS",
+      "duration_ms": 0,
+      "evidence_ref": "raw/memory_limit.json",
+      "basis": "",
+      "missing_reason": "",
+      "retest_hint": ""
+    },
+    {
+      "check_id": "cpu_limit-inspect",
+      "policy_key": "cpu_limit",
+      "expected": "policy",
+      "observed": "",
+      "judgement": "PASS",
+      "duration_ms": 0,
+      "evidence_ref": "raw/cpu_limit.json",
+      "basis": "",
+      "missing_reason": "",
+      "retest_hint": ""
+    },
+    {
+      "check_id": "exec_user-4b00",
+      "policy_key": "exec_user",
+      "expected": "policy",
+      "observed": "{\"cap_eff\": \"0000000000000000\", \"gid\": 10001, \"no_new_privs\": \"1\", \"setuid_blocked\": true, \"setuid_error\": \"PermissionError\", \"uid\": 10001}",
+      "judgement": "PASS",
+      "duration_ms": 411,
+      "evidence_ref": "raw/exec_user.json",
+      "basis": "exit=0,timed_out=False",
+      "missing_reason": "",
+      "retest_hint": ""
+    },
+    {
+      "check_id": "capability_set-4b00",
+      "policy_key": "capability_set",
+      "expected": "policy",
+      "observed": "{\"cap_eff\": \"0000000000000000\", \"gid\": 10001, \"no_new_privs\": \"1\", \"setuid_blocked\": true, \"setuid_error\": \"PermissionError\", \"uid\": 10001}",
+      "judgement": "PASS",
+      "duration_ms": 411,
+      "evidence_ref": "raw/capability_set.json",
+      "basis": "exit=0,timed_out=False",
+      "missing_reason": "",
+      "retest_hint": ""
+    },
+    {
+      "check_id": "no_new_privileges-4b00",
+      "policy_key": "no_new_privileges",
+      "expected": "True",
+      "observed": "{\"cap_eff\": \"0000000000000000\", \"gid\": 10001, \"no_new_privs\": \"1\", \"setuid_blocked\": true, \"setuid_error\": \"PermissionError\", \"uid\": 10001}",
+      "judgement": "PASS",
+      "duration_ms": 411,
+      "evidence_ref": "raw/no_new_privileges.json",
+      "basis": "exit=0,timed_out=False",
+      "missing_reason": "",
+      "retest_hint": ""
+    },
+    {
+      "check_id": "pids_limit-inspect",
+      "policy_key": "pids_limit",
+      "expected": "128",
+      "observed": "",
+      "judgement": "PASS",
+      "duration_ms": 0,
+      "evidence_ref": "raw/pids_limit.json",
+      "basis": "",
+      "missing_reason": "",
+      "retest_hint": ""
+    },
+    {
+      "check_id": "loopback_available-probe",
+      "policy_key": "loopback_available",
+      "expected": "policy",
+      "observed": "{\"bind\": true, \"connect\": true, \"listen\": true, \"port\": 45117}",
+      "judgement": "PASS",
+      "duration_ms": 435,
+      "evidence_ref": "raw/loopback_available.json",
+      "basis": "exit=0,timed_out=False",
+      "missing_reason": "",
+      "retest_hint": ""
+    },
+    {
+      "check_id": "P4-01-probe",
+      "policy_key": "escape_case:P4-01",
+      "expected": "policy",
+      "observed": "{\"dot_git_visible\": false, \"git_config_error\": \"FileNotFoundError\", \"git_config_readable\": false, \"positive_control\": true}",
+      "judgement": "PASS",
+      "duration_ms": 401,
+      "evidence_ref": "raw/escape_case-P4-01.json",
+      "basis": "exit=0,timed_out=False",
+      "missing_reason": "",
+      "retest_hint": ""
+    },
+    {
+      "check_id": "P4-02-probe",
+      "policy_key": "escape_case:P4-02",
+      "expected": "policy",
+      "observed": "{\"root_error\": \"OSError\", \"root_write\": false, \"src_error\": \"OSError\", \"src_read\": true, \"src_write\": false, \"tmp_writable\": true, \"workspace_writable\": true}",
+      "judgement": "PASS",
+      "duration_ms": 443,
+      "evidence_ref": "raw/escape_case-P4-02.json",
+      "basis": "exit=0,timed_out=False",
+      "missing_reason": "",
+      "retest_hint": ""
+    },
+    {
+      "check_id": "P4-03-probe",
+      "policy_key": "escape_case:P4-03",
+      "expected": "policy",
+      "observed": "{\"detail\": \"[Errno 101] Network is unreachable\", \"error_type\": \"OSError\", \"ok\": false, \"target\": \"1.1.1.1:53\"}",
+      "judgement": "PASS",
+      "duration_ms": 453,
+      "evidence_ref": "raw/escape_case-P4-03.json",
+      "basis": "exit=0,timed_out=False",
+      "missing_reason": "",
+      "retest_hint": ""
+    },
+    {
+      "check_id": "P4-04-probe",
+      "policy_key": "escape_case:P4-04",
+      "expected": "policy",
+      "observed": "{\"cap_eff\": \"0000000000000000\", \"gid\": 10001, \"no_new_privs\": \"1\", \"setuid_blocked\": true, \"setuid_error\": \"PermissionError\", \"uid\": 10001}",
+      "judgement": "PASS",
+      "duration_ms": 411,
+      "evidence_ref": "raw/escape_case-P4-04.json",
+      "basis": "exit=0,timed_out=False",
+      "missing_reason": "",
+      "retest_hint": ""
+    },
+    {
+      "check_id": "P4-05-VER-20261114T123224+0800-6984",
+      "policy_key": "escape_case:P4-05",
+      "expected": "killed_at_60s",
+      "observed": "terminated_ms=62371,leaked=False",
+      "judgement": "PASS",
+      "duration_ms": 62371,
+      "evidence_ref": "VER-20261114T123224+0800-6984/raw/p4-05.log",
+      "basis": "synthetic infinite loop terminated by host budget with docker kill",
+      "missing_reason": "",
+      "retest_hint": ""
+    }
+  ],
+  "verdict": "PASS",
+  "evidence_ref": "VER-20261114T123224+0800-6984/manifest.json",
+  "adopted_defaults": [
+    {
+      "q_id": "O-01",
+      "value": "10 judgement classes cover 11 policy keys",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "O-02",
+      "value": "synthetic .git fixture with mount trimming",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "O-03",
+      "value": "local alias allowed with registered image id",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "O-04",
+      "value": "cli and evidence only, no api routes added",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "O-05",
+      "value": "runtime flask independent, C01 static only",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "O-06",
+      "value": "host fallback enabled but marked REAL_LOCAL",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-01",
+      "value": "runtime root identity",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-02",
+      "value": "local build image with image id",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-03",
+      "value": "build time egress only, runtime none",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-04",
+      "value": "dynamic port allocation",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-05",
+      "value": "full scope 15 items",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-06",
+      "value": "host fallback accepted but excluded from sandbox evidence",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-07",
+      "value": "p4-05 timeout retest mandatory",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-08",
+      "value": "dual track probes, container domain publishable",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-09",
+      "value": "write new evidence root only",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-10",
+      "value": "cloud credential missing placeholder",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    }
+  ]
+}

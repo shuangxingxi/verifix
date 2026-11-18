@@ -1,0 +1,11 @@
+{
+  "image_id": "sha256:9b090181ca17d65bda27764178b10b6f0bdbe8cf6b610a1b6964c31fca80a645",
+  "exec_domain": "RUNTIME_ROOT",
+  "network_mode": "NONE_LOOPBACK",
+  "dependency_versions": {
+    "python": "3.12.10",
+    "docker": "26.1.5+dfsg1",
+    "cgroup": "unknown",
+    "driver": "unknown"
+  }
+}

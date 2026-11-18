@@ -1,0 +1,68 @@
+{
+  "entries": [
+    {
+      "exit_code": 3,
+      "fingerprint": "b017a5d65e80368ff05de9982cb0b44782f6471ccabcd56e3e0183bc6eecc488",
+      "generated_at": "2026-11-15T14:43:08.002620+08:00",
+      "json_sha256": "1bf4d8547cc8ca56367550c795846eebbd6eedd88a896ce5a686e60dd429f06f",
+      "overall": "不通过",
+      "report_sha256": "51157f2324b6378cea9dcdc2444f5ebfd8d71a3be4af1eb2ded44660c81f881a",
+      "run_id": "SC-20261115T144308+0800-v1",
+      "scope": [
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D5"
+      ]
+    },
+    {
+      "exit_code": 3,
+      "fingerprint": "ad2600fefac30ab71c22475bda4fc9dbb04b8e7ce9dba679ab51e5f2aa2dd2a2",
+      "generated_at": "2026-11-15T14:44:11.072042+08:00",
+      "json_sha256": "6cf1fd3ad7fc91f4ceeffa02aabe6cbe1abe020c6e2e0927a3ab131fc606c12b",
+      "overall": "不通过",
+      "report_sha256": "92d865a56c7f695bba8e7226499217aa5ffd72f934b93d65eb3a832570c3c92b",
+      "run_id": "SC-20261115T144411+0800-v2",
+      "scope": [
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D5"
+      ]
+    },
+    {
+      "exit_code": 3,
+      "fingerprint": "ec8ff770ab0dd5511a8f9b24a8696882af3e333055f26a676df395d01ab5047d",
+      "generated_at": "2026-11-15T15:28:10.650390+08:00",
+      "json_sha256": "112e6123e6cb20274b174173b0cb843bf2fcb54b9172ae18b41d2c2746a31fc7",
+      "overall": "不通过",
+      "report_sha256": "53ffaa0b9dc14d12ef2b7f484d234a467ac2fb7fcf8911ea387f8315d278c71f",
+      "run_id": "SC-20261115T152810+0800-v3",
+      "scope": [
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D5"
+      ]
+    },
+    {
+      "exit_code": 3,
+      "fingerprint": "e092b331b36340375e8174090cd12c212e1e1acc9c8339c1eb41bd019296f237",
+      "generated_at": "2026-11-15T16:50:51.485556+08:00",
+      "json_sha256": "be0d4001cf38b28c04a39df28467442a7d11a1d183ac8c58353db3a163b03a1e",
+      "overall": "不通过",
+      "report_sha256": "c5cf35337ab1c657b7ceb31731354648764728b50cacd2988d7530c8c57d6312",
+      "run_id": "SC-20261115T165051+0800-v4",
+      "scope": [
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D5"
+      ]
+    }
+  ]
+}

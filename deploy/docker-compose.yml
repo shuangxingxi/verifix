@@ -1,0 +1,51 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.api
+    env_file:
+    - .env
+    volumes:
+    - evidence:/app/.evidence
+    expose:
+    - '8000'
+    healthcheck:
+      test:
+      - CMD
+      - python
+      - -c
+      - import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz',
+        timeout=3)
+      interval: 15s
+      timeout: 5s
+      retries: 5
+  mcp:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.api
+    command:
+    - python
+    - mcp/server.py
+    environment:
+      VERIFIX_WORKSPACE_ROOT: /workspace
+    volumes:
+    - workspace:/workspace
+    expose:
+    - '8001'
+  sandbox:
+    build:
+      context: ../sandbox
+      dockerfile: Dockerfile.runner
+  gateway:
+    image: nginx:1.27-alpine
+    depends_on:
+    - api
+    ports:
+    - 8443:8443
+    volumes:
+    - ./nginx/verifix.conf:/etc/nginx/conf.d/default.conf:ro
+    - ./certs:/etc/nginx/certs:ro
+    - ../frontend/dist:/usr/share/nginx/html:ro
+volumes:
+  evidence: null
+  workspace: null

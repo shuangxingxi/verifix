@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: verifix-console
+  namespace: verifix
+  annotations:
+    kubernetes.io/elb.port: '8443'
+spec:
+  tls:
+  - hosts:
+    - verifix.example.com
+    secretName: verifix-tls
+  rules:
+  - host: verifix.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: verifix-api
+            port:
+              number: 8000

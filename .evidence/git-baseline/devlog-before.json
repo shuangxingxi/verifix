@@ -1,0 +1,59 @@
+{
+  "steps": [
+    {
+      "step": "需求理解 [step-1/requirement]",
+      "file": "docs/devlog/01-requirement.md",
+      "exists": true,
+      "recorded_at": "2026-11-11",
+      "status": "已归档（需求已冻结，见 `00-conventions.md` §3）",
+      "blocking": [],
+      "ok": true
+    },
+    {
+      "step": "代码生成 [step-2/codegen]",
+      "file": "docs/devlog/02-codegen.md",
+      "exists": true,
+      "recorded_at": "2026-11-11",
+      "status": "已归档（回溯整理，附产物摘要；**非当时提交**）",
+      "blocking": [],
+      "ok": true
+    },
+    {
+      "step": "项目构建 [step-3/build]",
+      "file": "docs/devlog/03-build.md",
+      "exists": true,
+      "recorded_at": "2026-11-11",
+      "status": "已归档（构建为真实执行，产物摘要可复算）",
+      "blocking": [],
+      "ok": true
+    },
+    {
+      "step": "问题修复 [step-4/bootstrap]",
+      "file": "docs/devlog/04-bootstrap.md",
+      "exists": true,
+      "recorded_at": "2026-11-14",
+      "status": "**未执行（阻塞）**",
+      "blocking": [
+        "环节未执行：**未执行（阻塞）**"
+      ],
+      "ok": false
+    },
+    {
+      "step": "部署上线 [step-5/release]",
+      "file": "docs/devlog/05-release.md",
+      "exists": true,
+      "recorded_at": "2026-11-14",
+      "status": "**未执行（阻塞）**",
+      "blocking": [
+        "环节未执行：**未执行（阻塞）**"
+      ],
+      "ok": false
+    }
+  ],
+  "git_commits": {},
+  "global_blocking": [
+    "非 Git 仓库或无法读取提交历史，提交前缀完整性无法校验（不视为通过）"
+  ],
+  "blocking_total": 3,
+  "passed": false
+}

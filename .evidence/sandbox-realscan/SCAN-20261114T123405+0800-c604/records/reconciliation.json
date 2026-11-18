@@ -1,0 +1,28 @@
+{
+  "reconcile_id": "REC-SCAN-20261114T123405+0800-c604",
+  "scan_id": "SCAN-20261114T123405+0800-c604",
+  "truth_version": "1.0.0",
+  "truth_sha256": "286d13be98fdfc9c18967be8d82e761ab1751ee1aacfc836d599e937b69becb2",
+  "truth_read_count": 1,
+  "read_phase": "POST_SCAN",
+  "matched": 0,
+  "missing": [
+    "TGT-001",
+    "TGT-002",
+    "TGT-003",
+    "TGT-004",
+    "TGT-005",
+    "TGT-006",
+    "TGT-007",
+    "TGT-008",
+    "TGT-009",
+    "TGT-010",
+    "TGT-011",
+    "TGT-012",
+    "TGT-013",
+    "TGT-014",
+    "TGT-015"
+  ],
+  "extra": [],
+  "coverage": "0/15"
+}

@@ -1,0 +1,16 @@
+GRANT SELECT, INSERT, UPDATE, DELETE ON verifix.issues TO 'verifix_app'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON verifix.alerts TO 'verifix_app'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON verifix.verdicts TO 'verifix_app'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON verifix.proofs TO 'verifix_app'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON verifix.patches TO 'verifix_app'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON verifix.audit_findings TO 'verifix_app'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON verifix.gate_results TO 'verifix_app'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON verifix.dispositions TO 'verifix_app'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON verifix.runs TO 'verifix_app'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON verifix.run_steps TO 'verifix_app'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON verifix.metrics TO 'verifix_app'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON verifix.eval_cases TO 'verifix_app'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON verifix.circuit_states TO 'verifix_app'@'%';
+GRANT SELECT, INSERT, UPDATE, DELETE ON verifix.outbox TO 'verifix_app'@'%';
+GRANT SELECT, INSERT ON verifix.events TO 'verifix_app'@'%';
+REVOKE UPDATE, DELETE ON verifix.events FROM 'verifix_app'@'%';

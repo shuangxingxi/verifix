@@ -1,0 +1,37 @@
+[
+  {
+    "probe": "enumerate",
+    "result": "DENIED",
+    "denial_kind": "PATH_NOT_EXIST"
+  },
+  {
+    "probe": "open",
+    "result": "DENIED",
+    "denial_kind": "PATH_NOT_EXIST"
+  },
+  {
+    "probe": "relative",
+    "result": "DENIED",
+    "denial_kind": "PATH_NOT_EXIST"
+  },
+  {
+    "probe": "traversal",
+    "result": "DENIED",
+    "denial_kind": "PATH_NOT_EXIST"
+  },
+  {
+    "probe": "symlink",
+    "result": "DENIED",
+    "denial_kind": "PATH_NOT_EXIST"
+  },
+  {
+    "probe": "decoy_expected",
+    "result": "DENIED",
+    "denial_kind": "PATH_NOT_EXIST"
+  },
+  {
+    "probe": "decoy_shadow",
+    "result": "DENIED",
+    "denial_kind": "PERMISSION_DENIED"
+  }
+]

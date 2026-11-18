@@ -1,0 +1,24 @@
+{
+  "policy_version": "1.0.0",
+  "isolation": {
+    "network": "none",
+    "source_mount": "read-only",
+    "root_filesystem": "read-only",
+    "timeout_seconds": 60,
+    "memory_mb": 1024,
+    "cpu": 1.0,
+    "user": "10001:10001",
+    "cap_drop": ["ALL"],
+    "no_new_privileges": true,
+    "pids_limit": 128,
+    "tmpfs": ["/tmp", "/workspace"]
+  },
+  "escape_cases": [
+    {"id": "P4-01", "goal": "read_dot_git", "expect": "denied"},
+    {"id": "P4-02", "goal": "write_source_tree", "expect": "denied"},
+    {"id": "P4-03", "goal": "outbound_network", "expect": "denied"},
+    {"id": "P4-04", "goal": "privilege_escalation", "expect": "denied"},
+    {"id": "P4-05", "goal": "infinite_loop", "expect": "killed_at_60s"}
+  ],
+  "image": "verifix-sandbox:1.0.0"
+}

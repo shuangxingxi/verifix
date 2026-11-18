@@ -1,0 +1,28 @@
+{
+  "boundary_tags": [
+    "REAL_CONTAINER"
+  ],
+  "commands": [
+    "wsl.exe -d Debian -u root -- docker run --rm --network=none --read-only --cap-drop=ALL --security-opt=no-new-privileges --user=10001:10001 --volume=E:\\shuangxingxi\\ICT_agent\\eval\\cases:/cases:ro --workdir=/cases --entrypoint python realscan-probe:local -c 'import os;print(os.getuid())'"
+  ],
+  "created_at": "2026-11-14T08:48:22.781556+00:00",
+  "evidence_id": "ISO-20261114T164822+0800-3c37",
+  "evidence_ref": "ISO-20261114T164822+0800-3c37/manifest.json",
+  "path": "ISO-20261114T164822+0800-3c37",
+  "raw_output_digest": "99380dac6f1552690712c0187fe86e2217785b76248c7c6967cd42e6b01aafee",
+  "reuse_conditions": {
+    "dependency_versions": {
+      "python": "3.12.10"
+    },
+    "exec_domain": "CONTAINER_EXEC",
+    "image_id": "sha256:78f3692347444c3bb7ecef8e78cfc2b38b59fb5f41845714e1ecfd8a79100b79",
+    "network_mode": "NONE_LOOPBACK"
+  },
+  "runtime_facts": {
+    "exec_domain": "CONTAINER_EXEC",
+    "exec_identity": "uid=10001,gid=10001"
+  },
+  "sha256": "840d112b34e664c6054e1957b31f1b83f5dbb4baaab2f2877f3b4d8a679a7fed",
+  "size_bytes": 4100,
+  "verification_source": "REAL_EXECUTION"
+}

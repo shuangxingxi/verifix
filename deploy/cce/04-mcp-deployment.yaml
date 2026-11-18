@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: verifix-mcp
+  namespace: verifix
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: verifix-mcp
+  template:
+    metadata:
+      labels:
+        app: verifix-mcp
+    spec:
+      containers:
+      - name: mcp
+        image: swr.cn-north-4.myhuaweicloud.com/verifix/verifix-api:1.0.0
+        command:
+        - python
+        - mcp/server.py
+        env:
+        - name: VERIFIX_WORKSPACE_ROOT
+          value: /workspace
+        volumeMounts:
+        - name: workspace
+          mountPath: /workspace
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+      volumes:
+      - name: workspace
+        emptyDir: {}

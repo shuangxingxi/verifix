@@ -1,0 +1,181 @@
+{
+ "collected_at": "2026-11-18T13:03:30.851197+08:00",
+ "tier_ab": [
+  {
+   "file": "docs/devlog/00-conventions.md",
+   "line": 30,
+   "sha256": "991f76e1678c2a2bd96b394b16788f7d8d6741b2d3f3afc707f669e6fc0739c5",
+   "text": "## 3. 当前仓库状态"
+  },
+  {
+   "file": "docs/devlog/00-conventions.md",
+   "line": 31,
+   "sha256": "991f76e1678c2a2bd96b394b16788f7d8d6741b2d3f3afc707f669e6fc0739c5",
+   "text": ""
+  },
+  {
+   "file": "docs/devlog/00-conventions.md",
+   "line": 32,
+   "sha256": "991f76e1678c2a2bd96b394b16788f7d8d6741b2d3f3afc707f669e6fc0739c5",
+   "text": "工作区尚未初始化为 Git 仓库，五步留痕先以 `docs/devlog/` 文件与归档副本留存；仓库初始化后按本规范补建提交序列，并保持文件时间早于首个实现提交。"
+  },
+  {
+   "file": ".codeartsdoer/specs/sandbox_realscan/tasks.md",
+   "line": 21,
+   "sha256": "e9763aafc3b20695d5a9ac9f2cdb107cd39a1a13f14eba06339aabbf02a95647",
+   "text": "| C8 | 工作区**非 Git 仓库**，禁止依赖分支/提交/回滚命令；回滚只能 staging + 文件替换 | 验收命令中不出现 `git `；`docs/devlog/00-conventions.md` §3 已声明 |"
+  },
+  {
+   "file": ".codeartsdoer/specs/sandbox_realscan/tasks.md",
+   "line": 233,
+   "sha256": "e9763aafc3b20695d5a9ac9f2cdb107cd39a1a13f14eba06339aabbf02a95647",
+   "text": "6. **不初始化真实 Git 仓库**：不执行 `git init`，不依赖分支/提交/回滚；P4-01 只用合成夹具。"
+  },
+  {
+   "file": ".codeartsdoer/specs/sandbox_realscan/tasks.md",
+   "line": 650,
+   "sha256": "e9763aafc3b20695d5a9ac9f2cdb107cd39a1a13f14eba06339aabbf02a95647",
+   "text": "- [x] `basis` 固定为\"合成夹具；工作区非 Git 仓库\"，**不得**表述为\"已验证真实仓库 `.git`\"（O-02：采用默认值，待确认）"
+  },
+  {
+   "file": ".codeartsdoer/specs/eval_leak_hardening/tasks.md",
+   "line": 16,
+   "sha256": "1356a8dae92d55811a65d6a9e6353418b904d964cc36326daf50e821536f4c3b",
+   "text": "| C3 | 仓库非 Git 管理，不得依赖分支/提交/回滚命令 | 拆分与发布的回滚只能用 staging + 文件替换实现 |"
+  },
+  {
+   "file": ".codeartsdoer/specs/metrics_recalc/design.md",
+   "line": 6,
+   "sha256": "da093772c3591328c23eea1493b1256d730c84b1b0d3509e3ae5de21cfa70473",
+   "text": "> 环境约束：本机无 Docker、无华为云凭据、非 Git 仓库。本方案所有验收路径均可在进程内 `MemoryStore` + 本地文件证据目录下完成，不以真实 Pipeline / CodeArts / OBS 连通为前提。"
+  },
+  {
+   "file": ".codeartsdoer/specs/metrics_recalc/tasks.md",
+   "line": 33,
+   "sha256": "e43a03c17fa10926ca36e6b80375db18adc36cb78fa115a81365a63daaa5cdcf",
+   "text": "4. **非 Git 仓库**：不安排任何 git 命令；\"分支不得为 main\"由 `LocalRepoAdapter` 与 `Patch` 模型校验断言，不依赖 git 状态。"
+  },
+  {
+   "file": ".codeartsdoer/specs/sandbox_realscan/spec.md",
+   "line": 6,
+   "sha256": "fa64bae2410647c9b8efae82d11c62f67ac836523d0e40d7b67b44ab06957601",
+   "text": "> 前提修正：本机 Docker 已实测可用（WSL2 Debian 13 内 Docker 26.1.5+dfsg1，daemon 运行中）；上一阶段\"本机无 Docker\"的记录作废，但\"无华为云凭据、无 pytest、非 Git 仓库\"仍然成立。"
+  },
+  {
+   "file": ".codeartsdoer/specs/sandbox_realscan/design.md",
+   "line": 56,
+   "sha256": "7e490d8b657699c93692edb8e2a1dd72e6e10f68b85af21a7f13a60aa2d23953",
+   "text": "| 工作区非 Git 仓库；靶场源码树无 `.git` | 环境事实；`verifix-target/` 目录实检 | P4-01 只能以\"合成等价夹具 + 挂载面裁剪\"验证，并标注 `fixture=true`，不得声称验证了真实 `.git` |"
+  },
+  {
+   "file": ".codeartsdoer/specs/sandbox_realscan/design.md",
+   "line": 520,
+   "sha256": "7e490d8b657699c93692edb8e2a1dd72e6e10f68b85af21a7f13a60aa2d23953",
+   "text": "- P4-01 使用合成夹具：`.evidence/sandbox-realscan/<VER>/fixtures/p4-01/{app/main.py,.git/config}`；视图仅含 `app/`；探针断言 `/src/.git/config` 为 ENOENT 且 `/src/app/main.py` 可读；`basis=\"合成夹具；工作区非 Git 仓库\"`。若工作区未来成为 Git 仓库，同一视图规则排除真实 `.git`，探针无需改动。"
+  },
+  {
+   "file": ".codeartsdoer/specs/sandbox_realscan/design.md",
+   "line": 1311,
+   "sha256": "7e490d8b657699c93692edb8e2a1dd72e6e10f68b85af21a7f13a60aa2d23953",
+   "text": "| P4-01 | 非 Git 工作区用合成夹具；未来成为 Git 仓库时同规则适配真实 `.git`，无需改探针 |"
+  },
+  {
+   "file": ".codeartsdoer/specs/sandbox_realscan/design.md",
+   "line": 1454,
+   "sha256": "7e490d8b657699c93692edb8e2a1dd72e6e10f68b85af21a7f13a60aa2d23953",
+   "text": "10. 不使用 Git 分支/提交/回滚操作（工作区非 Git 仓库）。"
+  },
+  {
+   "file": ".codeartsdoer/specs/sandbox_realscan/design.md",
+   "line": 1871,
+   "sha256": "7e490d8b657699c93692edb8e2a1dd72e6e10f68b85af21a7f13a60aa2d23953",
+   "text": "| O-02 | P4-01 以合成夹具验证 | 合成 `.git` 夹具 + 视图裁剪；标注 `fixture=true` | 是否接受\"合成夹具\"作为 P4-01 依据；若要求真实 `.git`，需先将工作区初始化为 Git 仓库（超出本设计范围） |"
+  },
+  {
+   "file": ".codeartsdoer/specs/selfcheck_harness/design.md",
+   "line": 160,
+   "sha256": "badc7a000ee0dd4d6f162f9caea50baad257c20220137490880104acfdd9c78d",
+   "text": "- **约束**：当前工作区未初始化为 Git 仓库，D5 与 D1 引用其结果时必然得到阻塞；自检必须如实转述，不得以\"其他项已通过\"抵消。注意其\"3 个阻塞\"指阻塞条目数，进程退出码仍为 `2`。"
+  },
+  {
+   "file": ".codeartsdoer/specs/selfcheck_harness/tasks.md",
+   "line": 661,
+   "sha256": "3dc735e79494fd160745273a1ea24950c5774427c9327c54b174d36009e56c00",
+   "text": "  - 验收：`git diff`（或文件摘要对比）显示仅新增小节，无既有数值/结论行被修改；`python scripts/check_devlog.py --devlog docs/devlog --json` 输出与运行前一致（该脚本当前的非 Git 阻塞结果不得被\"抵消\"）"
+  }
+ ],
+ "tier_c": [
+  {
+   "file": "docs/devlog/m5-eval-report.md",
+   "exists": true,
+   "sha256": "931d20442673b0922a32cfb42de1dcc9996925836607f6ddedbc5e8b1f165502"
+  },
+  {
+   "file": "docs/devlog/m9-stage-anchors-review.md",
+   "exists": true,
+   "sha256": "37023d93576c87d7aa3adf5aab73e2380a9b95804243171d8ab578c93c5edbfd"
+  },
+  {
+   "file": "docs/devlog/m12-closure-and-blockers.md",
+   "exists": true,
+   "sha256": "d978309738c88091481d345eb836cf1339988141622b2e72a96245da9f77cf65"
+  },
+  {
+   "file": "docs/devlog/m13-selfcheck-report.md",
+   "exists": true,
+   "sha256": "f557b200cf2223499c28c2cf7ef1695ca0d09ddaecbb369e2ea3c61a48488471"
+  },
+  {
+   "file": "docs/devlog/m13-analysis-plan.md",
+   "exists": true,
+   "sha256": "ad2d3b9d0fc8d09a1b3d199ae9786733198041f28b82b5af3ab1a569ae6d8bd7"
+  },
+  {
+   "file": "docs/devlog/m11-coverage-report.md",
+   "exists": true,
+   "sha256": "e11d1c8c447b3fb4bab7f2dfd9388b769d1f5ff65b9e0451d2ff1797b9632198"
+  },
+  {
+   "file": "docs/devlog/03-build.md",
+   "exists": true,
+   "sha256": "e9609f0f974257ab54db8120d8e43e1c111d43146dc6d5a679ed050d020a94b1"
+  },
+  {
+   "file": "docs/devlog/02-codegen.md",
+   "exists": true,
+   "sha256": "85901087ca8ac6f5fe217f4834bea1016c1c24d4f2a1521602219385c0401991"
+  },
+  {
+   "file": "docs/devlog/metrics-report.md",
+   "exists": true,
+   "sha256": "678087b0f98ffb0bc8b39f015c8e20b30a81bab80c6441a7f94e6747247a4480"
+  },
+  {
+   "file": "docs/devlog/04-bootstrap.md",
+   "exists": true,
+   "sha256": "002849fa15a3fcc3cd8e21aa0a648cd1d4d57c758fbdc4ebce3dc675067debc0"
+  },
+  {
+   "file": "docs/devlog/m6-sandbox-constraint-report.md",
+   "exists": true,
+   "sha256": "389767d2841769d158756ede7e6c56343859ab53bc768fa63480a8e25602c9cb"
+  },
+  {
+   "file": "docs/devlog/sandbox-realscan-index.md",
+   "exists": true,
+   "sha256": "cc7075236a91c9e0c88749bf0cded31164893548ed8e46e155e4f71f373d8b27"
+  }
+ ],
+ "snapshot": {
+  "keys": [
+   "rootHash",
+   "timestamp",
+   "fileCount",
+   "files"
+  ],
+  "rootHash": "e7aefa1dd8b076d5d9cfa5439766cb599e385988df533c2ee5532ebf00c4571e",
+  "fileCount": 334,
+  "timestamp": 1794916749441,
+  "sha256": "daea4208fd01faa30de2fa5709caa984e78bacaa4df73c5c44f95a21c1c27a12"
+ }
+}

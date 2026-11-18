@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "Fetch": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-fetch"
+      ],
+      "disabled": false,
+      "timeout": 60
+    },
+    "Everything": {
+      "command": "npx.cmd",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-everything"
+      ],
+      "disabled": false,
+      "timeout": 60
+    }
+  }
+}

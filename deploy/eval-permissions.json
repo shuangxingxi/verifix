@@ -1,0 +1,32 @@
+{
+  "purpose": "评测集答案隔离的部署侧权限声明（本机无 Docker，未做真实挂载验证）",
+  "evaluation_identity": "exec",
+  "adjudication_identity": "judge",
+  "permissions": [
+    {
+      "path": "eval/cases",
+      "exec": "read",
+      "judge": "read",
+      "note": "用例输入集，执行侧唯一允许装载的目录"
+    },
+    {
+      "path": "eval/expected",
+      "exec": "none",
+      "judge": "read",
+      "note": "预期答案集，仅裁决侧可读；部署时以只读挂载或独立受控目录实现"
+    },
+    {
+      "path": "eval/verdicts",
+      "exec": "none",
+      "judge": "read_write",
+      "note": "裁决结论，执行侧不可写"
+    }
+  ],
+  "release_checks": [
+    "审计记录中 actor=exec 且 result=成功 的条数恒为 0",
+    "eval/cases 目录不含 category/reachable/fixable/should_reject/proof_* 字段",
+    "eval/expected 目录对执行身份不可读（权限探针五类全部拒绝）",
+    "同一评测运行累计越权尝试 < eval.max_violations(3)"
+  ],
+  "boundary": "应用层探针负责可验证属性；真实文件系统边界由部署侧只读挂载与独立用户身份负责，本仓库不包含容器实跑验证"
+}

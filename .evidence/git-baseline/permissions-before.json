@@ -1,0 +1,16 @@
+{
+  "branch_guard": {
+    "ok": true,
+    "problems": []
+  },
+  "secret_scan": {
+    "ok": true,
+    "hits": []
+  },
+  "env_example": {
+    "ok": true,
+    "problems": []
+  },
+  "blocking_total": 0,
+  "passed": true
+}

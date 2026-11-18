@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: verifix-api
+  namespace: verifix
+spec:
+  selector:
+    app: verifix-api
+  ports:
+  - name: http
+    port: 8000
+    targetPort: 8000

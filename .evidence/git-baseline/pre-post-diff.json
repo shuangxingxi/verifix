@@ -1,0 +1,46 @@
+{
+  "before": "E:\\shuangxingxi\\ICT_agent\\.evidence\\git-baseline\\pre-vcs-manifest.json",
+  "after": "E:\\shuangxingxi\\ICT_agent\\.evidence\\git-baseline\\post-commit-manifest.json",
+  "added": [
+    ".evidence/git-baseline/cross-check-differences.json",
+    ".evidence/git-baseline/cross-check.json",
+    ".evidence/git-baseline/pre-post-diff.json",
+    ".evidence/git-baseline/pre-vcs-manifest.json",
+    "docs/devlog/vcs-baseline.md"
+  ],
+  "changed": [
+    ".codeartsdoer/specs/eval_leak_hardening/tasks.md",
+    ".codeartsdoer/specs/metrics_recalc/design.md",
+    ".codeartsdoer/specs/metrics_recalc/tasks.md",
+    ".codeartsdoer/specs/sandbox_realscan/design.md",
+    ".codeartsdoer/specs/sandbox_realscan/spec.md",
+    ".codeartsdoer/specs/sandbox_realscan/tasks.md",
+    ".codeartsdoer/specs/selfcheck_harness/design.md",
+    ".codeartsdoer/specs/selfcheck_harness/tasks.md",
+    "docs/devlog/00-conventions.md",
+    "scripts/vcs_baseline.py"
+  ],
+  "deleted": [],
+  "waived": [
+    ".codeartsdoer/specs/eval_leak_hardening/tasks.md",
+    ".codeartsdoer/specs/metrics_recalc/design.md",
+    ".codeartsdoer/specs/metrics_recalc/tasks.md",
+    ".codeartsdoer/specs/sandbox_realscan/design.md",
+    ".codeartsdoer/specs/sandbox_realscan/spec.md",
+    ".codeartsdoer/specs/sandbox_realscan/tasks.md",
+    ".codeartsdoer/specs/selfcheck_harness/design.md",
+    ".codeartsdoer/specs/selfcheck_harness/tasks.md",
+    "docs/devlog/00-conventions.md",
+    "scripts/vcs_baseline.py"
+  ],
+  "added_whitelisted": [
+    ".evidence/git-baseline/cross-check-differences.json",
+    ".evidence/git-baseline/cross-check.json",
+    ".evidence/git-baseline/pre-post-diff.json",
+    ".evidence/git-baseline/pre-vcs-manifest.json",
+    "docs/devlog/vcs-baseline.md"
+  ],
+  "added_unexpected": [],
+  "non_waived_diff_count": 0,
+  "non_waived": []
+}

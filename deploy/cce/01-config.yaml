@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: verifix-config
+  namespace: verifix
+data:
+  VERIFIX_EVIDENCE_ROOT: /app/.evidence
+  VERIFIX_RDS_HOST: ''
+  VERIFIX_REDIS_HOST: ''
+  VERIFIX_OBS_ENDPOINT: ''
+  VERIFIX_MAAS_HOST: ''
+  VERIFIX_CODEARTS_HOST: ''

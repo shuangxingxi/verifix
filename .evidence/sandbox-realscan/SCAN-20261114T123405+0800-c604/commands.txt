@@ -1,0 +1,4 @@
+# cwd=E:\shuangxingxi\ICT_agent
+wsl.exe -d Debian -u root -- docker image inspect --format '{{.Id}}' realscan-probe:local
+# cwd=E:\shuangxingxi\ICT_agent
+wsl.exe -d Debian -u root -- docker run -i --rm --network=none --read-only --cap-drop=ALL --security-opt=no-new-privileges --user=10001:10001 --memory=1024m --cpus=1 --pids-limit=128 --volume=.evidence\sandbox-realscan\.work\SCAN-20261114T123405+0800-c604\view:/src:ro --workdir=/src --entrypoint python realscan-probe:local - < scan_bundle/worker_bundle.py

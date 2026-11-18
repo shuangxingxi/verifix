@@ -1,0 +1,47 @@
+{
+  "boundary_tags": [
+    "REAL_CONTAINER"
+  ],
+  "commands": [
+    "wsl.exe -d Debian -u root -- docker version --format '{{.Server.Version}}'",
+    "wsl.exe -d Debian -u root -- docker info --format '{{.Driver}}|{{.CgroupVersion}}'",
+    "wsl.exe -d Debian -u root -- docker image inspect --format '{{.Id}}' verifix-sandbox:1.0.0"
+  ],
+  "created_at": "2026-11-14T04:29:11.539943+00:00",
+  "evidence_id": "VER-20261114T122909+0800-31af",
+  "evidence_ref": "VER-20261114T122909+0800-31af/manifest.json",
+  "path": "VER-20261114T122909+0800-31af",
+  "raw_output_digest": "119e258ca5cb72cf87e733b3f0d0893cfcd2c4d3fc8474a0646a29256e784f6b",
+  "reuse_conditions": {
+    "dependency_versions": {
+      "cgroup": "unknown",
+      "docker": "26.1.5+dfsg1",
+      "driver": "unknown",
+      "python": "3.12.10"
+    },
+    "exec_domain": "RUNTIME_ROOT",
+    "image_id": "sha256:9b090181ca17d65bda27764178b10b6f0bdbe8cf6b610a1b6964c31fca80a645",
+    "network_mode": "NONE_LOOPBACK"
+  },
+  "runtime_facts": {
+    "cap_drop": [
+      "ALL"
+    ],
+    "cgroup_version": "unknown",
+    "docker_version": "26.1.5+dfsg1",
+    "memory_bytes": 0,
+    "nano_cpus": 0,
+    "network_mode": "NONE_LOOPBACK",
+    "pids_limit": 0,
+    "read_only_rootfs": true,
+    "runtime_driver": "unknown",
+    "security_opts": [
+      "no-new-privileges"
+    ],
+    "tmpfs_mounts": [],
+    "user": "root"
+  },
+  "sha256": "58215b20e98677a2952417ff430c8771fefea1dade804356462b440428721d79",
+  "size_bytes": 20032,
+  "verification_source": "REAL_EXECUTION"
+}

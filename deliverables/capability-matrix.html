@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>能力矩阵 · 安全审计-测试-修复自运行 Agent</title>
+<style>
+  @page { size: A4 landscape; margin: 0; }
+  :root{
+    --ink:#0f2436; --ink2:#33506b; --muted:#6b7f94; --line:#d5dde6;
+    --a:#14507e; --b:#9cbcd6; --dash:#eef2f6; --xbg:#f8e4e1; --xfg:#a32b1f;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:-apple-system,"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;
+    color:var(--ink); background:#fff; -webkit-font-smoothing:antialiased;
+  }
+  .page{
+    width:297mm; height:210mm; padding:9mm 11mm 8mm; display:flex; flex-direction:column;
+  }
+  /* ---------- header ---------- */
+  header{display:flex; justify-content:space-between; align-items:flex-end;
+    border-bottom:2px solid var(--ink); padding-bottom:3mm;}
+  h1{font-size:15pt; font-weight:700; letter-spacing:.3px;}
+  h1 span{font-weight:400; color:var(--muted); font-size:10pt; margin-left:6px;}
+  .meta{text-align:right; font-size:7.5pt; color:var(--muted); line-height:1.5;}
+  .meta b{color:var(--ink2); font-weight:600;}
+  /* ---------- layout ---------- */
+  .top{display:flex; gap:6mm; margin-top:5mm; flex:0 0 auto;}
+  .left{width:182mm; flex:0 0 auto;}
+  .right{flex:1; display:flex; flex-direction:column; gap:4mm;}
+  .sec-title{font-size:8.5pt; font-weight:700; color:var(--ink2); letter-spacing:.5px;
+    margin-bottom:2mm; display:flex; align-items:center; gap:2mm;}
+  .sec-title::before{content:""; width:3px; height:9px; background:var(--a);}
+  .sec-title em{font-style:normal; font-weight:400; color:var(--muted); font-size:7pt;}
+  /* ---------- tables ---------- */
+  table{border-collapse:collapse; width:100%; table-layout:fixed;}
+  th,td{border:1px solid var(--line); text-align:center; font-size:7.5pt;}
+  thead th{background:#f6f8fa; font-weight:600; color:var(--ink2); padding:1.6mm 0; font-size:7pt;}
+  .m1 td{height:7.1mm;}
+  .m1 .name{text-align:left; padding-left:2.5mm; font-size:7.5pt; color:var(--ink);}
+  .m1 .name i{font-style:normal; color:var(--muted); font-family:ui-monospace,Consolas,monospace;
+    font-size:6.5pt; margin-right:2mm;}
+  .m2 td{height:6.4mm; font-size:6.5pt;}
+  .m2 .name{text-align:left; padding-left:2mm; font-size:7pt;}
+  /* cells */
+  .A{background:var(--a); color:#fff; font-weight:700;}
+  .B{background:var(--b); color:#0d3554; font-weight:700;}
+  .C{background:#fff; color:var(--a); font-weight:700; box-shadow:inset 0 0 0 1.5px var(--a);}
+  .X{background:var(--xbg); color:var(--xfg); font-weight:700;}
+  .N{background:var(--dash); color:#b9c4d0; font-weight:400;}
+  /* ---------- legend ---------- */
+  .legend{display:grid; grid-template-columns:1fr 1fr; gap:1.6mm 3mm; font-size:7pt; color:var(--ink2);}
+  .legend div{display:flex; align-items:center; gap:1.8mm;}
+  .sw{width:6mm; height:4mm; border:1px solid var(--line); flex:0 0 auto; display:flex;
+    align-items:center; justify-content:center; font-size:6pt; font-weight:700;}
+  /* ---------- stat ---------- */
+  .stat{display:flex; gap:2mm;}
+  .stat div{flex:1; border:1px solid var(--line); padding:1.8mm 0; text-align:center;}
+  .stat b{display:block; font-size:13pt; font-weight:700; color:var(--a); line-height:1.1;
+    font-family:ui-monospace,Consolas,monospace;}
+  .stat span{font-size:6.5pt; color:var(--muted);}
+  /* ---------- axes ---------- */
+  .axes{border:1px solid var(--line); padding:2.4mm 3mm; font-size:7pt; line-height:1.65; color:var(--ink2);}
+  .axes p{margin:0;}
+  .axes b{color:var(--ink); font-weight:600;}
+  .axes b + span{color:var(--muted);}
+  /* ---------- bottom ---------- */
+  .bottom{margin-top:4mm; flex:0 0 auto;}
+  .law{margin-top:3mm; border-left:2.5px solid var(--a); background:#f6f9fb;
+    padding:2.2mm 3mm; font-size:7.5pt; color:var(--ink2); line-height:1.6;}
+  .law b{color:var(--ink);}
+  footer{margin-top:auto; padding-top:2.5mm; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; font-size:6.5pt; color:var(--muted);}
+  .mono{font-family:ui-monospace,Consolas,monospace;}
+  /* MVP 行标记：左竖条 + 淡底，不受 border-collapse 影响 */
+  td.name.mvp{background:#eef4f9; box-shadow:inset 2.5px 0 0 #14507e;}
+  .legend .sw.bar{width:3px; height:11px; border-radius:0;}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <h1>能力覆盖矩阵<span>Capability Coverage Matrix</span></h1>
+    <div class="meta">
+      <b>安全审计 · 测试 · 修复 · 自运行全流程 Agent</b><br>
+      第十一届华为 ICT 大赛 创新赛 ｜ 赛题 2 · AgentArts Agent 设计<br>
+      v1.0 ｜ 2026-11-10 ｜ 单位：缺陷类别 × 闭环阶段
+    </div>
+  </header>
+
+  <div class="top">
+    <div class="left">
+      <div class="sec-title">主矩阵 · 12 类缺陷 × 5 个闭环阶段 <em>单格 = 该阶段能否无人干预完成</em></div>
+      <table class="m1">
+        <colgroup>
+          <col style="width:62mm"><col span="5" style="width:24mm">
+        </colgroup>
+        <thead>
+          <tr>
+            <th style="text-align:left; padding-left:2.5mm;">缺陷类别</th>
+            <th>Detect<br>检测</th>
+            <th>Triage<br>可达性判定</th>
+            <th>Reproduce<br>造红测试</th>
+            <th>Patch<br>最小修复</th>
+            <th>Verify<br>验证 + 门禁</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="name mvp"><i>C01</i>依赖已知漏洞（SCA / CVE）</td>
+            <td class="A">A</td><td class="A">A</td><td class="A">A</td><td class="A">A</td><td class="A">A</td></tr>
+          <tr><td class="name mvp"><i>C02</i>SQL 注入</td>
+            <td class="A">A</td><td class="A">A</td><td class="A">A</td><td class="A">A</td><td class="A">A</td></tr>
+          <tr><td class="name mvp"><i>C03</i>命令注入</td>
+            <td class="A">A</td><td class="A">A</td><td class="A">A</td><td class="A">A</td><td class="A">A</td></tr>
+          <tr><td class="name"><i>C04</i>路径穿越</td>
+            <td class="A">A</td><td class="A">A</td><td class="A">A</td><td class="A">A</td><td class="A">A</td></tr>
+          <tr><td class="name mvp"><i>C05</i>硬编码凭据（密钥入库）</td>
+            <td class="A">A</td><td class="A">A</td><td class="B">B</td><td class="A">A</td><td class="B">B</td></tr>
+          <tr><td class="name"><i>C06</i>不安全反序列化</td>
+            <td class="A">A</td><td class="A">A</td><td class="B">B</td><td class="A">A</td><td class="A">A</td></tr>
+          <tr><td class="name"><i>C07</i>弱加密算法（MD5 / SHA1）</td>
+            <td class="A">A</td><td class="A">A</td><td class="B">B</td><td class="B">B</td><td class="C">C</td></tr>
+          <tr><td class="name"><i>C08</i>敏感信息写入日志</td>
+            <td class="A">A</td><td class="A">A</td><td class="A">A</td><td class="A">A</td><td class="A">A</td></tr>
+          <tr><td class="name"><i>C09</i>SSRF（未校验外链请求）</td>
+            <td class="A">A</td><td class="B">B</td><td class="A">A</td><td class="B">B</td><td class="B">B</td></tr>
+          <tr><td class="name"><i>C10</i>配置基线错误（公网暴露 / 权限过大）</td>
+            <td class="A">A</td><td class="A">A</td><td class="B">B</td><td class="A">A</td><td class="A">A</td></tr>
+          <tr><td class="name"><i>C11</i>不安全随机数</td>
+            <td class="A">A</td><td class="A">A</td><td class="A">A</td><td class="A">A</td><td class="A">A</td></tr>
+          <tr><td class="name"><i>C12</i>竞态与 TOCTOU</td>
+            <td class="C">C</td><td class="C">C</td><td class="C">C</td><td class="C">C</td><td class="C">C</td></tr>
+        </tbody>
+      </table>
+      <div class="law">
+        <b>边界法则：</b>凡能用「一条会自动变红、再自动变绿」的测试判定对错的问题，即可全自动闭环；
+        只能由人判断对错的问题，止步于 L2（仅报告）；判不了对错的问题，不纳入覆盖。
+      </div>
+    </div>
+
+    <div class="right">
+      <div>
+        <div class="sec-title">评级图例</div>
+        <div class="legend">
+          <div><span class="sw" style="background:#14507e; color:#fff;">A</span>全自动闭环 · L0 / L1</div>
+          <div><span class="sw" style="background:#9cbcd6; color:#0d3554;">B</span>半自动 · 产 PR 待人审</div>
+          <div><span class="sw" style="background:#fff; color:#14507e; box-shadow:inset 0 0 0 1px #14507e;">C</span>仅检测与报告 · L2</div>
+          <div><span class="sw" style="background:#eef2f6; color:#b9c4d0;">—</span>该资产不承载此类缺陷</div>
+          <div><span class="sw" style="background:#f8e4e1; color:#a32b1f;">✗</span>承载但不覆盖</div>
+          <div><span class="sw bar" style="background:#14507e;"></span>本轮交付（MVP）· 4 行（左侧竖条）</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="sec-title">闭环阶段分布 <em>60 格</em></div>
+        <div class="stat">
+          <div><b>45</b><span>A 全自动</span></div>
+          <div><b>9</b><span>B 半自动</span></div>
+          <div><b>6</b><span>C 仅检测</span></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="sec-title">四轴覆盖范围</div>
+        <div class="axes">
+          <p><b>资产</b> <span>6 类 —</span> 应用代码 · 第三方依赖 · IaC 与云配置 · 容器镜像 · 密钥与凭据 · API 契约</p>
+          <p><b>缺陷</b> <span>12 类 —</span> 见左表 C01–C12；<b>本轮交付 3 类</b>（左条标记 4 行）</p>
+          <p><b>触发</b> <span>5 种 —</span> 定时扫描 · PR / push 门禁 · CVE 订阅 · 运行时告警 · 人工提交</p>
+          <p><b>处置</b> <span>4 级 —</span> L0 自动合并 · L1 开 PR 待人审 · L2 仅报告 · L3 拒绝处理</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="sec-title">附矩阵 · 6 类资产 × 12 类缺陷 <em>用于说明「同一引擎换插件即可平移」，非能力承诺</em></div>
+    <table class="m2">
+      <colgroup>
+        <col style="width:40mm"><col span="12" style="width:11.4mm">
+      </colgroup>
+      <thead>
+        <tr>
+          <th style="text-align:left; padding-left:2mm;">资产 \ 缺陷</th>
+          <th>C01</th><th>C02</th><th>C03</th><th>C04</th><th>C05</th><th>C06</th>
+          <th>C07</th><th>C08</th><th>C09</th><th>C10</th><th>C11</th><th>C12</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="name">应用代码（Python / Java）</td>
+          <td class="N">—</td><td class="A">A</td><td class="A">A</td><td class="A">A</td><td class="A">A</td><td class="A">A</td>
+          <td class="B">B</td><td class="A">A</td><td class="B">B</td><td class="N">—</td><td class="A">A</td><td class="X">✗</td></tr>
+        <tr><td class="name">第三方依赖（requirements / pom / go.mod）</td>
+          <td class="A">A</td><td class="N">—</td><td class="N">—</td><td class="N">—</td><td class="N">—</td><td class="N">—</td>
+          <td class="N">—</td><td class="N">—</td><td class="N">—</td><td class="N">—</td><td class="N">—</td><td class="N">—</td></tr>
+        <tr><td class="name">IaC 与云配置（Terraform / K8s / Dockerfile）</td>
+          <td class="N">—</td><td class="N">—</td><td class="N">—</td><td class="N">—</td><td class="B">B</td><td class="N">—</td>
+          <td class="N">—</td><td class="N">—</td><td class="N">—</td><td class="A">A</td><td class="N">—</td><td class="N">—</td></tr>
+        <tr><td class="name">容器镜像</td>
+          <td class="B">B</td><td class="N">—</td><td class="N">—</td><td class="N">—</td><td class="B">B</td><td class="N">—</td>
+          <td class="N">—</td><td class="N">—</td><td class="N">—</td><td class="B">B</td><td class="N">—</td><td class="N">—</td></tr>
+        <tr><td class="name">密钥与凭据</td>
+          <td class="N">—</td><td class="N">—</td><td class="N">—</td><td class="N">—</td><td class="A">A</td><td class="N">—</td>
+          <td class="B">B</td><td class="B">B</td><td class="N">—</td><td class="N">—</td><td class="N">—</td><td class="N">—</td></tr>
+        <tr><td class="name">API 契约（OpenAPI / 实际端点）</td>
+          <td class="N">—</td><td class="N">—</td><td class="N">—</td><td class="N">—</td><td class="N">—</td><td class="N">—</td>
+          <td class="N">—</td><td class="N">—</td><td class="N">—</td><td class="C">C</td><td class="N">—</td><td class="N">—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    <span>主矩阵 12 × 5 = 60 格，其中 A 类 45 格（75%）、B 类 9 格（15%）、C 类 6 格（10%）；无「承载但不覆盖」项落在主矩阵内。</span>
+    <span class="mono">deliverables / capability-matrix.html</span>
+  </footer>
+
+</div>
+</body>
+</html>

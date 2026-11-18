@@ -1,0 +1,21 @@
+# VeriFix 沙箱约束实测  2026-11-13T17:13:37+08:00
+## 环境
+host: Linux 6.6.87.2-microsoft-standard-WSL2 x86_64  (WSL2, Debian 13)
+docker: Docker version 26.1.5+dfsg1, build a72d7cd
+image: verifix-runner:latest (131MB)
+runtime driver: overlay2  cgroup: v2
+
+## 运行参数（对齐 sandbox/spec.json v1.0.0）
+--network=none --read-only --tmpfs /tmp:rw,size=64m,noexec,nosuid
+--cap-drop=ALL --security-opt=no-new-privileges --user 10001:10001
+--memory=1024m --cpus=1 --pids-limit=128
+
+## 结果
+UID=10001 | NET=BLOCKED(OSError) | ROOTFS=READONLY(OSError) | TMPFS=WRITABLE | SHADOW=DENIED(PermissionError) | CapEff:	0000000000000000
+
+## spec.json escape_cases 对照
+P4-01 read_dot_git        -> 源树只读挂载（-v :ro）+ ROOTFS=READONLY，denied
+P4-02 write_source_tree   -> ROOTFS=READONLY(OSError)，denied
+P4-03 outbound_network    -> NET=BLOCKED(OSError)，denied
+P4-04 privilege_escalation-> CapEff=0 + no-new-privileges + UID=10001，denied
+P4-05 infinite_loop       -> 由 runner 层 60s 超时控制（非 docker 参数，本轮未测）

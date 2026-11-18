@@ -1,0 +1,12 @@
+{
+  "reconcile_id": "REC-SCAN-20261114T164810+0800-95ac",
+  "scan_id": "SCAN-20261114T164810+0800-95ac",
+  "truth_version": "1.0.0",
+  "truth_sha256": "286d13be98fdfc9c18967be8d82e761ab1751ee1aacfc836d599e937b69becb2",
+  "truth_read_count": 1,
+  "read_phase": "POST_SCAN",
+  "matched": 15,
+  "missing": [],
+  "extra": [],
+  "coverage": "15/15"
+}

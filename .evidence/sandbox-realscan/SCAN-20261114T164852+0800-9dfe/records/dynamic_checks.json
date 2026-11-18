@@ -1,0 +1,122 @@
+[
+  {
+    "check_id": "DYN-01",
+    "detection_id": "D-11-C03-CMD",
+    "endpoint": "/backup",
+    "method": "GET",
+    "normal_digest": "de18a9e4e32702586178a3ef38334aaee44ff29124add1e43c4e8e4ffd984b1a",
+    "injected_digest": "a3a937c750a1d6c5bc6e51ee1135b949c03764a609d1838665bdf66bde1a600b",
+    "behavior_diff": true,
+    "conclusion": "REPRODUCIBLE",
+    "duration_ms": 19,
+    "retries": 0
+  },
+  {
+    "check_id": "DYN-02",
+    "detection_id": "D-10-C03-CMD",
+    "endpoint": "/convert",
+    "method": "GET",
+    "normal_digest": "791b09bb61fe23d13b5b82bd2ac7f4e7784cd706630ad9e3155c109330cf0fce",
+    "injected_digest": "d24219f6de94b955cf36d25bd2aca88e2d35eef45b9317b7083f55ec8fe9653c",
+    "behavior_diff": true,
+    "conclusion": "REPRODUCIBLE",
+    "duration_ms": 3,
+    "retries": 0
+  },
+  {
+    "check_id": "DYN-03",
+    "detection_id": "D-12-C03-CMD",
+    "endpoint": "/deploy",
+    "method": "POST",
+    "normal_digest": "0b5284f44294afe8e83ee11f9bd2b649d73eb16b9e79b2929a6a42fa8dcc15d6",
+    "injected_digest": "a329b8cd7870b93e9a67f5d21392c334b1fd1032b465e219778397ac469c7139",
+    "behavior_diff": true,
+    "conclusion": "REPRODUCIBLE",
+    "duration_ms": 3,
+    "retries": 0
+  },
+  {
+    "check_id": "DYN-04",
+    "detection_id": "D-04-C02-SQL",
+    "endpoint": "/login",
+    "method": "POST",
+    "normal_digest": "51fe551145b4e1973312c10a17a5fb37f440e74d377834fb18d17b7d1f466c62",
+    "injected_digest": "7a5e5d56fad9a6a4cddcccfea9e8462b16f3925e864b1765ee7137afb8f73cd7",
+    "behavior_diff": true,
+    "conclusion": "REPRODUCIBLE",
+    "duration_ms": 2,
+    "retries": 0
+  },
+  {
+    "check_id": "DYN-05",
+    "detection_id": "D-06-C02-SQL",
+    "endpoint": "/order",
+    "method": "GET",
+    "normal_digest": "2c8a7c826e1131ffe10912df651e0cac43bda62af97f315bd8ca1bc5bdb69048",
+    "injected_digest": "68c1b9424a34b590d318e1b6ec39f990efc90624d8ec79266a3181437fd9fbda",
+    "behavior_diff": true,
+    "conclusion": "REPRODUCIBLE",
+    "duration_ms": 2,
+    "retries": 0
+  },
+  {
+    "check_id": "DYN-06",
+    "detection_id": "D-09-C03-CMD",
+    "endpoint": "/ping",
+    "method": "GET",
+    "normal_digest": "de18a9e4e32702586178a3ef38334aaee44ff29124add1e43c4e8e4ffd984b1a",
+    "injected_digest": "a3a937c750a1d6c5bc6e51ee1135b949c03764a609d1838665bdf66bde1a600b",
+    "behavior_diff": true,
+    "conclusion": "REPRODUCIBLE",
+    "duration_ms": 4,
+    "retries": 0
+  },
+  {
+    "check_id": "DYN-07",
+    "detection_id": "D-08-C02-SQL",
+    "endpoint": "/profile",
+    "method": "GET",
+    "normal_digest": "5ed05ee19e58aae7c91b46415d68e69c156237308f9831c84989d5a0325c8336",
+    "injected_digest": "3ef9f0b737f73fe18477ea4252f050ea8ddc9b1c92dbba2d3bd90bfa65c6b448",
+    "behavior_diff": true,
+    "conclusion": "REPRODUCIBLE",
+    "duration_ms": 2,
+    "retries": 0
+  },
+  {
+    "check_id": "DYN-08",
+    "detection_id": "D-07-C02-SQL",
+    "endpoint": "/report",
+    "method": "GET",
+    "normal_digest": "3aa8ac761c5a23906d30fb86ca2db09c9b391142a956cdb4263570adb94bfbe6",
+    "injected_digest": "36111fdade3414ef5771f228d7990e459989a06874c5316b080715fa43efd732",
+    "behavior_diff": true,
+    "conclusion": "REPRODUCIBLE",
+    "duration_ms": 2,
+    "retries": 0
+  },
+  {
+    "check_id": "DYN-09",
+    "detection_id": "D-05-C02-SQL",
+    "endpoint": "/search",
+    "method": "GET",
+    "normal_digest": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "injected_digest": "9d2892b6acb70c53357b1ae79b3c6232523e4201ca43f9da8c334c6e73b0ec27",
+    "behavior_diff": true,
+    "conclusion": "REPRODUCIBLE",
+    "duration_ms": 2,
+    "retries": 0
+  },
+  {
+    "check_id": "DYN-10",
+    "detection_id": "D-03-C02-SQL",
+    "endpoint": "/user",
+    "method": "GET",
+    "normal_digest": "c2a57f644b0a03091a4894390a68c4549163c8feada32f042fb5129dda9bbc9c",
+    "injected_digest": "9d2892b6acb70c53357b1ae79b3c6232523e4201ca43f9da8c334c6e73b0ec27",
+    "behavior_diff": true,
+    "conclusion": "REPRODUCIBLE",
+    "duration_ms": 2,
+    "retries": 0
+  }
+]

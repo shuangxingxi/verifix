@@ -1,0 +1,167 @@
+[
+  {
+    "detection_id": "D-01-C05-CRED",
+    "file": "app/config.py",
+    "line": 1,
+    "rule_id": "C05-CRED",
+    "defect_class": "C05",
+    "source_kind": "REAL_CONTAINER",
+    "exec_location": "CONTAINER",
+    "snippet_masked": "SECRET_KEY = \"***\"",
+    "rule_basis": "CWE-798"
+  },
+  {
+    "detection_id": "D-02-C05-CRED",
+    "file": "app/config.py",
+    "line": 2,
+    "rule_id": "C05-CRED",
+    "defect_class": "C05",
+    "source_kind": "REAL_CONTAINER",
+    "exec_location": "CONTAINER",
+    "snippet_masked": "DB_PASSWORD = \"***\"",
+    "rule_basis": "CWE-798"
+  },
+  {
+    "detection_id": "D-03-C02-SQL",
+    "file": "app/main.py",
+    "line": 31,
+    "rule_id": "C02-SQL",
+    "defect_class": "C02",
+    "source_kind": "REAL_CONTAINER",
+    "exec_location": "CONTAINER",
+    "snippet_masked": "rows = conn.execute(\"SELECT id, name FROM users WHERE id = '%s'\" % uid).fetchall()",
+    "rule_basis": "CWE-89"
+  },
+  {
+    "detection_id": "D-04-C02-SQL",
+    "file": "app/main.py",
+    "line": 41,
+    "rule_id": "C02-SQL",
+    "defect_class": "C02",
+    "source_kind": "REAL_CONTAINER",
+    "exec_location": "CONTAINER",
+    "snippet_masked": "\"SELECT id FROM users WHERE name = '\" + username + \"' AND password = '\" + password + \"'\"",
+    "rule_basis": "CWE-89"
+  },
+  {
+    "detection_id": "D-05-C02-SQL",
+    "file": "app/main.py",
+    "line": 50,
+    "rule_id": "C02-SQL",
+    "defect_class": "C02",
+    "source_kind": "REAL_CONTAINER",
+    "exec_location": "CONTAINER",
+    "snippet_masked": "rows = conn.execute(\"SELECT id, name FROM users WHERE name LIKE '%\" + keyword + \"%'\").fetchall()",
+    "rule_basis": "CWE-89"
+  },
+  {
+    "detection_id": "D-06-C02-SQL",
+    "file": "app/main.py",
+    "line": 58,
+    "rule_id": "C02-SQL",
+    "defect_class": "C02",
+    "source_kind": "REAL_CONTAINER",
+    "exec_location": "CONTAINER",
+    "snippet_masked": "rows = conn.execute(\"SELECT id, amount FROM orders WHERE id = \" + order_id).fetchall()",
+    "rule_basis": "CWE-89"
+  },
+  {
+    "detection_id": "D-07-C02-SQL",
+    "file": "app/main.py",
+    "line": 66,
+    "rule_id": "C02-SQL",
+    "defect_class": "C02",
+    "source_kind": "REAL_CONTAINER",
+    "exec_location": "CONTAINER",
+    "snippet_masked": "rows = conn.execute(\"SELECT COUNT(*) FROM orders WHERE created_at = '\" + day + \"'\").fetchall()",
+    "rule_basis": "CWE-89"
+  },
+  {
+    "detection_id": "D-08-C02-SQL",
+    "file": "app/main.py",
+    "line": 74,
+    "rule_id": "C02-SQL",
+    "defect_class": "C02",
+    "source_kind": "REAL_CONTAINER",
+    "exec_location": "CONTAINER",
+    "snippet_masked": "rows = conn.execute(f\"SELECT user_id, email FROM profiles WHERE user_id = {user_id}\").fetchall()",
+    "rule_basis": "CWE-89"
+  },
+  {
+    "detection_id": "D-09-C03-CMD",
+    "file": "app/main.py",
+    "line": 81,
+    "rule_id": "C03-CMD",
+    "defect_class": "C03",
+    "source_kind": "REAL_CONTAINER",
+    "exec_location": "CONTAINER",
+    "snippet_masked": "output = os.popen(\"ping -c 1 \" + host).read()",
+    "rule_basis": "CWE-78"
+  },
+  {
+    "detection_id": "D-10-C03-CMD",
+    "file": "app/main.py",
+    "line": 87,
+    "rule_id": "C03-CMD",
+    "defect_class": "C03",
+    "source_kind": "REAL_CONTAINER",
+    "exec_location": "CONTAINER",
+    "snippet_masked": "result = subprocess.call(\"convert \" + name + \" out.jpg\", shell=True)",
+    "rule_basis": "CWE-78:shell=True"
+  },
+  {
+    "detection_id": "D-11-C03-CMD",
+    "file": "app/main.py",
+    "line": 93,
+    "rule_id": "C03-CMD",
+    "defect_class": "C03",
+    "source_kind": "REAL_CONTAINER",
+    "exec_location": "CONTAINER",
+    "snippet_masked": "output = os.popen(\"tar czf backup.tgz \" + folder).read()",
+    "rule_basis": "CWE-78"
+  },
+  {
+    "detection_id": "D-12-C03-CMD",
+    "file": "app/main.py",
+    "line": 99,
+    "rule_id": "C03-CMD",
+    "defect_class": "C03",
+    "source_kind": "REAL_CONTAINER",
+    "exec_location": "CONTAINER",
+    "snippet_masked": "completed = subprocess.run(\"deploy.sh \" + env, shell=True, capture_output=True, text=True)",
+    "rule_basis": "CWE-78:shell=True"
+  },
+  {
+    "detection_id": "D-13-C01-DEP",
+    "file": "requirements.txt",
+    "line": 2,
+    "rule_id": "C01-DEP",
+    "defect_class": "C01",
+    "source_kind": "REAL_CONTAINER",
+    "exec_location": "CONTAINER",
+    "snippet_masked": "requests==2.19.1",
+    "rule_basis": "CVE-2018-18074 NVD:CVE-2018-18074"
+  },
+  {
+    "detection_id": "D-14-C01-DEP",
+    "file": "requirements.txt",
+    "line": 3,
+    "rule_id": "C01-DEP",
+    "defect_class": "C01",
+    "source_kind": "REAL_CONTAINER",
+    "exec_location": "CONTAINER",
+    "snippet_masked": "PyYAML==5.1",
+    "rule_basis": "CVE-2020-1747 NVD:CVE-2020-1747"
+  },
+  {
+    "detection_id": "D-15-C01-DEP",
+    "file": "requirements.txt",
+    "line": 4,
+    "rule_id": "C01-DEP",
+    "defect_class": "C01",
+    "source_kind": "REAL_CONTAINER",
+    "exec_location": "CONTAINER",
+    "snippet_masked": "Jinja2==2.10.1",
+    "rule_basis": "CVE-2020-28493 NVD:CVE-2020-28493"
+  }
+]

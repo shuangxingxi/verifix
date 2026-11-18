@@ -1,0 +1,139 @@
+{
+  "scan_id": "SCAN-20261114T123510+0800-5b8f",
+  "target": "verifix-target",
+  "target_version": "1.0.0",
+  "target_view_digest": "7ef1e5ed21cb733150a1a3604be4a7dcf4af10aa97aed731cc4fb9b0067b283d",
+  "listen_port": 0,
+  "port_source": "DYNAMIC",
+  "network_mode": "NONE_LOOPBACK",
+  "sandbox_scope": true,
+  "scope": {
+    "defect_classes": [
+      "C01",
+      "C02",
+      "C03",
+      "C05"
+    ],
+    "item_count": 15,
+    "full_count": 15,
+    "uncovered_classes": []
+  },
+  "detections": [],
+  "dynamic_checks": [],
+  "scan_verdict": "UNVERIFIED",
+  "verdict_missing": [
+    "HEALTH_TIMEOUT"
+  ],
+  "boundary_summary": {
+    "REAL_CONTAINER": 0,
+    "REAL_LOCAL": 0,
+    "RECORDED_STUB": 10,
+    "CLOUD_CREDENTIAL_MISSING": 1
+  },
+  "scan_phase_truth_reads": 0,
+  "stub_count": 10,
+  "cloud_section": "云凭据缺失，未验证",
+  "repeat_diff": [],
+  "interrupted_at": null,
+  "completed_count": 0,
+  "unverified_count": 0,
+  "evidence_ref": "SCAN-20261114T123510+0800-5b8f/manifest.json",
+  "adopted_defaults": [
+    {
+      "q_id": "O-01",
+      "value": "10 judgement classes cover 11 policy keys",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "O-02",
+      "value": "synthetic .git fixture with mount trimming",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "O-03",
+      "value": "local alias allowed with registered image id",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "O-04",
+      "value": "cli and evidence only, no api routes added",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "O-05",
+      "value": "runtime flask independent, C01 static only",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "O-06",
+      "value": "host fallback enabled but marked REAL_LOCAL",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-01",
+      "value": "runtime root identity",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-02",
+      "value": "local build image with image id",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-03",
+      "value": "build time egress only, runtime none",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-04",
+      "value": "dynamic port allocation",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-05",
+      "value": "full scope 15 items",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-06",
+      "value": "host fallback accepted but excluded from sandbox evidence",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-07",
+      "value": "p4-05 timeout retest mandatory",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-08",
+      "value": "dual track probes, container domain publishable",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-09",
+      "value": "write new evidence root only",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    },
+    {
+      "q_id": "Q-10",
+      "value": "cloud credential missing placeholder",
+      "source": "SPEC_DEFAULT",
+      "pending": true
+    }
+  ]
+}
