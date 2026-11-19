@@ -4,6 +4,8 @@
   "added": [
     ".evidence/git-baseline/cross-check-differences.json",
     ".evidence/git-baseline/cross-check.json",
+    ".evidence/git-baseline/devlog-before.json",
+    ".evidence/git-baseline/permissions-before.json",
     ".evidence/git-baseline/pre-post-diff.json",
     ".evidence/git-baseline/pre-vcs-manifest.json",
     "docs/devlog/vcs-baseline.md"
@@ -17,6 +19,7 @@
     ".codeartsdoer/specs/sandbox_realscan/tasks.md",
     ".codeartsdoer/specs/selfcheck_harness/design.md",
     ".codeartsdoer/specs/selfcheck_harness/tasks.md",
+    ".evidence/git-baseline/override-paths.txt",
     "docs/devlog/00-conventions.md",
     "scripts/vcs_baseline.py"
   ],
@@ -30,12 +33,15 @@
     ".codeartsdoer/specs/sandbox_realscan/tasks.md",
     ".codeartsdoer/specs/selfcheck_harness/design.md",
     ".codeartsdoer/specs/selfcheck_harness/tasks.md",
+    ".evidence/git-baseline/override-paths.txt",
     "docs/devlog/00-conventions.md",
     "scripts/vcs_baseline.py"
   ],
   "added_whitelisted": [
     ".evidence/git-baseline/cross-check-differences.json",
     ".evidence/git-baseline/cross-check.json",
+    ".evidence/git-baseline/devlog-before.json",
+    ".evidence/git-baseline/permissions-before.json",
     ".evidence/git-baseline/pre-post-diff.json",
     ".evidence/git-baseline/pre-vcs-manifest.json",
     "docs/devlog/vcs-baseline.md"

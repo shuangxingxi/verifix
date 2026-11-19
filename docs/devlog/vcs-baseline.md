@@ -11,12 +11,21 @@
 | 基线标识 | `vcs-baseline/<短标识>`（取提交 SHA 前 12 位；真实值记录在 `.evidence/git-baseline/baseline-meta.json` 的 `baseline_label`；与自检 `v1`–`v4`、`definition_version=v2` 命名空间互不混用） |
 | 初始化日期 | 2026-11-18 |
 | 分支 | `main`（仅此一个分支，无 remote、无 tag） |
-| 清单条目 | 979（L1 逐文件 975 + L2 目录聚合 4） |
-| 入库计数 | tracked=true 520 项 / 6.74 MB |
-| 排除计数 | tracked=false 459 项（含 4 个 L2 聚合目录，覆盖 4037 个派生文件） |
+| 清单条目 | 987（提交前 post 清单：L1 逐文件 983 + L2 目录聚合 4） |
+| 入库计数 | tracked=true **527** 项 / 7,054,686 字节（约 6.73 MiB） |
+| 排除计数 | tracked=false **460** 项（含 4 个 L2 聚合目录，覆盖 4037 个派生文件） |
+| pre 清单口径 | 979 条目 / tracked 520 / 排除 459（pre 清单生成于证据文件落盘前；与提交口径的差额归因见 `.evidence/git-baseline/final-report.md` 第 6 节） |
 | pre 清单摘要 | `10b957da5ce668233688e3248065b5bfdc411fe70309f36c4080695a00078549` |
-| 基线提交对应清单摘要 | 见 `.evidence/git-baseline/baseline-meta.json`（post 清单，提交后生成） |
+| 基线提交对应清单摘要 | `362307f626951b129b5c8bcb6e2c5a38caf9d96cb5f9121a2c9653f84f1fc5da`（post 清单；元数据见 `.evidence/git-baseline/baseline-meta.json`，提交后生成） |
 | 自检口径 | 阻塞合计由 3 条变为 7 条；其中全局阻塞由 1 条变为 5 条（两组数字并列，不得单写其一） |
+
+**人工签署（2026-11-18，按维护者授权录入）**
+
+- **AC-08 抽样复核**：10 项（7 个入库项 + secret/answer/derived 各 1）复算误差 **0**，数值未变、结论未改。评审者：**张李焱**。执行方式：AI 复算（`.evidence/git-baseline/ac08-sample.json`）+ 本人授权确认；同一人兼任。
+- **AC-13 复核**：`git grep -n "已验证真实仓库"` 命中 13 行，全部为"不得表述为/不声称/必须为 0"的否定句或规范条文，无肯定断言；`fixture=true` 在 7 个文件保留。复核者：**张李焱**（同一人兼任）。**判定**：基线提交内 `vcs_baseline.py` 判 fail（否定句误命中）；以工作区修正版（`NEGATION_TOKENS`）重跑判 **pass**。两版本差异已登记，不因改判而消除。
+- **13.5 签发**：**通过（附注）**——以工作区修正版 `vcs_baseline.py` 重跑 AC-01…AC-14 得 **14/14 pass**（证据 `.evidence/git-baseline/ac-report.json`）；基线提交内版本存在 AC-13 检索缺陷，差异与影响见 `.evidence/git-baseline/final-report.md` 第 6 节。维护者：**张李焱**，2026-11-18。
+
+> 上述三处为同一署名人在本人授权下录入，不构成三个独立第三方评审；签署不改变 AC-13 机器项 fail 的事实。
 
 **命名空间声明**：`vcs-baseline/<短标识>`、自检口径 `v1`–`v4`、指标定义 `definition_version=v2` 三者互不混用；`v4` 是自检基线编号，不是"第四个提交"。`eval/eval_set.sha256` 的绑定关系未因 Git 化改变。
 
@@ -290,7 +299,7 @@
 
 ### 3.2 override 清单与不 override 清单
 
-- **override（逐条 `git add -f`，禁 `git add -f .`）**：`.codeartsdoer/specs/**` 共 20 个文件、`.codeartsdoer/mcp/mcp_settings.json`、`.codeartsdoer/rule/metadata.properties`、`.codeartsdoer/package.json`、`.codeartsdoer/mem-exp-config.json`、`.codeartsdoer/.gitignore`、`eval/.gitignore`，合计 26 条，见 `.evidence/git-baseline/override-paths.txt`。
+- **override（逐条 `git add -f`，禁 `git add -f .`）**：`.codeartsdoer/specs/**` 共 20 个文件、`.codeartsdoer/mcp/mcp_settings.json`、`.codeartsdoer/rule/metadata.properties`、`.codeartsdoer/package.json`、`.codeartsdoer/mem-exp-config.json`、`.codeartsdoer/.gitignore`、`eval/.gitignore`，合计 26 条，见 `.evidence/git-baseline/override-paths.txt`（sha256 `f75ce825f688a5fe3b2bfa08817f916f6cd74926defde86da33b1651665ba7e4`）。
 - **不 override**：`.codeartsdoer/.codebase/**`、`.codeartsdoer/temp/**`、`eval/**`（仅 `eval/.gitignore` 例外）。
 - **原因**：`.codeartsdoer/.gitignore` 与 `eval/.gitignore` 内容均为 `*`，Git 语义为下层优先，上层 `!` 否定规则无法覆盖，因此只能以 `git add -f` 强制纳入。
 

@@ -1,0 +1,99 @@
+{
+  "generated_at": "2026-11-18T17:22:56+08:00",
+  "source_manifest": ".evidence/git-baseline/post-commit-manifest.json",
+  "checked": 10,
+  "mismatch": 0,
+  "items": [
+    {
+      "path": "backend/app/main.py",
+      "role": "source",
+      "tracked": true,
+      "size": 36223,
+      "expected_sha256": "f9b04b7f55772cb52cffe21ce02693f786ae1e9d3a4d75176724a28d7556c9a0",
+      "recomputed_sha256": "f9b04b7f55772cb52cffe21ce02693f786ae1e9d3a4d75176724a28d7556c9a0",
+      "match": true
+    },
+    {
+      "path": "README.md",
+      "role": "docs",
+      "tracked": true,
+      "size": 12250,
+      "expected_sha256": "ce28d5846eb471bb846b6d0f5d9ee3962c85caa7ac0a205d6cd35189c16e9129",
+      "recomputed_sha256": "ce28d5846eb471bb846b6d0f5d9ee3962c85caa7ac0a205d6cd35189c16e9129",
+      "match": true
+    },
+    {
+      "path": "docs/devlog/00-conventions.md",
+      "role": "history",
+      "tracked": true,
+      "size": 4317,
+      "expected_sha256": "bfc57420593c7e95f6e282a8ba624fbf18bb8b31e920955ad9260ab8a97abd80",
+      "recomputed_sha256": "bfc57420593c7e95f6e282a8ba624fbf18bb8b31e920955ad9260ab8a97abd80",
+      "match": true
+    },
+    {
+      "path": ".codeartsdoer/specs/git_adoption/spec.md",
+      "role": "spec",
+      "tracked": true,
+      "size": 48451,
+      "expected_sha256": "80b482c14326874c4de9cc64b15af7ce11dea7c1f52ea8aa69f9b07084ed2af1",
+      "recomputed_sha256": "80b482c14326874c4de9cc64b15af7ce11dea7c1f52ea8aa69f9b07084ed2af1",
+      "match": true
+    },
+    {
+      "path": ".evidence/git-baseline/pre-vcs-manifest.json",
+      "role": "evidence",
+      "tracked": true,
+      "size": 238197,
+      "expected_sha256": "1fbe89236155233b913ad7a3410860b1113e2f648d8fe07ab857855cfc9656de",
+      "recomputed_sha256": "1fbe89236155233b913ad7a3410860b1113e2f648d8fe07ab857855cfc9656de",
+      "match": true
+    },
+    {
+      "path": "scripts/check_devlog.py",
+      "role": "source",
+      "tracked": true,
+      "size": 6993,
+      "expected_sha256": "42c357e08f0673ee095aac962a60ae1f1251d896da4d76ed70cda5b214629596",
+      "recomputed_sha256": "42c357e08f0673ee095aac962a60ae1f1251d896da4d76ed70cda5b214629596",
+      "match": true
+    },
+    {
+      "path": "deliverables/能力边界说明书.pdf",
+      "role": "source",
+      "tracked": true,
+      "size": 380997,
+      "expected_sha256": "f5c2af5825b5b58f77caae706b8eb18d525f7f2c3c552a4dee89f65d7c1bd126",
+      "recomputed_sha256": "f5c2af5825b5b58f77caae706b8eb18d525f7f2c3c552a4dee89f65d7c1bd126",
+      "match": true
+    },
+    {
+      "path": "deploy/certs/server.key",
+      "role": "secret",
+      "tracked": false,
+      "size": 1736,
+      "expected_sha256": "e90a2e0a194032997fea2aded44c1a4d4f571bca53814be065e17cc16800db1a",
+      "recomputed_sha256": "e90a2e0a194032997fea2aded44c1a4d4f571bca53814be065e17cc16800db1a",
+      "match": true
+    },
+    {
+      "path": "eval/cases/EVAL-0001.json",
+      "role": "answer",
+      "tracked": false,
+      "size": 329,
+      "expected_sha256": "20296b2a61685430c89294a56c2d75957fc79a2e82013f5273053fce0288ecc5",
+      "recomputed_sha256": "20296b2a61685430c89294a56c2d75957fc79a2e82013f5273053fce0288ecc5",
+      "match": true
+    },
+    {
+      "path": ".codeartsdoer/.codebase/baseline_info.json",
+      "role": "derived",
+      "tracked": false,
+      "size": 2,
+      "expected_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "recomputed_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "match": true
+    }
+  ],
+  "note": "机器已复算；评审者仍需独立复核并签署，AI 不代签"
+}

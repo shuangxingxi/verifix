@@ -1,0 +1,11 @@
+{
+  "copy": "C:\\Temp\\vcsrb-kafjp9yw",
+  "had_dotgit": true,
+  "digest_with_git": "42f8a9bc6e428d85958fb41c89aaa4565058483c22bc66316f0910c0b888d91f",
+  "digest_without_git": "42f8a9bc6e428d85958fb41c89aaa4565058483c22bc66316f0910c0b888d91f",
+  "diff": 0,
+  "files": 702,
+  "tracked": 532,
+  "real_dotgit_intact": true,
+  "scope": "排除 node_modules/edgeprofile*/__pycache__/.codebase/temp/dist；清单输出置于副本外避免自引用"
+}

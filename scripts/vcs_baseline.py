@@ -51,6 +51,7 @@ STEPS = (
 W_HIT = re.compile(r"留痕已通过|五步留痕验收通过|已 Git 化，留痕通过")
 W_FULL = re.compile(r"内容完全一致|内容级一致")
 W_REAL_GIT = re.compile(r"已验证真实仓库\s*`?\.git`?")
+NEGATION_TOKENS = ("不得", "不声称", "禁止", "未声称", "不表述", "不得以")
 
 ADDED_WHITELIST = (".gitignore", ".gitattributes", ".evidence/git-baseline/", "docs/devlog/vcs-baseline.md")
 
@@ -674,7 +675,13 @@ def cmd_verify(args: argparse.Namespace) -> int:
 
     ac08 = manifest_digest(manifest.get("files", [])) == manifest.get("manifest_digest")
     ac12 = "vcs-baseline/" in record_text and "definition_version=v2" in record_text
-    ac13 = not W_REAL_GIT.search(record_text + c8) and "fixture=true" in c8
+    real_git_claims = [
+        line
+        for text in (record_text, c8)
+        for line in text.splitlines()
+        if W_REAL_GIT.search(line) and not any(token in line for token in NEGATION_TOKENS)
+    ]
+    ac13 = not real_git_claims and "fixture=true" in c8
 
     all_texts = [record_text]
     for path in ("docs/devlog/00-conventions.md", ".codeartsdoer/specs/selfcheck_harness/design.md"):

@@ -1,0 +1,86 @@
+{
+  "checked_at": "2026-11-18T17:29:09+08:00",
+  "manifest": "E:\\shuangxingxi\\ICT_agent\\.evidence\\git-baseline\\post-commit-manifest.json",
+  "meta": "E:\\shuangxingxi\\ICT_agent\\.evidence\\git-baseline\\baseline-meta.json",
+  "baseline_label": "vcs-baseline/ecfcad3d8fca",
+  "commit_id": "ecfcad3d8fcaef085e280f70a245546b870eb4d8",
+  "results": [
+    {
+      "id": "AC-01",
+      "pass": true,
+      "evidence": "rev-list count=1, HEAD^ rc=128"
+    },
+    {
+      "id": "AC-02",
+      "pass": true,
+      "evidence": "ls-files=527, tracked=527"
+    },
+    {
+      "id": "AC-03",
+      "pass": true,
+      "evidence": "files=527, bytes=7054686, max=380997"
+    },
+    {
+      "id": "AC-04",
+      "pass": true,
+      "evidence": "blocking_total=0"
+    },
+    {
+      "id": "AC-05",
+      "pass": true,
+      "evidence": "non_waived=0"
+    },
+    {
+      "id": "AC-06",
+      "pass": true,
+      "evidence": "00-conventions 3.2/第 6 条 + C8 新语义"
+    },
+    {
+      "id": "AC-07",
+      "pass": true,
+      "evidence": "Tier A/B/C 记录数 3/12/12"
+    },
+    {
+      "id": "AC-08",
+      "pass": true,
+      "evidence": "manifest_digest 复算"
+    },
+    {
+      "id": "AC-09",
+      "pass": true,
+      "evidence": "cross-check.json"
+    },
+    {
+      "id": "AC-10",
+      "pass": true,
+      "evidence": "blocking_total=7, global=5"
+    },
+    {
+      "id": "AC-11",
+      "pass": true,
+      "evidence": "check_permissions branch_guard"
+    },
+    {
+      "id": "AC-12",
+      "pass": true,
+      "evidence": "vcs-baseline / definition_version=v2"
+    },
+    {
+      "id": "AC-13",
+      "pass": true,
+      "evidence": "fixture=true 保留、无真实 .git 断言"
+    },
+    {
+      "id": "AC-14",
+      "pass": true,
+      "evidence": "diff 无源码改动"
+    }
+  ],
+  "passed_count": 14,
+  "failed": [],
+  "hit_forbidden_claims": 3,
+  "warnings": [
+    "AC-08 抽样的评审者签署属人工项，未在本报告中代填",
+    "AC-13 需人工复核沙箱报告原文"
+  ]
+}
