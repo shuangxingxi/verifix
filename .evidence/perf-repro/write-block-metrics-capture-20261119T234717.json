@@ -1,0 +1,48 @@
+{
+  "baseline_max_ms": 0.0414,
+  "baseline_ops": 200,
+  "baseline_p50_ms": 0.0071,
+  "baseline_p95_ms": 0.0147,
+  "case_id": "PERF-02/metrics-capture",
+  "data_scale": {
+    "events": 12000,
+    "issues": 1100
+  },
+  "delta_p95_ms": -0.0014,
+  "environment": {
+    "concurrent_load": true,
+    "declared_at": "2026-11-19T15:47:17+00:00",
+    "mode": "default",
+    "os_name": "Windows",
+    "os_release": "11",
+    "python_io_encoding": null,
+    "python_path": null,
+    "python_utf8_env": null,
+    "python_version": "3.12.10",
+    "retained_env_keys": [
+      "PATH",
+      "SYSTEMROOT",
+      "TEMP"
+    ],
+    "stripped_env_keys": [
+      "PYTHONIOENCODING",
+      "PYTHONUNBUFFERED"
+    ]
+  },
+  "event_id_set_equal": true,
+  "evidence_level": "L3",
+  "generated_at": "2026-11-19T15:47:17+00:00",
+  "interference_max_ms": 0.0985,
+  "interference_ops": 200,
+  "interference_p50_ms": 0.0096,
+  "interference_p95_ms": 0.0133,
+  "measurement_scope": {
+    "container_copy": false,
+    "digest_compute": false,
+    "disk_write": false,
+    "field_redaction": false,
+    "note": "仅测主流程写入延迟增量，不含落盘写入",
+    "serialization": false
+  },
+  "thread_model_note": "内存实现（MemoryStore，无锁）；CPython GIL 下阻塞表现为调度延迟，不得外推至 MySQL/持久化后端"
+}

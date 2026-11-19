@@ -1,0 +1,25 @@
+{
+  "check_id": "D1-1",
+  "command": "C:\\Users\\双星系\\AppData\\Local\\Programs\\Python\\Python312\\python.exe -X utf8=0 -c \"import sys;sys.path.insert(0,str(__import__('pathlib').Path('backend').resolve()));from app.config import load_config;load_config();print('config ok')\"",
+  "conclusion": "通过",
+  "coverage_layer": "config-load",
+  "degraded_from": "install-unavailable",
+  "duration_seconds": 0.247,
+  "encoding_exception": false,
+  "env_mode": "clean",
+  "errors": 0,
+  "evidence_gap": false,
+  "executed_at": "2026-11-19T15:48:50+00:00",
+  "exit_code": 0,
+  "failed_test_names": [],
+  "failures": 0,
+  "ran": 0,
+  "retained_env_keys": [
+    "PATH",
+    "SYSTEMROOT",
+    "TEMP"
+  ],
+  "stderr_tail": "",
+  "stdout_tail": "config ok\r\n",
+  "stopped_at_layer": null
+}

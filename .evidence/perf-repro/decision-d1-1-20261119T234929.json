@@ -1,0 +1,35 @@
+{
+  "decision_class": "文档口径问题",
+  "effective_date": "2026-11-19",
+  "evidence_paths": [
+    ".evidence/perf-repro\\d1-1-clean-export-20261119T234822.json",
+    ".evidence/perf-repro\\d1-1-clean-export-20261119T234827.json",
+    ".evidence/perf-repro\\d1-1-clean-export-20261119T234841.json",
+    ".evidence/perf-repro\\d1-1-config-load-20261119T234850.json",
+    ".evidence/perf-repro\\d1-1-config-load-20261119T234851.json",
+    ".evidence/perf-repro\\d1-1-full-regression-20261119T234851.json",
+    ".evidence/perf-repro\\d1-1-install-20261119T234850.json",
+    ".evidence/perf-repro\\d1-1-summary-20261119T234851.json"
+  ],
+  "immutable_carriers": [],
+  "not_claimed": "不得声称 D1-1 全通过；安装层与全量回归层为 EVIDENCE_GAP",
+  "original_text_refs": {
+    "gap_layers": [
+      "install",
+      "full-regression"
+    ],
+    "layer_summary": {
+      "clean-export": "通过",
+      "config-load": "通过",
+      "full-regression": "EVIDENCE_GAP",
+      "install": "EVIDENCE_GAP"
+    }
+  },
+  "reason": "L1 干净导出通过、L3 在 default 与 clean 两档均输出 config ok；L2 依赖安装未完成（pip rc=1，停在 SQLAlchemy 下载），L4 可选层未执行",
+  "spec_refs": [
+    "5.2.1-2a/3a",
+    "5.2.1-4a",
+    "5.2.1-5a"
+  ],
+  "topic": "D1-1 PYTHONUTF8 隐式依赖口径裁定"
+}

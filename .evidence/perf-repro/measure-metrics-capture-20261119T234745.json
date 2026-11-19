@@ -1,0 +1,72 @@
+{
+  "case_id": "PERF-02/metrics-capture",
+  "data_scale": {
+    "events": 12000,
+    "issues": 1100
+  },
+  "elapsed_ms_series": [
+    186.423,
+    184.012,
+    209.873,
+    169.326,
+    183.941
+  ],
+  "environment": {
+    "concurrent_load": false,
+    "declared_at": "2026-11-19T15:47:45+00:00",
+    "mode": "default",
+    "os_name": "Windows",
+    "os_release": "11",
+    "python_io_encoding": null,
+    "python_path": null,
+    "python_utf8_env": null,
+    "python_version": "3.12.10",
+    "retained_env_keys": [
+      "PATH",
+      "SYSTEMROOT",
+      "TEMP"
+    ],
+    "stripped_env_keys": [
+      "PYTHONIOENCODING",
+      "PYTHONUNBUFFERED"
+    ]
+  },
+  "evidence_level": "L2",
+  "fingerprint_sha256": "497c79765c046ec391e71d212eaf87025c81bc5461468e58c7fd9579d731cfaf",
+  "generated_at": "2026-11-19T15:47:46+00:00",
+  "ledger": {
+    "assertion_text_ref": {
+      "line": "104",
+      "path": "backend/tests/test_metrics_perf.py",
+      "text": "self.assertLess(capture_elapsed, 0.2)"
+    },
+    "captured_at": "2026-11-19T15:47:46+00:00",
+    "design_text_ref": {
+      "line": "465",
+      "path": ".codeartsdoer/specs/metrics_recalc/design.md",
+      "text": "if (抓取耗时 > capture_budget_ms?) then (是)"
+    },
+    "requirement_text_ref": {
+      "line": "读操作开销",
+      "path": ".codeartsdoer/specs/metrics_recalc/spec.md",
+      "text": "2. **读操作开销**：复算对主流程的读取不得阻塞主流程写入超过 200 毫秒。"
+    }
+  },
+  "max_ms": 209.873,
+  "measurement_object": "SnapshotBuilder.capture 端到端耗时",
+  "measurement_scope": {
+    "container_copy": true,
+    "digest_compute": true,
+    "disk_write": true,
+    "field_redaction": true,
+    "note": "端到端包含加工与 I/O，不得作为 spec 4.1-2 写阻塞判据",
+    "serialization": true
+  },
+  "median_ms": 184.012,
+  "out_dir": ".evidence\\perf-repro",
+  "over_budget_count": 1,
+  "samples": 5,
+  "semantics_consistent": false,
+  "semantics_note": "spec 4.1-2 约束对象是'复算对主流程的读取不得阻塞主流程写入超过 200 毫秒'；协议 A 测得的是 capture 端到端耗时，含容器拷贝、脱敏、序列化、摘要与落盘，不构成写阻塞判据（design D-01）",
+  "threshold_ms": 200
+}

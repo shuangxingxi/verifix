@@ -1,0 +1,186 @@
+{
+  "count": 36,
+  "paths": [
+    {
+      "path": ".evidence/git-baseline/ac-report.json",
+      "bytes": 2088,
+      "sha256": "395e04d79db638a4dcff2b5b913bd854c9aacb6a91b1c25e52dc4c64941b6280"
+    },
+    {
+      "path": ".evidence/git-baseline/ac08-sample.json",
+      "bytes": 3714,
+      "sha256": "f5f38ffcf42135f4a9413c640118002e5277f07f9ca8c9d4f7514b652594001b"
+    },
+    {
+      "path": ".evidence/git-baseline/baseline-meta.json",
+      "bytes": 325,
+      "sha256": "533f318d0c8ba793549e40110ba2b39faee2b472117d902d0a0332ce0229cbef"
+    },
+    {
+      "path": ".evidence/git-baseline/collect.json",
+      "bytes": 8443,
+      "sha256": "516b5b70ddb9cb0bea89c177cc9d157a9d857e21a1799804455048d9cf35e787"
+    },
+    {
+      "path": ".evidence/git-baseline/cross-check-differences.json",
+      "bytes": 38217,
+      "sha256": "9461da0bd1d1e6c0b545ec39d4246a6f1caf3d378502719393efab807769de85"
+    },
+    {
+      "path": ".evidence/git-baseline/cross-check.json",
+      "bytes": 1991,
+      "sha256": "647d6f9947e1f6ec028f1498541dacbc6590461449c79351490117f94015f417"
+    },
+    {
+      "path": ".evidence/git-baseline/devlog-after.json",
+      "bytes": 2038,
+      "sha256": "afe43f54c988a3be0b20fe947c119e3f8cfb9f3b919b5b5a8c248be2d7d8ddc7"
+    },
+    {
+      "path": ".evidence/git-baseline/devlog-before.json",
+      "bytes": 1739,
+      "sha256": "7014c9fd9f1ea7b057e9214034cd857ef922c0de34aeedde6ae9472d81d50d89"
+    },
+    {
+      "path": ".evidence/git-baseline/final-report.md",
+      "bytes": 9999,
+      "sha256": "390afd26516be1ea9866195b3f7687299bbc920f18d2bc08fe876684c10416f2"
+    },
+    {
+      "path": ".evidence/git-baseline/override-paths.txt",
+      "bytes": 1058,
+      "sha256": "f75ce825f688a5fe3b2bfa08817f916f6cd74926defde86da33b1651665ba7e4"
+    },
+    {
+      "path": ".evidence/git-baseline/permissions-before.json",
+      "bytes": 234,
+      "sha256": "708c4693702861b58d32ff17d719f83811a113151ed9fe8644569008fd8a066e"
+    },
+    {
+      "path": ".evidence/git-baseline/post-commit-manifest.json",
+      "bytes": 240160,
+      "sha256": "c24628dea4f5479d2404adb0ff2a35827129b1ab3e9cb4dcd8cad5a9b03614a9"
+    },
+    {
+      "path": ".evidence/git-baseline/pre-post-diff.json",
+      "bytes": 2194,
+      "sha256": "6dc74bf9c5b6f528cbf54624624a1a0bb7b8306c13dbfa85cec2e0a18d948cc9"
+    },
+    {
+      "path": ".evidence/git-baseline/pre-vcs-manifest.json",
+      "bytes": 238197,
+      "sha256": "1fbe89236155233b913ad7a3410860b1113e2f648d8fe07ab857855cfc9656de"
+    },
+    {
+      "path": ".evidence/git-baseline/rollback-drill.json",
+      "bytes": 456,
+      "sha256": "9d984defd9b168fb2307736cffc2a2ae8581f0a8c3e1a8d16597bad13f7912cc"
+    },
+    {
+      "path": ".evidence/git-baseline/rollback-plan.md",
+      "bytes": 4262,
+      "sha256": "f125767f0738fc293320fdcf6a9284e5d2ae105d70047b3c747326ad8bc1fac2"
+    },
+    {
+      "path": ".evidence/git-baseline/signoff-template.md",
+      "bytes": 4725,
+      "sha256": "fde40e02252cc9cdf8604b7e9842332417206395bcc0164cf96bb25eae446005"
+    },
+    {
+      "path": "README.md",
+      "bytes": 12250,
+      "sha256": "ce28d5846eb471bb846b6d0f5d9ee3962c85caa7ac0a205d6cd35189c16e9129"
+    },
+    {
+      "path": "backend/app/config.py",
+      "bytes": 21133,
+      "sha256": "61f860c45433335fd8c5a8981a8ada03970a4282b3421799c2e2970a2fb9b0bf"
+    },
+    {
+      "path": "backend/app/metrics/snapshot.py",
+      "bytes": 14739,
+      "sha256": "fabc24db4e560265f6831c38a15fe6372cce9822ce15fbf456c0b3acdd705261"
+    },
+    {
+      "path": "backend/tests/test_check_devlog.py",
+      "bytes": 3964,
+      "sha256": "e70c4406c2cc7496e1c1b2c54bbb00256e4e6f9b5e904c090eac48798a7c3128"
+    },
+    {
+      "path": "backend/tests/test_metrics_perf.py",
+      "bytes": 8474,
+      "sha256": "3461a031b46a47113fc0d5a12a5801ef855a8a539aa60bcc879d2e9134fbbefe"
+    },
+    {
+      "path": "docs/devlog/m12-closure-and-blockers.md",
+      "bytes": 6672,
+      "sha256": "d978309738c88091481d345eb836cf1339988141622b2e72a96245da9f77cf65"
+    },
+    {
+      "path": "docs/devlog/m13-analysis-plan.md",
+      "bytes": 10327,
+      "sha256": "ad2d3b9d0fc8d09a1b3d199ae9786733198041f28b82b5af3ab1a569ae6d8bd7"
+    },
+    {
+      "path": "docs/devlog/m13-selfcheck-report.md",
+      "bytes": 16178,
+      "sha256": "f557b200cf2223499c28c2cf7ef1695ca0d09ddaecbb369e2ea3c61a48488471"
+    },
+    {
+      "path": "docs/devlog/metrics-report.md",
+      "bytes": 5584,
+      "sha256": "678087b0f98ffb0bc8b39f015c8e20b30a81bab80c6441a7f94e6747247a4480"
+    },
+    {
+      "path": "docs/devlog/selfcheck/SC-20261115T144308+0800-v1/report.md",
+      "bytes": 14472,
+      "sha256": "51157f2324b6378cea9dcdc2444f5ebfd8d71a3be4af1eb2ded44660c81f881a"
+    },
+    {
+      "path": "docs/devlog/selfcheck/SC-20261115T144308+0800-v1/selfcheck.json",
+      "bytes": 30954,
+      "sha256": "1bf4d8547cc8ca56367550c795846eebbd6eedd88a896ce5a686e60dd429f06f"
+    },
+    {
+      "path": "docs/devlog/selfcheck/SC-20261115T144411+0800-v2/report.md",
+      "bytes": 14393,
+      "sha256": "92d865a56c7f695bba8e7226499217aa5ffd72f934b93d65eb3a832570c3c92b"
+    },
+    {
+      "path": "docs/devlog/selfcheck/SC-20261115T144411+0800-v2/selfcheck.json",
+      "bytes": 30950,
+      "sha256": "6cf1fd3ad7fc91f4ceeffa02aabe6cbe1abe020c6e2e0927a3ab131fc606c12b"
+    },
+    {
+      "path": "docs/devlog/selfcheck/SC-20261115T152810+0800-v3/report.md",
+      "bytes": 16562,
+      "sha256": "53ffaa0b9dc14d12ef2b7f484d234a467ac2fb7fcf8911ea387f8315d278c71f"
+    },
+    {
+      "path": "docs/devlog/selfcheck/SC-20261115T152810+0800-v3/selfcheck.json",
+      "bytes": 33491,
+      "sha256": "112e6123e6cb20274b174173b0cb843bf2fcb54b9172ae18b41d2c2746a31fc7"
+    },
+    {
+      "path": "docs/devlog/selfcheck/SC-20261115T165051+0800-v4/report.md",
+      "bytes": 16132,
+      "sha256": "c5cf35337ab1c657b7ceb31731354648764728b50cacd2988d7530c8c57d6312"
+    },
+    {
+      "path": "docs/devlog/selfcheck/SC-20261115T165051+0800-v4/selfcheck.json",
+      "bytes": 33278,
+      "sha256": "be0d4001cf38b28c04a39df28467442a7d11a1d183ac8c58353db3a163b03a1e"
+    },
+    {
+      "path": "docs/devlog/selfcheck/index.json",
+      "bytes": 2218,
+      "sha256": "c0633c755b588a5cd19bebd9eaf9836b97a8fe03fee5a1006b31253b0dd3a9c9"
+    },
+    {
+      "path": "docs/devlog/vcs-baseline.md",
+      "bytes": 31031,
+      "sha256": "0d0aeb25cf0b154ed892558a8bd07e43c1f38e31af5de844da748533063042fb"
+    }
+  ],
+  "captured_at": "2026-11-19T15:46:20+00:00"
+}

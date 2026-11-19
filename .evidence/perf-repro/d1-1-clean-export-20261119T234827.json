@@ -1,0 +1,26 @@
+{
+  "check_id": "D1-1",
+  "command": "git archive --format=zip --output=C:\\Temp\\d1-1-j2em6tpy\\repo.zip HEAD",
+  "conclusion": "通过",
+  "coverage_layer": "clean-export",
+  "duration_seconds": 0.291,
+  "env_mode": "default",
+  "errors": 0,
+  "evidence_gap": false,
+  "executed_at": "2026-11-19T15:48:27+00:00",
+  "exit_code": 0,
+  "export_dir": "C:\\Temp\\d1-1-j2em6tpy\\src",
+  "exported_files": 536,
+  "failed_test_names": [],
+  "failures": 0,
+  "file_count_delta": 0,
+  "ran": 0,
+  "retained_env_keys": [
+    "PATH",
+    "SYSTEMROOT",
+    "TEMP"
+  ],
+  "stopped_at_layer": null,
+  "temp_outside_repo": true,
+  "tracked_files": 536
+}

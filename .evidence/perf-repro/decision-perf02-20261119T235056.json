@@ -1,0 +1,115 @@
+{
+  "decision_class": "阈值口径问题",
+  "effective_date": "2026-11-19",
+  "environment": {
+    "concurrent_load": false,
+    "declared_at": "2026-11-19T15:47:45+00:00",
+    "mode": "default",
+    "os_name": "Windows",
+    "os_release": "11",
+    "python_io_encoding": null,
+    "python_path": null,
+    "python_utf8_env": null,
+    "python_version": "3.12.10",
+    "retained_env_keys": [
+      "PATH",
+      "SYSTEMROOT",
+      "TEMP"
+    ],
+    "stripped_env_keys": [
+      "PYTHONIOENCODING",
+      "PYTHONUNBUFFERED"
+    ]
+  },
+  "evidence_paths": [
+    ".evidence/perf-repro\\measure-metrics-capture-20261119T234648.json",
+    ".evidence/perf-repro\\measure-metrics-capture-20261119T234712.json",
+    ".evidence/perf-repro\\measure-metrics-capture-20261119T234745.json",
+    ".evidence/perf-repro\\samples-metrics-capture-20261119T234627.jsonl",
+    ".evidence/perf-repro\\samples-metrics-capture-20261119T234648.jsonl",
+    ".evidence/perf-repro\\samples-metrics-capture-20261119T234712.jsonl",
+    ".evidence/perf-repro\\samples-metrics-capture-20261119T234745.jsonl",
+    ".evidence/perf-repro\\write-block-metrics-capture-20261119T234717.json"
+  ],
+  "immutable_carriers": [
+    ".evidence/git-baseline/ac-report.json",
+    ".evidence/git-baseline/ac08-sample.json",
+    ".evidence/git-baseline/baseline-meta.json",
+    ".evidence/git-baseline/collect.json",
+    ".evidence/git-baseline/cross-check-differences.json",
+    ".evidence/git-baseline/cross-check.json",
+    ".evidence/git-baseline/devlog-after.json",
+    ".evidence/git-baseline/devlog-before.json",
+    ".evidence/git-baseline/final-report.md",
+    ".evidence/git-baseline/override-paths.txt",
+    ".evidence/git-baseline/permissions-before.json",
+    ".evidence/git-baseline/post-commit-manifest.json",
+    ".evidence/git-baseline/pre-post-diff.json",
+    ".evidence/git-baseline/pre-vcs-manifest.json",
+    ".evidence/git-baseline/rollback-drill.json",
+    ".evidence/git-baseline/rollback-plan.md",
+    ".evidence/git-baseline/signoff-template.md",
+    "README.md",
+    "backend/app/config.py",
+    "backend/app/metrics/snapshot.py",
+    "backend/tests/test_check_devlog.py",
+    "backend/tests/test_metrics_perf.py",
+    "docs/devlog/m12-closure-and-blockers.md",
+    "docs/devlog/m13-analysis-plan.md",
+    "docs/devlog/m13-selfcheck-report.md",
+    "docs/devlog/metrics-report.md",
+    "docs/devlog/selfcheck/SC-20261115T144308+0800-v1/report.md",
+    "docs/devlog/selfcheck/SC-20261115T144308+0800-v1/selfcheck.json",
+    "docs/devlog/selfcheck/SC-20261115T144411+0800-v2/report.md",
+    "docs/devlog/selfcheck/SC-20261115T144411+0800-v2/selfcheck.json",
+    "docs/devlog/selfcheck/SC-20261115T152810+0800-v3/report.md",
+    "docs/devlog/selfcheck/SC-20261115T152810+0800-v3/selfcheck.json",
+    "docs/devlog/selfcheck/SC-20261115T165051+0800-v4/report.md",
+    "docs/devlog/selfcheck/SC-20261115T165051+0800-v4/selfcheck.json",
+    "docs/devlog/selfcheck/index.json",
+    "docs/devlog/vcs-baseline.md"
+  ],
+  "measurement_object": "SnapshotBuilder.capture 端到端耗时",
+  "measurement_scope": {
+    "container_copy": true,
+    "digest_compute": true,
+    "disk_write": true,
+    "field_redaction": true,
+    "note": "端到端包含加工与 I/O，不得作为 spec 4.1-2 写阻塞判据",
+    "serialization": true
+  },
+  "not_claimed": "不得以本结论证明 spec 4.1-2 已满足；不得声称 PERF-02 已修复或已优化",
+  "original_text_refs": {
+    "assertion_text_ref": "self.assertLess(capture_elapsed, 0.2)",
+    "design_text_ref": "if (抓取耗时 > capture_budget_ms?) then (是)",
+    "requirement_text_ref": "2. **读操作开销**：复算对主流程的读取不得阻塞主流程写入超过 200 毫秒。"
+  },
+  "reason": "用例测的是 capture 端到端耗时（含容器拷贝/脱敏/序列化/摘要/落盘），需求条款约束的是读操作对主流程写入的阻塞；语义不一致优先于统计证据",
+  "runs": [
+    {
+      "max_ms": 205.492,
+      "median_ms": 200.215,
+      "over_budget_count": 3,
+      "threshold_ms": 200
+    },
+    {
+      "max_ms": 202.907,
+      "median_ms": 189.973,
+      "over_budget_count": 1,
+      "threshold_ms": 200
+    },
+    {
+      "max_ms": 209.873,
+      "median_ms": 184.012,
+      "over_budget_count": 1,
+      "threshold_ms": 200
+    }
+  ],
+  "spec_refs": [
+    "4.1-2",
+    "5.1.1-2c",
+    "5.1.3-3"
+  ],
+  "topic": "PERF-02/metrics-capture 阈值口径裁定",
+  "write_block_evidence": ".evidence/perf-repro\\write-block-metrics-capture-20261119T234717.json"
+}
