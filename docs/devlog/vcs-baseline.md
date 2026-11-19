@@ -11,6 +11,7 @@
 | 基线标识 | `vcs-baseline/<短标识>`（取提交 SHA 前 12 位；真实值记录在 `.evidence/git-baseline/baseline-meta.json` 的 `baseline_label`；与自检 `v1`–`v4`、`definition_version=v2` 命名空间互不混用） |
 | 初始化日期 | 2026-11-18 |
 | 分支 | `main`（仅此一个分支，无 remote、无 tag） |
+| 提交序列 | 基线 `ecfcad3d8fca`（无父提交，主题不命中五前缀）+ 证据修订 `b61445b`（2026-11-19，主题前缀 `docs(vcs-baseline):`）；后者不计入五步留痕 |
 | 清单条目 | 987（提交前 post 清单：L1 逐文件 983 + L2 目录聚合 4） |
 | 入库计数 | tracked=true **527** 项 / 7,054,686 字节（约 6.73 MiB） |
 | 排除计数 | tracked=false **460** 项（含 4 个 L2 聚合目录，覆盖 4037 个派生文件） |
@@ -23,9 +24,17 @@
 
 - **AC-08 抽样复核**：10 项（7 个入库项 + secret/answer/derived 各 1）复算误差 **0**，数值未变、结论未改。评审者：**张李焱**。执行方式：AI 复算（`.evidence/git-baseline/ac08-sample.json`）+ 本人授权确认；同一人兼任。
 - **AC-13 复核**：`git grep -n "已验证真实仓库"` 命中 13 行，全部为"不得表述为/不声称/必须为 0"的否定句或规范条文，无肯定断言；`fixture=true` 在 7 个文件保留。复核者：**张李焱**（同一人兼任）。**判定**：基线提交内 `vcs_baseline.py` 判 fail（否定句误命中）；以工作区修正版（`NEGATION_TOKENS`）重跑判 **pass**。两版本差异已登记，不因改判而消除。
-- **13.5 签发**：**通过（附注）**——以工作区修正版 `vcs_baseline.py` 重跑 AC-01…AC-14 得 **14/14 pass**（证据 `.evidence/git-baseline/ac-report.json`）；基线提交内版本存在 AC-13 检索缺陷，差异与影响见 `.evidence/git-baseline/final-report.md` 第 6 节。维护者：**张李焱**，2026-11-18。
+- **13.5 签发**：**通过（附注）**——以工作区修正版 `vcs_baseline.py` 重跑 AC-01…AC-14 得 **14/14 pass**（证据 `.evidence/git-baseline/ac-report.json`）；基线提交内版本存在 AC-13 检索缺陷，差异与影响见 `.evidence/git-baseline/final-report.md` 第 6 节。维护者：**张李焱**，2026-11-18。（**时点标注**：该 14/14 为 2026-11-18 签署时点口径；2026-11-19 提交 `b61445b` 后 AC-01 客观 fail，改判见下段，签署原文不删改。）
 
 > 上述三处为同一署名人在本人授权下录入，不构成三个独立第三方评审；签署不改变 AC-13 机器项 fail 的事实。
+
+**AC-01 口径变更（2026-11-19，按维护者授权录入）**
+
+- **事实**：仓库现有 2 个提交（`ecfcad3` 基线 + `b61445b` 证据修订），`git rev-list --count HEAD = 2`、`git rev-parse HEAD^` 成功 → 原 AC-01（`count=1` 且 `HEAD^` 失败）**客观 fail**，不改判为 pass。
+- **替代口径 AC-01R**：基线提交自身的单提交性以 `git rev-list --count ecfcad3 = 1` 判定（成立，且主题不命中五前缀）；其后仅允许"证据修订提交"，主题须命中前缀 `docs(vcs-baseline):`，不得产生第三类提交（当前成立）。
+- **总账**：**13/14**（AC-01 fail）+ AC-01R 通过 + AC-13 附注通过。`ac-report.json` 生成于 `b61445b` 之前，其中 AC-01 记为 pass，引用时须并列本条改判。
+- **口径边界**：`design.md` 要求"AC-01…AC-14 全部 pass 才可进入下一收尾路线项"。严格口径下当前不具备进入条件；采纳 AC-01R 后视为满足，该项由维护者拍板。
+- **`baseline-meta.json` 不改写**：该文件固定 7 字段，`commit_id`/`baseline_label` 指向基线提交 `ecfcad3` 语义正确，不因第二次提交而变更。
 
 **命名空间声明**：`vcs-baseline/<短标识>`、自检口径 `v1`–`v4`、指标定义 `definition_version=v2` 三者互不混用；`v4` 是自检基线编号，不是"第四个提交"。`eval/eval_set.sha256` 的绑定关系未因 Git 化改变。
 
