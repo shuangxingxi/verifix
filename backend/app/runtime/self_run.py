@@ -16,6 +16,8 @@ class SelfRunSample:
     interruptions: int
     heartbeat_ok: bool
     tracker_started_at: datetime | None
+    origin: str = "fixture"
+    manual_interventions: int = 0
 
     def to_dict(self) -> dict:
         return {
@@ -24,6 +26,8 @@ class SelfRunSample:
             "interruptions": self.interruptions,
             "heartbeat_ok": self.heartbeat_ok,
             "tracker_started_at": self.tracker_started_at.isoformat() if self.tracker_started_at else None,
+            "origin": self.origin,
+            "manual_interventions": self.manual_interventions,
         }
 
 
@@ -31,6 +35,7 @@ class SelfRunSample:
 class SelfRunTracker:
     heartbeat_timeout_seconds: float = HEARTBEAT_TIMEOUT_SECONDS
     clock: Callable[[], float] = time.monotonic
+    origin: str = "fixture"
     _started_at: float | None = None
     _last_heartbeat: float | None = None
     _interruptions: int = 0
@@ -78,6 +83,7 @@ class SelfRunTracker:
             interruptions=self._interruptions,
             heartbeat_ok=healthy,
             tracker_started_at=started,
+            origin=self.origin,
         )
 
 

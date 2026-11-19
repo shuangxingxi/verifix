@@ -146,7 +146,7 @@ def create_app(config: AppConfig | None = None, container: AppContainer | None =
     auth = AuthGuard(secret=webhook_secret)
     triggers = TriggerService(normalizer, resolved, auth, RateLimiter())
     breaker = CircuitBreaker(box.store, resolved.circuit.fail_streak, resolved.circuit.blacklist_ttl_hours)
-    tracker = SelfRunTracker()
+    tracker = SelfRunTracker(origin="runtime")
     dashboard = DashboardService(box.store, tracker, breaker)
     evidence_root = Path(os.environ.get("VERIFIX_EVIDENCE_ROOT", ".evidence"))
     evidence = LocalEvidenceStore(evidence_root)
