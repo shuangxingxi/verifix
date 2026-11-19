@@ -30,10 +30,10 @@
 
 **AC-01 口径变更（2026-11-19，按维护者授权录入）**
 
-- **事实**：仓库现有 2 个提交（`ecfcad3` 基线 + `b61445b` 证据修订），`git rev-list --count HEAD = 2`、`git rev-parse HEAD^` 成功 → 原 AC-01（`count=1` 且 `HEAD^` 失败）**客观 fail**，不改判为 pass。
-- **替代口径 AC-01R**：基线提交自身的单提交性以 `git rev-list --count ecfcad3 = 1` 判定（成立，且主题不命中五前缀）；其后仅允许"证据修订提交"，主题须命中前缀 `docs(vcs-baseline):`，不得产生第三类提交（当前成立）。
+- **事实**：仓库现有 5 个提交（`ecfcad3` 基线 + `b61445b`、`bb93b31`、`9b24a95` 三次证据修订 + `bee4720` 收尾项），`git rev-list --count HEAD = 5`、`git rev-parse HEAD^` 成功 → 原 AC-01（`count=1` 且 `HEAD^` 失败）**客观 fail**，不改判为 pass。
+- **替代口径 AC-01R**：基线提交自身的单提交性以 `git rev-list --count ecfcad3 = 1` 判定（成立，且主题不命中五前缀）；基线之后仅允许"证据修订提交"，主题须命中前缀 `docs(vcs-baseline):`（现存 `b61445b`、`bb93b31`、`9b24a95`）。**适用范围（2026-11-19 补记）**：本条仅约束"Git 化基线"自身的证据修订，**不约束其后各收尾路线项的提交**（如 `bee4720 docs(perf-repro):`）；不得据 AC-01R 把后续项提交判为违约，也不得据其恢复"单提交"主张。
 - **总账**：**13/14**（AC-01 fail）+ AC-01R 通过 + AC-13 附注通过。`ac-report.json` 生成于 `b61445b` 之前，其中 AC-01 记为 pass，引用时须并列本条改判。
-- **口径边界**：`design.md` 要求"AC-01…AC-14 全部 pass 才可进入下一收尾路线项"。严格口径下当前不具备进入条件；采纳 AC-01R 后视为满足，该项由维护者拍板。
+- **口径边界**：`design.md` 要求"AC-01…AC-14 全部 pass 才可进入下一收尾路线项"。**2026-11-19 维护者采纳 AC-01R**，据此推进并完成第 2 项（`bee4720`）；后续收尾项不再受 AC-01 单提交约束。
 - **`baseline-meta.json` 不改写**：该文件固定 7 字段，`commit_id`/`baseline_label` 指向基线提交 `ecfcad3` 语义正确，不因第二次提交而变更。
 
 **命名空间声明**：`vcs-baseline/<短标识>`、自检口径 `v1`–`v4`、指标定义 `definition_version=v2` 三者互不混用；`v4` 是自检基线编号，不是"第四个提交"。`eval/eval_set.sha256` 的绑定关系未因 Git 化改变。
