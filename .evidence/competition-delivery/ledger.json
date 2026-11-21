@@ -10,7 +10,7 @@
     "total": {"total": 17, "DONE": 10, "PARTIAL": 1, "BLOCKED": 4, "NOT_STARTED": 2}
   },
   "items": [
-    {"id": "DLV-A01", "layer": "L0", "status": "DONE", "evidence": ".evidence/competition-delivery/a01-repo-snapshot.log", "note": "9 commits ecfcad3..a80ae13; no remote; only .codeartsdoer/package.json (IDE plugin bump, unrelated) uncommitted; AC 13/14 + AC-01R"},
+    {"id": "DLV-A01", "layer": "L0", "status": "DONE", "evidence": ".evidence/competition-delivery/a01-repo-snapshot.log", "note": "commits since ecfcad3 (>=9, monotonically growing; count not a criterion); no remote; only .codeartsdoer/package.json (IDE plugin bump, unrelated) uncommitted; AC 13/14 + AC-01R"},
     {"id": "DLV-A02", "layer": "L1", "status": "BLOCKED", "reason_code": "NO_ACCOUNT", "fallback": "NONE"},
     {"id": "DLV-B01", "layer": "L0", "status": "DONE", "evidence": [".evidence/competition-delivery/b01-smoke.log", ".evidence/competition-delivery/b01-recalc.log", ".evidence/competition-delivery/b01-frontend-build.log"]},
     {"id": "DLV-B02", "layer": "L0", "status": "DONE", "evidence": ".evidence/competition-delivery/b02-compose.log", "note": "structure only; service run and cloud deploy not measured"},

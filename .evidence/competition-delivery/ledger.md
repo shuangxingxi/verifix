@@ -9,7 +9,7 @@
 
 | 编号 | 类别 | 层 | 交付对象 | 状态 | 判定依据 / 证据 |
 |---|---|---|---|---|---|
-| DLV-A01 | A | L0 | 本机 Git 仓库与证据快照 | **DONE** | 9 次提交 `ecfcad3`→`a80ae13`、无 remote；仅 `.codeartsdoer/package.json`（IDE 插件升版，与交付无关）未提交；AC 13/14 + AC-01R（`a01-repo-snapshot.log`） |
+| DLV-A01 | A | L0 | 本机 Git 仓库与证据快照 | **DONE** | 提交自 `ecfcad3` 起累计 ≥9 次、无 remote（计数随迭代只增，不作判定依据）；工作区仅 `.codeartsdoer/package.json`（IDE 插件升版，与交付无关）未提交；AC 13/14 + AC-01R（`a01-repo-snapshot.log`） |
 | DLV-A02 | A | L1 | 真实远端仓库与 Issue/PR 留痕 | **BLOCKED** | `reason_code=NO_ACCOUNT`、`fallback=NONE`；无 CodeArts 账号 |
 | DLV-B01 | B | L0 | 本机可运行系统 | **DONE** | `smoke_m0` PASS、`recalc_metrics` rc=0、`vue-tsc`+`vite build` 通过（`b01-*.log`） |
 | DLV-B02 | B | L0 | 本地容器编排结构 | **DONE** | WSL Debian `docker-compose config` rc=0，4 服务 2 卷（`b02-compose.log`）。**服务运行与云上部署未实测，并列标注** |
