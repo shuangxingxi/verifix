@@ -1,0 +1,23 @@
+{
+  "trusted": false,
+  "reason": "INSUFFICIENT_DURATION",
+  "label": "缺少真实连续运行证据：连续时长不足 24 小时",
+  "samples": 7,
+  "origin": "runtime",
+  "continuous_seconds": 30.015000000001237,
+  "continuous_hours": 0.0083,
+  "interruptions": 0,
+  "manual_interventions": 0,
+  "target_seconds": 86400.0,
+  "shortfall_seconds": 86370.0,
+  "evaluated_at": "2026-11-20T07:35:22.311044+00:00",
+  "verdict_evidence": {
+    "samples": 7,
+    "origin": "runtime",
+    "tracker_started_at": "2026-11-20 07:34:52.276964+00:00",
+    "continuous_seconds": 30.015000000001237,
+    "interruptions": 0,
+    "manual_interventions": 0
+  },
+  "samples_written": 7
+}
