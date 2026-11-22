@@ -277,6 +277,46 @@ class StateMachineTest(unittest.TestCase):
         loc = Location(file="requirements.txt", component="flask", component_version="2.0.1")
         self.assertIsNone(loc.line)
 
+    def test_transition_error_converts_to_api_error_with_context(self) -> None:
+        error = StateTransitionError(
+            Transition.T2,
+            IssueStatus.TRIAGING,
+            "Verdict required before REACHABLE",
+        )
+
+        self.assertIs(error.transition, Transition.T2)
+        self.assertIs(error.current, IssueStatus.TRIAGING)
+        self.assertEqual(error.reason, "Verdict required before REACHABLE")
+        self.assertEqual(
+            str(error),
+            "T2 rejected from TRIAGING: Verdict required before REACHABLE",
+        )
+
+        api_error = error.to_api_error()
+        self.assertIs(api_error.code, ErrorCode.NO_VERDICT)
+        self.assertEqual(api_error.detail, "Verdict required before REACHABLE")
+        self.assertEqual(api_error.http_status, 409)
+        self.assertEqual(
+            str(api_error),
+            "VF-2001 无可达性结论: Verdict required before REACHABLE",
+        )
+
+    def test_audit_failure_still_requires_patch_after_rejected_finding(self) -> None:
+        issue = make_issue(IssueStatus.AUDITING)
+        ctx = TransitionContext(
+            issue=issue,
+            patch=None,
+            audit_findings=[finding(verdict=AuditVerdict.REJECT)],
+        )
+
+        with self.assertRaises(ApiError) as raised:
+            self.sm.target_status(IssueStatus.AUDITING, Transition.T12, ctx)
+
+        self.assertIs(raised.exception.code, ErrorCode.AUDIT_HIT)
+        self.assertEqual(raised.exception.detail, "Patch missing")
+        self.assertEqual(str(raised.exception), "VF-4003 审计命中: Patch missing")
+        self.assertIs(issue.status, IssueStatus.AUDITING)
+
 
 if __name__ == "__main__":
     unittest.main()

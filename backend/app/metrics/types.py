@@ -61,6 +61,7 @@ class RecalcResult:
     snapshot: MetricSnapshotRef | None = None
     failure_reason: str = ""
     late: bool = False
+    warnings: list[str] = field(default_factory=list)
 
     @property
     def succeeded(self) -> bool:

@@ -90,8 +90,12 @@ class CheckDevlogTest(unittest.TestCase):
     def test_real_repository_reports_blocking_not_pass(self) -> None:
         result = _run(ROOT / "docs" / "devlog")
         self.assertEqual(result.returncode, 2, result.stdout)
-        self.assertIn("非 Git 仓库", result.stdout)
+        self.assertNotIn("非 Git 仓库", result.stdout)
         self.assertIn("问题修复", result.stdout)
+        self.assertIn("部署上线", result.stdout)
+        self.assertIn("缺少带前缀 [step-4/bootstrap] 的提交", result.stdout)
+        self.assertIn("缺少带前缀 [step-5/release] 的提交", result.stdout)
+        self.assertIn("阻塞项合计：7", result.stdout)
 
 
 if __name__ == "__main__":

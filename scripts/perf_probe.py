@@ -11,7 +11,9 @@ import hashlib
 import json
 import os
 import platform
+import re
 import statistics
+import subprocess
 import sys
 import tempfile
 import threading
@@ -195,11 +197,72 @@ REQUIRED = {
     "SemanticsLedger": ("requirement_text_ref", "design_text_ref", "assertion_text_ref", "captured_at"),
 }
 
+# 新增记录类型独立于 REQUIRED：既有 8 项 schema 与 --selftest 计数保持不变。
+EXTRA_REQUIRED = {
+    "SegmentedSampleRecord": (
+        "sample_index",
+        "round_index",
+        "case_id",
+        "write_block_ms",
+        "capture_ms",
+        "capture_total_ms",
+        "segment_ms",
+        "encode_count",
+        "over_capture_budget",
+        "collected_at",
+    ),
+    "SegmentedMeasurementRecord": (
+        "case_id",
+        "round_index",
+        "samples",
+        "data_scale",
+        "write_ops",
+        "write_block_p50_ms",
+        "write_block_p95_ms",
+        "write_block_max_ms",
+        "capture_total_p50_ms",
+        "capture_total_p95_ms",
+        "capture_total_max_ms",
+        "over_capture_budget_count",
+        "encode_count",
+        "measurement_scope",
+        "environment",
+        "fingerprint_sha256",
+        "evidence_level",
+        "generated_at",
+    ),
+    "PerfRoundRecord": (
+        "case_id",
+        "round_index",
+        "samples_path",
+        "measure_path",
+        "write_block_path",
+        "regression_path",
+        "samples_sha256",
+        "measure_sha256",
+        "write_block_sha256",
+        "regression_sha256",
+        "passed",
+        "reasons",
+        "generated_at",
+    ),
+}
+
+ROUND_RULES = {
+    "rounds_required": 3,
+    "samples_required": 5,
+    "write_block_budget_ms": THRESHOLD_MS,
+    "delta_p95_budget_ms": THRESHOLD_MS,
+    "regression_failures": 0,
+    "encode_count": 1,
+}
+
 
 def validate_record(record: dict, kind: str) -> None:
-    if kind not in REQUIRED:
+    schema = REQUIRED.get(kind) or EXTRA_REQUIRED.get(kind)
+    if schema is None:
         fail("SCHEMA_INVALID", f"unknown record kind: {kind}")
-    missing = [name for name in REQUIRED[kind] if name not in record]
+    missing = [name for name in schema if name not in record]
     if missing:
         fail("SCHEMA_INVALID", f"{kind} missing fields: {','.join(missing)}")
     if kind == "RelatedFindingRecord":
@@ -570,7 +633,7 @@ def _percentile(values: list[float], ratio: float) -> float:
     return ordered[position]
 
 
-def measure_write_block(*, env_mode: str, out_dir: Path, write_ops: int = 200) -> dict:
+def measure_write_block(*, env_mode: str, out_dir: Path, write_ops: int = 200, round_index: int = 0) -> dict:
     import threading as _threading
 
     from app.domain.enums import EventType, StageTier
@@ -655,7 +718,8 @@ def measure_write_block(*, env_mode: str, out_dir: Path, write_ops: int = 200) -
     }
     validate_record(record, "WriteBlockRecord")
     out_dir.mkdir(parents=True, exist_ok=True)
-    append_record(out_dir / f"write-block-metrics-capture-{ts_stamp()}.json", record, kind="WriteBlockRecord")
+    suffix = f"-r{round_index}" if round_index else ""
+    append_record(out_dir / f"write-block-metrics-capture-{ts_stamp()}{suffix}.json", record, kind="WriteBlockRecord")
     return record
 
 
@@ -677,6 +741,293 @@ def judge(record: dict, ledger: dict) -> dict:
     if over > 0 and not record.get("observable_marker", False):
         return {"decision_class": "实现缺口", "decision_reason": "抓取超预算且无任何可观测标记（IF-01）"}
     return {"decision_class": "证据不足", "decision_reason": "统计特征不足以落入任一裁定类别"}
+
+
+def _p50_p95_max(values: list[float]) -> tuple[float, float, float]:
+    if not values:
+        return 0.0, 0.0, 0.0
+    return (
+        round(statistics.median(values), 4),
+        round(_percentile(values, 0.95), 4),
+        round(max(values), 4),
+    )
+
+
+def write_new_json(path: Path, payload: dict) -> None:
+    if is_readonly_target(path):
+        fail("READONLY_VIOLATION", f"refuse to write immutable carrier: {path}")
+    if path.exists():
+        fail("OUTPUT_EXISTS", f"record already exists: {path}")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def measure_capture_segmented(
+    *,
+    case: str,
+    env_mode: str,
+    out_dir: Path,
+    rounds: int = 3,
+    samples: int = 5,
+    write_ops: int = 200,
+) -> dict:
+    from app.domain.enums import StageTier
+    from app.evidence.store import LocalEvidenceStore
+    from app.metrics.snapshot import SnapshotBuilder
+
+    if case != CASE_ID:
+        fail("INVALID_CASE_ID", f"case must be {CASE_ID}")
+    if rounds < ROUND_RULES["rounds_required"]:
+        fail("ROUNDS_INSUFFICIENT", f"rounds must be >= 3, got {rounds}")
+    if samples < ROUND_RULES["samples_required"]:
+        fail("SAMPLE_COUNT_INSUFFICIENT", f"samples must be >= 5, got {samples}")
+    environment = declare_env(env_mode)
+    stamp = ts_stamp()
+    out_dir.mkdir(parents=True, exist_ok=True)
+    produced: list[dict] = []
+    for round_index in range(1, rounds + 1):
+        store, scale = build_scale()
+        if scale["issues"] != 1100 or scale["events"] != 12000:
+            fail("SUT_EXCEPTION", f"data scale mismatch: {scale}")
+        sample_path = out_dir / f"samples-metrics-capture-segmented-{stamp}-r{round_index}.jsonl"
+        write_values: list[float] = []
+        total_values: list[float] = []
+        encode_counts: list[int] = []
+        over_count = 0
+        with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as tmp:
+            builder = SnapshotBuilder(store, LocalEvidenceStore(Path(tmp) / "evidence"))
+            for index in range(1, samples + 1):
+                envelope = builder.capture("2026-12", StageTier.PRELIMINARY)
+                ref = envelope.ref
+                over = ref.capture_total_ms > ref.capture_budget_ms
+                over_count += 1 if over else 0
+                write_values.append(float(ref.write_block_ms))
+                total_values.append(float(ref.capture_total_ms))
+                encode_counts.append(int(ref.encode_count))
+                append_record(
+                    sample_path,
+                    {
+                        "sample_index": index,
+                        "round_index": round_index,
+                        "case_id": CASE_ID,
+                        "write_block_ms": ref.write_block_ms,
+                        "capture_ms": ref.capture_ms,
+                        "capture_total_ms": ref.capture_total_ms,
+                        "segment_ms": ref.segment_ms,
+                        "encode_count": ref.encode_count,
+                        "over_capture_budget": over,
+                        "collected_at": now_iso(),
+                    },
+                    kind="SegmentedSampleRecord",
+                )
+        if any(value != ROUND_RULES["encode_count"] for value in encode_counts):
+            fail("SUT_EXCEPTION", f"encode_count drifted in round {round_index}: {encode_counts}")
+        wb_p50, wb_p95, wb_max = _p50_p95_max(write_values)
+        total_p50, total_p95, total_max = _p50_p95_max(total_values)
+        fingerprint = hashlib.sha256(
+            json.dumps(
+                {
+                    "write_block_ms": write_values,
+                    "capture_total_ms": total_values,
+                    "encode_count": encode_counts,
+                },
+                sort_keys=True,
+            ).encode("utf-8")
+        ).hexdigest()
+        measure = {
+            "case_id": CASE_ID,
+            "round_index": round_index,
+            "samples": samples,
+            "data_scale": scale,
+            "write_ops": write_ops,
+            "write_block_p50_ms": wb_p50,
+            "write_block_p95_ms": wb_p95,
+            "write_block_max_ms": wb_max,
+            "capture_total_p50_ms": total_p50,
+            "capture_total_p95_ms": total_p95,
+            "capture_total_max_ms": total_max,
+            "over_capture_budget_count": over_count,
+            "encode_count": ROUND_RULES["encode_count"],
+            "measurement_scope": {
+                "write_block_judged": True,
+                "capture_end_to_end_judged": False,
+                "note": (
+                    "200ms 仅判 write_block_ms（capture 临界段）；"
+                    "capture_total_ms 超过 capture_budget_ms 只产生 CAPTURE_SLOW 非阻断告警"
+                ),
+            },
+            "environment": environment,
+            "fingerprint_sha256": fingerprint,
+            "evidence_level": "L3",
+            "samples_path": str(sample_path),
+            "stamp": stamp,
+            "generated_at": now_iso(),
+        }
+        measure_path = out_dir / f"measure-metrics-capture-segmented-{stamp}-r{round_index}.json"
+        append_record(measure_path, measure, kind="SegmentedMeasurementRecord")
+        produced.append({"round_index": round_index, "measure": measure_path, "samples": sample_path})
+    return {"stamp": stamp, "rounds": produced, "samples": samples, "write_ops": write_ops}
+
+
+def evaluate_round(*, round_index: int, measure: dict, write_block: dict, regression: dict, samples: list[dict]) -> dict:
+    reasons: list[str] = []
+    if any(int(item.get("write_block_ms", 0)) > ROUND_RULES["write_block_budget_ms"] for item in samples):
+        reasons.append("write_block_ms")
+    if float(write_block.get("delta_p95_ms", 0.0) or 0.0) > ROUND_RULES["delta_p95_budget_ms"]:
+        reasons.append("delta_p95_ms")
+    if int(regression.get("failures", 0)) > ROUND_RULES["regression_failures"] or int(
+        regression.get("errors", 0)
+    ) > ROUND_RULES["regression_failures"]:
+        reasons.append("regression_failures")
+    counts = [int(item.get("encode_count", 0)) for item in samples]
+    counts.append(int(measure.get("encode_count", 0)))
+    if any(value != ROUND_RULES["encode_count"] for value in counts):
+        reasons.append("encode_count")
+    return {"round_index": round_index, "passed": not reasons, "reasons": reasons}
+
+
+def _latest_by_round(out_dir: Path, prefix: str, round_index: int, suffix: str = ".json") -> Path | None:
+    pattern = f"{prefix}*-r{round_index}{suffix}"
+    candidates = sorted(p for p in out_dir.glob(pattern) if p.is_file())
+    return candidates[-1] if candidates else None
+
+
+def round_summary(*, case: str, out_dir: Path) -> dict:
+    if case != CASE_ID:
+        fail("INVALID_CASE_ID", f"case must be {CASE_ID}")
+    rounds: list[dict] = []
+    for round_index in range(1, ROUND_RULES["rounds_required"] + 1):
+        measure_path = _latest_by_round(out_dir, "measure-metrics-capture-segmented-", round_index)
+        samples_path = _latest_by_round(out_dir, "samples-metrics-capture-segmented-", round_index, ".jsonl")
+        write_path = _latest_by_round(out_dir, "write-block-metrics-capture-", round_index)
+        reg_path = _latest_by_round(out_dir, "regression-", round_index)
+        missing = [
+            name
+            for name, path in (
+                ("measure", measure_path),
+                ("samples", samples_path),
+                ("write_block", write_path),
+                ("regression", reg_path),
+            )
+            if path is None
+        ]
+        if missing:
+            fail("EVIDENCE_MISSING", f"round {round_index} missing: {','.join(missing)}")
+        measure = json.loads(measure_path.read_text(encoding="utf-8"))
+        samples = [
+            json.loads(line)
+            for line in samples_path.read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        ]
+        write_block = json.loads(write_path.read_text(encoding="utf-8"))
+        regression = json.loads(reg_path.read_text(encoding="utf-8"))
+        if len(samples) < ROUND_RULES["samples_required"]:
+            fail("SAMPLE_COUNT_INSUFFICIENT", f"round {round_index} samples={len(samples)}")
+        verdict = evaluate_round(
+            round_index=round_index,
+            measure=measure,
+            write_block=write_block,
+            regression=regression,
+            samples=samples,
+        )
+        round_record = {
+            "case_id": CASE_ID,
+            "round_index": round_index,
+            "samples_path": rel(samples_path),
+            "measure_path": rel(measure_path),
+            "write_block_path": rel(write_path),
+            "regression_path": rel(reg_path),
+            "samples_sha256": sha256_file(samples_path),
+            "measure_sha256": sha256_file(measure_path),
+            "write_block_sha256": sha256_file(write_path),
+            "regression_sha256": sha256_file(reg_path),
+            "passed": verdict["passed"],
+            "reasons": verdict["reasons"],
+            "generated_at": now_iso(),
+        }
+        validate_record(round_record, "PerfRoundRecord")
+        rounds.append(round_record)
+    failed = [item for item in rounds if not item["passed"]]
+    if failed:
+        reasons = sorted({reason for item in failed for reason in item["reasons"]})
+        decision_class = "不通过"
+        decision_reason = "第 " + ",".join(str(item["round_index"]) for item in failed) + " 轮未达标：" + ",".join(reasons)
+    else:
+        decision_class = "通过"
+        decision_reason = "写阻塞口径满足 spec 4.1-2；抓取端到端超预算仅告警，不构成 4.1-2 判据"
+    summary = {
+        "case_id": CASE_ID,
+        "decision_class": decision_class,
+        "decision_reason": decision_reason,
+        "rules": dict(ROUND_RULES),
+        "rounds": rounds,
+        "supersedes": [],
+        "thread_model_note": (
+            "内存实现（MemoryStore，无锁）；CPython GIL 下阻塞表现为调度延迟，"
+            "不得外推至 MySQL/持久化后端"
+        ),
+        "generated_at": now_iso(),
+    }
+    write_new_json(out_dir / f"round-summary-{ts_stamp()}.json", summary)
+    return summary
+
+
+def record_regression(*, out_dir: Path, round_index: int) -> int:
+    if round_index < 1:
+        fail("ENV_DECLARATION_INVALID", "round must be >= 1")
+    command = [
+        sys.executable,
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "backend/tests",
+        "-p",
+        "test_*.py",
+    ]
+    started = time.perf_counter()
+    proc = subprocess.run(
+        command,
+        cwd=str(ROOT),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    duration = round(time.perf_counter() - started, 3)
+    text = (proc.stdout or "") + "\n" + (proc.stderr or "")
+    ran_match = re.search(r"Ran (\d+) tests", text)
+    counts_match = re.search(r"FAILED \((.*?)\)", text)
+    errors = 0
+    failures = 0
+    if counts_match:
+        for part in counts_match.group(1).split(","):
+            key, _, value = part.strip().partition("=")
+            if key == "errors":
+                errors = int(value)
+            elif key == "failures":
+                failures = int(value)
+    failed_names = [
+        line.split(" ", 1)[1].strip()
+        for line in text.splitlines()
+        if line.startswith("FAIL: ") or line.startswith("ERROR: ")
+    ]
+    record = {
+        "check_id": "D1-1",
+        "round_index": round_index,
+        "command": " ".join(command),
+        "exit_code": proc.returncode,
+        "duration_seconds": duration,
+        "ran": int(ran_match.group(1)) if ran_match else 0,
+        "errors": errors,
+        "failures": failures,
+        "failed_test_names": failed_names,
+        "contains_skip": "skipped=" in text,
+        "stdout_tail": text.strip().splitlines()[-5:],
+        "collected_at": now_iso(),
+    }
+    write_new_json(out_dir / f"regression-{ts_stamp()}-r{round_index}.json", record)
+    return proc.returncode
 
 
 def _selftest() -> int:
@@ -869,6 +1220,84 @@ def _selftest() -> int:
     priority = judge({"samples": 5, "over_budget_count": 4, "semantics_consistent": False}, ledger)["decision_class"]
     checks.append(("PASS" if priority == "阈值口径问题" else "FAIL", priority == "阈值口径问题", "priority: semantics > statistics"))
 
+    extra_samples = {
+        "SegmentedSampleRecord": {
+            "sample_index": 1,
+            "round_index": 1,
+            "case_id": CASE_ID,
+            "write_block_ms": 1,
+            "capture_ms": 2,
+            "capture_total_ms": 3,
+            "segment_ms": {"clone": 1},
+            "encode_count": 1,
+            "over_capture_budget": False,
+            "collected_at": now_iso(),
+        },
+        "SegmentedMeasurementRecord": {
+            "case_id": CASE_ID,
+            "round_index": 1,
+            "samples": 5,
+            "data_scale": {"issues": 1100, "events": 12000},
+            "write_ops": 200,
+            "write_block_p50_ms": 1.0,
+            "write_block_p95_ms": 1.0,
+            "write_block_max_ms": 1.0,
+            "capture_total_p50_ms": 2.0,
+            "capture_total_p95_ms": 2.0,
+            "capture_total_max_ms": 2.0,
+            "over_capture_budget_count": 0,
+            "encode_count": 1,
+            "measurement_scope": {"write_block_judged": True, "capture_end_to_end_judged": False},
+            "environment": {},
+            "fingerprint_sha256": "a" * 64,
+            "evidence_level": "L3",
+            "generated_at": now_iso(),
+        },
+        "PerfRoundRecord": {
+            "case_id": CASE_ID,
+            "round_index": 1,
+            "samples_path": "a",
+            "measure_path": "b",
+            "write_block_path": "c",
+            "regression_path": "d",
+            "samples_sha256": "e",
+            "measure_sha256": "f",
+            "write_block_sha256": "g",
+            "regression_sha256": "h",
+            "passed": True,
+            "reasons": [],
+            "generated_at": now_iso(),
+        },
+    }
+    extra_schema_hits = 0
+    for kind, payload in extra_samples.items():
+        validate_record(payload, kind)
+        broken = dict(payload)
+        broken.pop(next(iter(EXTRA_REQUIRED[kind])))
+        try:
+            validate_record(broken, kind)
+        except ProbeError as exc:
+            if exc.code == "SCHEMA_INVALID":
+                extra_schema_hits += 1
+    checks.append(("PASS" if extra_schema_hits == 3 else "FAIL", extra_schema_hits == 3, f"extra schema checks={extra_schema_hits}"))
+
+    ok_verdict = evaluate_round(
+        round_index=1,
+        measure={"encode_count": 1},
+        write_block={"delta_p95_ms": 0.0},
+        regression={"failures": 0, "errors": 0},
+        samples=[{"write_block_ms": 1, "encode_count": 1}],
+    )
+    bad_verdict = evaluate_round(
+        round_index=1,
+        measure={"encode_count": 1},
+        write_block={"delta_p95_ms": 0.0},
+        regression={"failures": 0, "errors": 0},
+        samples=[{"write_block_ms": 201, "encode_count": 1}],
+    )
+    round_rules_ok = ok_verdict["passed"] and not bad_verdict["passed"] and "write_block_ms" in bad_verdict["reasons"]
+    checks.append(("PASS" if round_rules_ok else "FAIL", round_rules_ok, "round rule fixtures"))
+
 
     for state, ok, detail in checks:
         print(f"{state} {detail}")
@@ -885,7 +1314,21 @@ def main(argv: list[str] | None = None) -> int:
         node.add_argument("--env", default=None, choices=("default", "clean"))
         node.add_argument("--samples", type=int, default=5)
         node.add_argument("--write-ops", type=int, default=200)
+        node.add_argument("--round", type=int, default=0, dest="round_index")
         node.add_argument("--out", default=str(DEFAULT_OUT))
+    segmented_node = sub.add_parser("capture-segmented")
+    segmented_node.add_argument("--case", required=True)
+    segmented_node.add_argument("--env", default=None, choices=("default", "clean"))
+    segmented_node.add_argument("--rounds", type=int, default=3)
+    segmented_node.add_argument("--samples", type=int, default=5)
+    segmented_node.add_argument("--write-ops", type=int, default=200)
+    segmented_node.add_argument("--out", default=str(DEFAULT_OUT))
+    summary_node = sub.add_parser("round-summary")
+    summary_node.add_argument("--case", required=True)
+    summary_node.add_argument("--out", default=str(DEFAULT_OUT))
+    regression_node = sub.add_parser("regression")
+    regression_node.add_argument("--round", type=int, default=1, dest="round_index")
+    regression_node.add_argument("--out", default=str(DEFAULT_OUT))
     env_node = sub.add_parser("env")
     env_node.add_argument("--env", required=True, choices=("default", "clean"))
     env_node.add_argument("--out", default=str(DEFAULT_OUT))
@@ -908,7 +1351,12 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "write-block":
             if args.case != CASE_ID:
                 fail("INVALID_CASE_ID", f"case must be {CASE_ID}")
-            record = measure_write_block(env_mode=args.env, out_dir=Path(args.out), write_ops=args.write_ops)
+            record = measure_write_block(
+                env_mode=args.env,
+                out_dir=Path(args.out),
+                write_ops=args.write_ops,
+                round_index=args.round_index,
+            )
             print(
                 json.dumps(
                     {k: record[k] for k in ("baseline_p95_ms", "interference_p95_ms", "delta_p95_ms", "evidence_level")},
@@ -916,6 +1364,23 @@ def main(argv: list[str] | None = None) -> int:
                 )
             )
             return 0
+        if args.command == "capture-segmented":
+            outcome = measure_capture_segmented(
+                case=args.case,
+                env_mode=args.env,
+                out_dir=Path(args.out),
+                rounds=args.rounds,
+                samples=args.samples,
+                write_ops=args.write_ops,
+            )
+            print(json.dumps({"stamp": outcome["stamp"], "rounds": len(outcome["rounds"]), "samples": outcome["samples"]}, ensure_ascii=False))
+            return 0
+        if args.command == "round-summary":
+            summary = round_summary(case=args.case, out_dir=Path(args.out))
+            print(json.dumps({k: summary[k] for k in ("decision_class", "decision_reason")}, ensure_ascii=False))
+            return 0
+        if args.command == "regression":
+            return record_regression(out_dir=Path(args.out), round_index=args.round_index)
         if args.command == "env":
             declaration = declare_env(args.env)
             out = Path(args.out)

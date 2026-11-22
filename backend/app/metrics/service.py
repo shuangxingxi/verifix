@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 
 from app.domain.enums import MetricChannel, MetricId, StageTier
 from app.domain.models import ExclusionEntry, Metric, RecalcRun
+from app.metrics.capture_health import CAPTURE_WARNINGS
 from app.metrics.collectors.main_flow import MainFlowEvidenceCollector
 from app.metrics.definitions import DefinitionRegistry
 from app.metrics.judgment import ComputabilityPipeline, MetricComputation
@@ -35,6 +36,12 @@ DEFAULT_RULES = {
     MetricId.M8: M8Rule(),
     MetricId.M9: M9Rule(),
 }
+
+
+def _ref_warnings(ref) -> list[str]:
+    """把 ref 上的告警事实映射为稳定码；只读布尔字段，不重算预算。"""
+    flags = {"WRITE_BLOCK_EXCEEDED": ref.write_block_exceeded, "CAPTURE_SLOW": ref.capture_slow}
+    return [code for code in CAPTURE_WARNINGS if flags.get(code)]
 
 
 class RecalcGuard:
@@ -81,7 +88,9 @@ class RecalcService:
         self.config = config
         self.definitions = definitions or DefinitionRegistry()
         self.evidence = evidence
-        self.builder = builder or SnapshotBuilder(store, evidence)
+        self.builder = builder or SnapshotBuilder(
+            store, evidence, capture_budget_ms=config.metrics.capture_budget_ms
+        )
         self.verifier = verifier or SnapshotVerifier(evidence)
         self.guard = guard or RecalcGuard()
         self.collector = collector or MainFlowEvidenceCollector()
@@ -125,6 +134,7 @@ class RecalcService:
             except Exception as exc:
                 self._mark_failed(running, current, f"快照抓取失败：{exc}")
                 raise RecalcFailed(recalc_id, f"快照抓取失败：{exc}") from exc
+            warnings = _ref_warnings(envelope.ref)
 
             try:
                 report = self.verifier.verify(envelope.ref.snapshot_id, envelope.ref.digest)
@@ -196,6 +206,7 @@ class RecalcService:
                             "excluded_total": sum(item.excluded_count for item in computations.values()),
                             "reason_distribution": distribution,
                             "failure_reason": "",
+                            "warnings": warnings,
                         }
                     )
                     self.store.update_recalc(finished)
@@ -213,6 +224,7 @@ class RecalcService:
                 computations=computations,
                 snapshot=envelope.ref,
                 late=effective_late,
+                warnings=warnings,
             )
 
     def _metric_record(

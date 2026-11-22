@@ -1,0 +1,48 @@
+{
+  "capture_total_max_ms": 154.0,
+  "capture_total_p50_ms": 129.0,
+  "capture_total_p95_ms": 154.0,
+  "case_id": "PERF-02/metrics-capture",
+  "data_scale": {
+    "events": 12000,
+    "issues": 1100
+  },
+  "encode_count": 1,
+  "environment": {
+    "concurrent_load": false,
+    "declared_at": "2026-11-22T12:19:31+00:00",
+    "mode": "default",
+    "os_name": "Windows",
+    "os_release": "11",
+    "python_io_encoding": null,
+    "python_path": null,
+    "python_utf8_env": null,
+    "python_version": "3.12.10",
+    "retained_env_keys": [
+      "PATH",
+      "SYSTEMROOT",
+      "TEMP"
+    ],
+    "stripped_env_keys": [
+      "PYTHONIOENCODING",
+      "PYTHONUNBUFFERED"
+    ]
+  },
+  "evidence_level": "L3",
+  "fingerprint_sha256": "a5acd913808c01daaa52a763ab61038ed7169d5f8beba73b8c62443fc7472e43",
+  "generated_at": "2026-11-22T12:19:33+00:00",
+  "measurement_scope": {
+    "capture_end_to_end_judged": false,
+    "note": "200ms 仅判 write_block_ms（capture 临界段）；capture_total_ms 超过 capture_budget_ms 只产生 CAPTURE_SLOW 非阻断告警",
+    "write_block_judged": true
+  },
+  "over_capture_budget_count": 0,
+  "round_index": 2,
+  "samples": 5,
+  "samples_path": "E:\\shuangxingxi\\ICT_agent\\.evidence\\perf-repro\\samples-metrics-capture-segmented-20261122T201931-r2.jsonl",
+  "stamp": "20261122T201931",
+  "write_block_max_ms": 2.0,
+  "write_block_p50_ms": 1.0,
+  "write_block_p95_ms": 2.0,
+  "write_ops": 200
+}

@@ -355,6 +355,30 @@ class MetricSnapshotRef(_DomainModel):
     capture_ms: int = Field(default=0, ge=0)
     redaction_hits: int = Field(default=0, ge=0)
     used_by: list[str] = Field(default_factory=list)
+    write_block_ms: int = Field(default=0, ge=0)
+    write_block_budget_ms: int = Field(default=200, ge=0)
+    write_block_exceeded: bool = False
+    capture_total_ms: int = Field(default=0, ge=0)
+    capture_budget_ms: int = Field(default=200, ge=1)
+    capture_slow: bool = False
+    segment_ms: dict[str, int] = Field(default_factory=dict)
+    encode_count: int = Field(default=1, ge=1)
+
+    @model_validator(mode="after")
+    def _capture_metrics_consistent(self) -> "MetricSnapshotRef":
+        if self.write_block_exceeded != (self.write_block_ms > self.write_block_budget_ms):
+            raise ValueError("write_block_exceeded must equal write_block_ms > write_block_budget_ms")
+        if self.capture_slow != (self.capture_total_ms > self.capture_budget_ms):
+            raise ValueError("capture_slow must equal capture_total_ms > capture_budget_ms")
+        # 旧 ref 不含计量字段（capture_total_ms=0）时豁免单调校验，保证历史数据可读。
+        if self.capture_total_ms and self.capture_total_ms < self.capture_ms:
+            raise ValueError("capture_total_ms must not be less than capture_ms")
+        if self.segment_ms:
+            if set(self.segment_ms) != {"clone", "build", "encode", "archive", "chain"}:
+                raise ValueError("segment_ms must contain clone/build/encode/archive/chain")
+            if any(value < 0 for value in self.segment_ms.values()):
+                raise ValueError("segment_ms values must be non-negative")
+        return self
 
 
 class RecalcRun(_DomainModel):
@@ -372,6 +396,7 @@ class RecalcRun(_DomainModel):
     reason_distribution: dict[str, int] = Field(default_factory=dict)
     failure_reason: str = ""
     late: bool = False
+    warnings: list[str] = Field(default_factory=list)
 
 
 class ExclusionEntry(_DomainModel):

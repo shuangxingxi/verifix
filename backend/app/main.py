@@ -409,6 +409,7 @@ def create_app(config: AppConfig | None = None, container: AppContainer | None =
                 "actor": result.actor,
                 "late": result.late,
                 "snapshot_id": result.snapshot.snapshot_id if result.snapshot else None,
+                "warnings": list(result.warnings),
                 "metrics": metrics,
             },
             request.state.trace_id,
@@ -441,6 +442,7 @@ def create_app(config: AppConfig | None = None, container: AppContainer | None =
                 "reason_distribution": run.reason_distribution,
                 "failure_reason": run.failure_reason,
                 "late": run.late,
+                "warnings": list(run.warnings),
                 "metrics": metrics,
             },
             request.state.trace_id,
@@ -522,6 +524,17 @@ def create_app(config: AppConfig | None = None, container: AppContainer | None =
                 ErrorCode.SNAPSHOT_INTEGRITY,
                 f"digest_match={report.digest_match} broken_runs={','.join(report.broken_runs)}",
             )
+        snapshot_metrics = {
+            "capture_ms": cached.capture_ms if cached is not None else None,
+            "capture_total_ms": cached.capture_total_ms if cached is not None else None,
+            "write_block_ms": cached.write_block_ms if cached is not None else None,
+            "write_block_budget_ms": cached.write_block_budget_ms if cached is not None else None,
+            "write_block_exceeded": cached.write_block_exceeded if cached is not None else None,
+            "capture_budget_ms": cached.capture_budget_ms if cached is not None else None,
+            "capture_slow": cached.capture_slow if cached is not None else None,
+            "encode_count": cached.encode_count if cached is not None else None,
+            "segment_ms": dict(cached.segment_ms) if cached is not None else None,
+        }
         return envelope_json(
             {
                 "snapshot_id": report.snapshot_id,
@@ -529,6 +542,7 @@ def create_app(config: AppConfig | None = None, container: AppContainer | None =
                 "chain_valid": report.chain_valid,
                 "broken_runs": report.broken_runs,
                 "record_counts": report.record_counts,
+                **snapshot_metrics,
             },
             request.state.trace_id,
         )

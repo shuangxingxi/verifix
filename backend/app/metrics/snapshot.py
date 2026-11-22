@@ -6,9 +6,11 @@ import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Callable
 
 from app.domain.enums import MetricChannel, StageTier
 from app.domain.models import MetricSnapshotRef
+from app.metrics.capture_health import WRITE_BLOCK_BUDGET_MS, CaptureMetrics, evaluate_capture_health
 from app.metrics.isolation import ChannelResolver
 from app.repo.memory import MemoryStore, canonical_content
 from app.tools.redactor import SecretRedactor
@@ -39,6 +41,7 @@ class SnapshotEnvelope:
     payload: dict
     ref: MetricSnapshotRef
     reused: bool = False
+    metrics: CaptureMetrics | None = None
 
 
 @dataclass
@@ -137,22 +140,32 @@ class SnapshotBuilder:
         snapshot_dir: Path | None = None,
         redactor: SecretRedactor | None = None,
         resolver: ChannelResolver | None = None,
+        capture_budget_ms: int = 200,
+        clock_ns: Callable[[], int] = time.perf_counter_ns,
     ) -> None:
+        if capture_budget_ms < 1:
+            raise ValueError("capture_budget_ms must be >= 1")
         self.store = store
         self.evidence = evidence
         self.snapshot_dir = Path(snapshot_dir) if snapshot_dir is not None else None
         self.redactor = redactor or SecretRedactor()
         self.resolver = resolver or ChannelResolver()
+        self.capture_budget_ms = capture_budget_ms
+        self.clock_ns = clock_ns
 
     def capture(self, window: str, tier: StageTier) -> SnapshotEnvelope:
-        started = time.perf_counter()
+        t0 = self.clock_ns()
         start, end = window_bounds(window)
         clone = self.store.snapshot_copy()
+        t1 = self.clock_ns()
         payload = self._build_payload(clone, window, tier, start, end)
-        digest = _digest(payload)
+        t2 = self.clock_ns()
+        encoded = encode_payload(payload)
+        encode_count = 1
+        t3 = self.clock_ns()
+        digest = hashlib.sha256(encoded).hexdigest()
         snapshot_id = f"SNAP-{window}-{tier.value}-{digest[:12]}"
         key = f"{SNAPSHOT_KEY_PREFIX}{snapshot_id}.json"
-        encoded = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
         reused = False
         if self._exists(key):
             check = self.evidence.verify(key, digest)
@@ -161,7 +174,11 @@ class SnapshotBuilder:
             reused = True
         else:
             self.evidence.put_locked(key, encoded, content_type="application/json")
-        capture_ms = int((time.perf_counter() - started) * 1000)
+        t4 = self.clock_ns()
+        chain_valid = self._chains_valid(payload["events"])
+        t5 = self.clock_ns()
+        metrics = CaptureMetrics.from_ns(t0, t1, t2, t3, t4, t5, encode_count)
+        warnings = evaluate_capture_health(metrics, self.capture_budget_ms)
         ref = MetricSnapshotRef(
             snapshot_id=snapshot_id,
             window=window,
@@ -172,11 +189,19 @@ class SnapshotBuilder:
             record_counts={
                 name: _count_records(payload[name]) for name in _RECORD_KEYS
             },
-            chain_valid=self._chains_valid(payload["events"]),
-            capture_ms=capture_ms,
+            chain_valid=chain_valid,
+            capture_ms=metrics.capture_ms,
             redaction_hits=int(payload["redaction_hits"]),
+            write_block_ms=metrics.write_block_ms,
+            write_block_budget_ms=WRITE_BLOCK_BUDGET_MS,
+            write_block_exceeded="WRITE_BLOCK_EXCEEDED" in warnings,
+            capture_total_ms=metrics.capture_total_ms,
+            capture_budget_ms=self.capture_budget_ms,
+            capture_slow="CAPTURE_SLOW" in warnings,
+            segment_ms=dict(metrics.segment_ms),
+            encode_count=metrics.encode_count,
         )
-        return SnapshotEnvelope(payload=payload, ref=ref, reused=reused)
+        return SnapshotEnvelope(payload=payload, ref=ref, reused=reused, metrics=metrics)
 
     def _exists(self, key: str) -> bool:
         root = getattr(self.evidence, "root", None)
@@ -318,9 +343,14 @@ def _count_records(value) -> int:
     return 1
 
 
+def encode_payload(payload: dict) -> bytes:
+    """同一 payload 的唯一 canonical 编码入口（参数与改造前逐字一致）。"""
+    return json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+
+
 def _digest(payload: dict) -> str:
-    encoded = json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
-    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+    """测试辅助入口：与 ``capture`` 使用同一 canonical 编码。"""
+    return hashlib.sha256(encode_payload(payload)).hexdigest()
 
 
 class SnapshotVerifier:

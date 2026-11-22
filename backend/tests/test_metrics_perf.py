@@ -11,8 +11,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from app.config import load_config
-from app.domain.enums import EventType, StageTier
-from app.domain.models import Event, Run
+from app.domain.enums import StageTier
 from app.evidence.store import LocalEvidenceStore
 from app.metrics.collectors.eval_channel import EvalConclusionReader, read_expected_digest
 from app.metrics.collectors.main_flow import MainFlowEvidenceCollector
@@ -23,12 +22,20 @@ from app.metrics.service import RecalcGuard, RecalcService
 from app.metrics.types import RecalcTrigger
 from app.repo.memory import MemoryStore
 from tests.support.mainflow_builder import seed_synthetic
+from tests.support.perf_fixture import build_perf02_store
 
 ROOT = Path(__file__).resolve().parents[2]
 NOW = datetime(2027, 1, 6, 12, 0, tzinfo=timezone.utc)
 WINDOW = "2026-12"
 STAGE_TIER = StageTier.PRELIMINARY
 SKIP = os.environ.get("VERIFIX_SKIP_PERF") == "1"
+
+PERF01_LIMIT_S = 5.0
+PERF02_LIMIT_S = 60.0
+PERF04_LIMIT_S = 3.0
+PERF02_RUNS = 1000
+PERF02_EVENTS = 12000
+PERF_WRITE_BLOCK_MS = 200
 
 
 @unittest.skipIf(SKIP, "VERIFIX_SKIP_PERF=1")
@@ -71,44 +78,29 @@ class PerfTest(unittest.TestCase):
         elapsed = time.perf_counter() - started
         print(f"\nPERF-01 55 issues recalc: {elapsed:.3f}s")
         self.assertTrue(result.succeeded)
-        self.assertLess(elapsed, 5.0)
+        self.assertLess(elapsed, PERF01_LIMIT_S)
 
     def test_perf02_thousand_issues_and_twelve_thousand_events(self) -> None:
-        store = MemoryStore()
-        seed_synthetic(store, WINDOW, full=1000, repro_failed=100)
-        for index in range(1000):
-            issue_id = f"ISF-{index + 1:03d}"
-            run = Run(
-                run_id=f"RUN-{issue_id}",
-                issue_id=issue_id,
-                started_at=NOW - timedelta(hours=2),
-                deadline_at=NOW,
-            )
-            store.add_run(run)
-            for seq in range(12):
-                store.append(
-                    Event(
-                        event_id=f"E-{issue_id}-{seq}",
-                        run_id=run.run_id,
-                        seq=seq + 1,
-                        event_type=EventType.INGEST,
-                        actor="perf",
-                    )
-                )
+        store, scale = build_perf02_store()
         builder = SnapshotBuilder(store, LocalEvidenceStore(self.root / "evidence"))
-        started = time.perf_counter()
         envelope = builder.capture(WINDOW, STAGE_TIER)
-        capture_elapsed = time.perf_counter() - started
-        print(f"\nPERF-02 1100 issues / 12000 events capture: {capture_elapsed * 1000:.1f}ms")
-        self.assertEqual(envelope.ref.event_count, 12000)
-        self.assertLess(capture_elapsed, 0.2)
+        print(
+            f"\nPERF-02 1100 issues / 12000 events write_block_ms={envelope.ref.write_block_ms}ms "
+            f"segment_ms={envelope.ref.segment_ms}"
+        )
+        self.assertEqual(envelope.ref.issue_count, 1100)
+        self.assertEqual(envelope.ref.event_count, PERF02_EVENTS)
+        self.assertEqual(scale["events"], PERF02_EVENTS)
+        self.assertLessEqual(envelope.ref.write_block_ms, PERF_WRITE_BLOCK_MS)
+        self.assertEqual(envelope.ref.encode_count, 1)
+        self.assertEqual(envelope.ref.capture_budget_ms, 200)
 
         started = time.perf_counter()
         result = self._service(store).recalc(WINDOW, STAGE_TIER, RecalcTrigger.MANUAL, "perf", now=NOW)
         elapsed = time.perf_counter() - started
         print(f"PERF-02 full recalc: {elapsed:.3f}s")
         self.assertTrue(result.succeeded)
-        self.assertLess(elapsed, 60.0)
+        self.assertLess(elapsed, PERF02_LIMIT_S)
 
     def test_perf04_report_under_three_seconds(self) -> None:
         store = MemoryStore()
@@ -120,7 +112,7 @@ class PerfTest(unittest.TestCase):
         elapsed = time.perf_counter() - started
         print(f"\nPERF-04 report generation: {elapsed:.3f}s")
         self.assertEqual(len(outcome.rows), 9)
-        self.assertLess(elapsed, 3.0)
+        self.assertLess(elapsed, PERF04_LIMIT_S)
 
     def test_read01_recalc_is_read_only(self) -> None:
         store = MemoryStore()

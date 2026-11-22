@@ -137,8 +137,9 @@ docker compose up -d --build  # 8443（不使用 80/443）
 | `sandbox-realscan-index.md` | 证据索引、K/O/Q 表、回归基线 |
 | `m9-stage-anchors-review.md` | 六锚点复核：达标/部分达标与阻塞项明示 |
 | `m10-code-review.md` | 关键路径代码审查：检查点、问题闭环与设计偏离说明 |
-| `m11-coverage-report.md` | 核心判定模块行覆盖率：54.5%，未达 80%（G-11） |
-| `m12-closure-and-blockers.md` | 基线冻结、剩余 13 项阻塞与解除条件（交接入口） |
+| `m11-coverage-report.md` | 核心判定模块行覆盖 91.86%、分支覆盖 80.68%，G-11 已关闭（含历史基线） |
+| `m12-closure-and-blockers.md` | 当前交接结论：`verifix` 61/73、剩余 12 项（含历史冻结基线） |
+| `m15-e2e-integration-test-report.md` | §13.2 端到端：五入口→L1 处置、重放零副作用、进程内续跑；链路覆盖 87.08% |
 
 ## 6. 容器域真扫（可复现）
 
@@ -166,9 +167,9 @@ python scripts/verify_isolation_bridge.py --cases eval/cases --evidence-root .ev
 python -m unittest discover -s backend/tests -p "test_*.py"
 ```
 
-- 当前：**690 用例**，功能性失败 0，基线口径 `≥690`。
-- `test_metrics_perf.py::PERF-02` 偶发抖动（0.25–0.37s > 0.2s），为每秒采样窗口的测量抖动，单跑稳定通过；
-  不通过修改断言来"修绿"。
+- 当前：**851 用例**。最近一次全量回归 **851 通过**，功能性失败 0。
+- `PERF-02` 的 200ms 判据作用于 `write_block_ms`；抓取端到端耗时只做 `CAPTURE_SLOW` 非阻断告警，
+  见 `docs/devlog/perf02-increment-report.md`。
 - 靶场自测：`python -m unittest discover -s verifix-target/tests`。
 
 ## 9. MCP 工具与接口
@@ -187,13 +188,14 @@ python -m unittest discover -s backend/tests -p "test_*.py"
 6. **五步留痕**：④ 自举修复与 ⑤ 发布上线未执行（缺凭据与 Git 远端），`check_devlog.py` 如实判阻塞。
 7. **M1 的 10/10** 为录制桩派生，不是真扫；真扫为 M7 的 15/15，两者分母不合并。
 
-## 11. 当前状态（2026-11-14 冻结）
+## 11. 当前状态（2026-11-22 增量复测）
 
-- 全量回归 **690 用例**，功能性失败 0（`PERF-02` 偶发抖动，单跑通过）
-- 任务进度：`verifix` 60/73、`metrics_recalc` 60/60、`eval_leak_hardening` 230/230、`sandbox_realscan` 302/302
-- 剩余 13 项全部因外部环境/凭据或验收条件未成立而阻塞，逐项状态见 `docs/devlog/m12-closure-and-blockers.md`
-- 五步留痕：①②③ 已归档；④自举、⑤发布未执行（`check_devlog.py` 如实返回阻塞）
-- 覆盖率：核心判定模块行覆盖 54.5%，未达 80%（G-11）
+- 全量回归 **851 用例全部通过**；`PERF-02` 已按写阻塞口径关闭，未放宽阈值
+- 任务进度：`verifix` 61/73（当前状态以 `.codeartsdoer/specs/verifix/tasks.md` 为准）、`metrics_recalc` 60/60、`eval_leak_hardening` 230/230、`sandbox_realscan` 302/302
+- 剩余 12 项因外部环境/凭据或验收条件未成立而阻塞，逐项状态见 `docs/devlog/m12-closure-and-blockers.md`
+- §13.2 端到端：五入口→L1 处置、重放零副作用、进程内 Outbox 续跑已测（链路覆盖 87.08%）；真实 kill 续跑仍阻塞，未勾选
+- 五步留痕：①②③ 已归档；④自举、⑤发布未执行（`check_devlog.py` 如实返回 7 条阻塞）
+- 覆盖率：核心判定模块行覆盖 **91.86%**（1049/1142）、分支覆盖 **80.68%**（213/264），G-11 已关闭
 ## 12. 自检入口（M13）
 
 - 命令：`python scripts/selfcheck.py [--scope D1,D2,D3,D4,D5] [--dry-run] [--json]`
