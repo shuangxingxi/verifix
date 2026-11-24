@@ -1,6 +1,6 @@
 # 大赛交付台账（DoD 判定）
 
-> 判定日期：2026-11-22（2026-11-21 回填队名并关闭 `DLV-D01`；本次按交付负责人裁定，将非赛题必需的 `DLV-E02` 移出本轮范围，历史签署证据不删改）
+> 判定日期：2026-11-24（2026-11-22 将非赛题必需的 `DLV-E02` 移出本轮范围；2026-11-24 远端仓库落位，`DLV-A02` 转 `DONE`，历史签署证据不删改）
 > 判定依据：`.codeartsdoer/specs/competition_delivery/spec.md` §1.4（赛题范围守门）、§5.1（交付对象定义）、§5.2（分层路由）
 > 状态枚举：`DONE` / `PARTIAL` / `BLOCKED` / `NOT_STARTED` / `EVIDENCE_GAP`
 > 总判定规则：按最差项收敛，顺序 `BLOCKED > EVIDENCE_GAP > PARTIAL > DONE`。
@@ -9,13 +9,13 @@
 
 | 编号 | 类别 | 层 | 交付对象 | 状态 | 判定依据 / 证据 |
 |---|---|---|---|---|---|
-| DLV-A01 | A | L0 | 本机 Git 仓库与证据快照 | **DONE** | 提交自 `ecfcad3` 起累计 ≥9 次、无 remote（计数随迭代只增，不作判定依据）；工作区未提交改动不参与 AC 判定（明细以 `git status` 为准，含 IDE 插件升版与本次队名回填）；AC 13/14 + AC-01R（`a01-repo-snapshot.log`） |
-| DLV-A02 | A | L1 | 真实远端仓库与 Issue/PR 留痕 | **BLOCKED** | `reason_code=NO_ACCOUNT`、`fallback=NONE`；无 CodeArts 账号 |
+| DLV-A01 | A | L0 | 本机 Git 仓库与证据快照 | **DONE** | 提交自 `ecfcad3` 起累计 ≥9 次（计数随迭代只增，不作判定依据）；远端 `origin` 已于 2026-11-24 绑定 `https://github.com/shuangxingxi/verifix`；AC 13/14 + AC-01R（`a01-repo-snapshot.log`） |
+| DLV-A02 | A | L1 | 真实远端仓库与 Issue/PR 留痕 | **DONE** | 远端可访问：`https://github.com/shuangxingxi/verifix`；Issue `#1`；PR `#2` 由 `verifix/ISS-001` 合并至 `release/auto`，合并提交 `948f85f`，`main` 未被写入（`a02-remote-repo.md`）。**平台为 GitHub，不是 CodeArts Repo** |
 | DLV-B01 | B | L0 | 本机可运行系统 | **DONE** | `smoke_m0` PASS、`recalc_metrics` rc=0、`vue-tsc`+`vite build` 通过（`b01-*.log`） |
 | DLV-B02 | B | L0 | 本地容器编排结构 | **DONE** | WSL Debian `docker-compose config` rc=0，4 服务 2 卷（`b02-compose.log`）。**服务运行与云上部署未实测，并列标注** |
-| DLV-B03 | B | L1 | 云上 ECS/CCE 部署实测 | **BLOCKED** | `reason_code=NO_CREDENTIAL`；无华为云凭据 |
+| DLV-B03 | B | L1 | 云上 ECS/CCE 部署实测 | **BLOCKED** | `reason_code=NO_RESOURCE,NO_COST_AUTH,PROBE_NOT_EXECUTED`（原 `NO_CREDENTIAL` 已 `superseded`）；AK/SK 已于 2026-11-22 提供，缺弹性服务器与实例，用户不做付费开通，且未授权只读探活 |
 | DLV-C01 | C | L0 | 本机演示环境 | **DONE** | `demo_rehearsal` 10 项 PASS（`c01-demo.log`）；历史报告已恢复，sha256 校验 OK |
-| DLV-C02 | C | L1 | 云上演示入口 | **BLOCKED** | 依赖 DLV-B03；无凭据 |
+| DLV-C02 | C | L1 | 云上演示入口 | **BLOCKED** | `reason_code=DEPENDENCY_BLOCKED`、`blocked_by=DLV-B03`；无公网入口（弹性 IP / DNS 均未开通） |
 | DLV-D01 | D | L0 | 方案与架构类材料 | **DONE** | 文件齐全（总方案/CodeArts方案/架构图/能力矩阵）；封面四项已于 2026-11-21 全部填齐：日期 `2026-11-21`、学校「齐齐哈尔大学」、队名「双星队」、队长「张李焱」（`CodeArts方案.md:10-11`）；全文无占位符 |
 | DLV-D02 | D | L0 | 能力边界说明书与自攻报告 | **DONE** | md/html/pdf 三形态齐全；`capability-boundary.md` 无占位符 |
 | DLV-D03 | D | L0 | 指标口径表 | **DONE** | 本轮产出 `deliverables/指标口径表.md`，覆盖 M1–M9，M9 标"未验证" |
@@ -31,9 +31,9 @@
 | 层 | 项数 | DONE | PARTIAL | BLOCKED | NOT_STARTED |
 |---|---|---|---|---|---|
 | L0（本机可完成） | 11 | 11 | 0 | 0 | 0 |
-| L1（需外部账号） | 3 | 0 | 0 | 3 | 0 |
+| L1（需外部账号） | 3 | 1 | 0 | 2 | 0 |
 | L2（需真人素材） | 2 | 0 | 0 | 0 | 2 |
-| 合计 | 16 | 11 | 0 | 3 | 2 |
+| 合计 | 16 | 12 | 0 | 2 | 2 |
 
 **L0 层已无 `NOT_STARTED`，且 11 项全部 `DONE`**，满足 spec 5.2.1-2（可做层必须优先清空）。
 
@@ -41,15 +41,15 @@
 
 **BLOCKED**
 
-原因：存在 3 项 `BLOCKED`（`DLV-A02`、`DLV-B03`、`DLV-C02`）与 2 项 `NOT_STARTED`（`DLV-D07`、`DLV-D08`）。按最差项收敛，交付包不得判为 PASS 或 PARTIAL。原 `DLV-E02` 已按赛题范围裁定移出，不参与总判定。
+原因：存在 2 项 `BLOCKED`（`DLV-B03`、`DLV-C02`）与 2 项 `NOT_STARTED`（`DLV-D07`、`DLV-D08`）。按最差项收敛，交付包不得判为 PASS 或 PARTIAL。原 `DLV-E02` 已按赛题范围裁定移出，不参与总判定。
 
 ## 4. 解除 BLOCKED 的唯一路径
 
 见 `deliverables/外部依赖清单.md`。最短路径：
 
 1. ~~用户提供队名 → 关闭 `DLV-D01`（L0 全绿）~~ ✅ 已完成（2026-11-21：双星队）
-2. 用户提供 CodeArts 账号 → `DLV-A02`
-3. 用户提供云凭据 → `DLV-B03` → `DLV-C02`
+2. ~~真实远端仓库 → 关闭 `DLV-A02`~~ ✅ 已完成（2026-11-24：GitHub `shuangxingxi/verifix`，Issue #1 + PR #2）
+3. 用户提供云上资源（已有 AK/SK，缺弹性服务器与 ECS/CCE 实例）→ `DLV-B03` → `DLV-C02`
 4. 用户提供真人素材 → `DLV-D07`、`DLV-D08`
 
 ## 5. 不得声称

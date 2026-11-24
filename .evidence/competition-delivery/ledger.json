@@ -1,22 +1,22 @@
 {
-  "generated_at": "2026-11-22T00:00:00+08:00",
+  "generated_at": "2026-11-24T17:40:00+08:00",
   "spec": ".codeartsdoer/specs/competition_delivery/spec.md",
   "rule": "worst_of(BLOCKED > EVIDENCE_GAP > PARTIAL > DONE)",
   "overall": "BLOCKED",
   "summary": {
     "L0": {"total": 11, "DONE": 11, "PARTIAL": 0, "BLOCKED": 0, "NOT_STARTED": 0},
-    "L1": {"total": 3, "DONE": 0, "PARTIAL": 0, "BLOCKED": 3, "NOT_STARTED": 0},
+    "L1": {"total": 3, "DONE": 1, "PARTIAL": 0, "BLOCKED": 2, "NOT_STARTED": 0},
     "L2": {"total": 2, "DONE": 0, "PARTIAL": 0, "BLOCKED": 0, "NOT_STARTED": 2},
-    "total": {"total": 16, "DONE": 11, "PARTIAL": 0, "BLOCKED": 3, "NOT_STARTED": 2}
+    "total": {"total": 16, "DONE": 12, "PARTIAL": 0, "BLOCKED": 2, "NOT_STARTED": 2}
   },
   "items": [
-    {"id": "DLV-A01", "layer": "L0", "status": "DONE", "evidence": ".evidence/competition-delivery/a01-repo-snapshot.log", "note": "commits since ecfcad3 (>=9, monotonically growing; count not a criterion); no remote; uncommitted working-tree changes are not part of AC (see git status: IDE plugin bump + cover fill); AC 13/14 + AC-01R"},
-    {"id": "DLV-A02", "layer": "L1", "status": "BLOCKED", "reason_code": "NO_ACCOUNT", "fallback": "NONE"},
+    {"id": "DLV-A01", "layer": "L0", "status": "DONE", "evidence": ".evidence/competition-delivery/a01-repo-snapshot.log", "note": "commits since ecfcad3 (>=9, monotonically growing; count not a criterion); remote=origin https://github.com/shuangxingxi/verifix (bound 2026-11-24); AC 13/14 + AC-01R"},
+    {"id": "DLV-A02", "layer": "L1", "status": "DONE", "platform": "GitHub", "evidence": ".evidence/competition-delivery/a02-remote-repo.md", "superseded": {"status": "BLOCKED", "reason_code": "NO_ACCOUNT", "at": "2026-11-24T17:40:00+08:00"}, "note": "remote https://github.com/shuangxingxi/verifix; issue #1; pr #2 merged into release/auto at 948f85f; main not written; not CodeArts Repo"},
     {"id": "DLV-B01", "layer": "L0", "status": "DONE", "evidence": [".evidence/competition-delivery/b01-smoke.log", ".evidence/competition-delivery/b01-recalc.log", ".evidence/competition-delivery/b01-frontend-build.log"]},
     {"id": "DLV-B02", "layer": "L0", "status": "DONE", "evidence": ".evidence/competition-delivery/b02-compose.log", "note": "structure only; service run and cloud deploy not measured"},
-    {"id": "DLV-B03", "layer": "L1", "status": "BLOCKED", "reason_code": "NO_CREDENTIAL", "fallback": "NONE"},
+    {"id": "DLV-B03", "layer": "L1", "status": "BLOCKED", "reason_code": ["NO_RESOURCE", "NO_COST_AUTH", "PROBE_NOT_EXECUTED"], "superseded": {"reason_code": "NO_CREDENTIAL", "at": "2026-11-24T17:40:00+08:00"}, "fallback": "NONE", "note": "AK/SK provided 2026-11-22; missing ECS/CCE instances; user declines paid provisioning; read-only probe not authorized"},
     {"id": "DLV-C01", "layer": "L0", "status": "DONE", "evidence": ".evidence/competition-delivery/c01-demo.log", "note": "10 checks PASS; historical report restored, sha256 OK"},
-    {"id": "DLV-C02", "layer": "L1", "status": "BLOCKED", "reason_code": "NO_CREDENTIAL", "fallback": "NONE"},
+    {"id": "DLV-C02", "layer": "L1", "status": "BLOCKED", "reason_code": "DEPENDENCY_BLOCKED", "blocked_by": "DLV-B03", "fallback": "NONE", "note": "no public ingress; elastic IP and DNS not provisioned"},
     {"id": "DLV-D01", "layer": "L0", "status": "DONE", "evidence": "deliverables/CodeArts方案.md", "note": "cover fully filled on 2026-11-21: date 2026-11-21, school 齐齐哈尔大学, team 双星队, leader 张李焱; no placeholder remains"},
     {"id": "DLV-D02", "layer": "L0", "status": "DONE", "evidence": ["deliverables/capability-boundary.md", "deliverables/capability-boundary.html", "deliverables/能力边界说明书.pdf", "deliverables/self-attack-report.html", "deliverables/自攻测试报告.pdf"]},
     {"id": "DLV-D03", "layer": "L0", "status": "DONE", "evidence": "deliverables/指标口径表.md"},
