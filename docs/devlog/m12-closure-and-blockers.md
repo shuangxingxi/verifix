@@ -131,4 +131,4 @@ cd frontend && npm run build
 
 | 修订号 | 生效日期 | 依据 | 涉及载体 | 取代关系 | 验证 | 回滚 |
 |---|---|---|---|---|---|---|
-| R-2026-11-24-01 | 2026-11-20（决议）/ 2026-11-24（文本统一） | 用户 2026-11-20 决议 + `.evidence/self-run-short/run-20261120b/` | `README.md` §11.1；`docs/devlog/m12-closure-and-blockers.md` §3/§4/§6/§9；`deliverables/CodeArts方案.md` §0/§7.1/§7.2/§9；`deliverables/指标口径表.md` §1/§1.1/§2.1/§3 | 历史目标档位表述（见 git 历史）；本次目标档位迁至独立说明块，事实值统一为实测 2 小时 | `SC-20261124T191844+0800-v7`：D4-2 字段一致、D4-5 通过 | `git revert <本次提交号>` 后重跑 `python scripts/selfcheck.py --scope D4 --dry-run` |
+| R-2026-11-24-01 | 2026-11-20（决议）/ 2026-11-24（文本统一） | 用户 2026-11-20 决议 + `.evidence/self-run-short/run-20261120b/` | `README.md` §11.1；`docs/devlog/m12-closure-and-blockers.md` §3/§4/§6/§9；`deliverables/CodeArts方案.md` §0/§7.1/§7.2/§9；`deliverables/指标口径表.md` §1/§1.1/§2.1/§3 | 历史目标档位表述（见 git 历史）；本次目标档位迁至独立说明块，事实值统一为实测 2 小时 | `SC-20261124T191844+0800-v7`：D4-2 字段一致、D4-5 通过 | `git revert e02f5b6` 后重跑 `python scripts/selfcheck.py --scope D4 --dry-run` |
