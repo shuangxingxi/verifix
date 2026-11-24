@@ -196,6 +196,17 @@ python -m unittest discover -s backend/tests -p "test_*.py"
 - §13.2 端到端：五入口→L1 处置、重放零副作用、进程内 Outbox 续跑已测（链路覆盖 87.08%）；真实 kill 续跑仍阻塞，未勾选
 - 五步留痕：①②③ 已归档；④自举、⑤发布未执行（`check_devlog.py` 如实返回 7 条阻塞）
 - 覆盖率：核心判定模块行覆盖 **91.86%**（1049/1142）、分支覆盖 **80.68%**（213/264），G-11 已关闭
+
+### 11.1 连续运行口径（M9，未验证）
+
+- 实测连续运行 2 小时（7200.234 秒 / 121 条采样 / 中断 0，origin=runtime、人工干预 0），判定**未验证**，原因码 INSUFFICIENT_DURATION。
+- 未达到 24 小时验收门槛（门槛 86400 秒，差额 79199.8 秒）；2 小时只是实测事实，不构成达标证据。
+- 证据路径：`.evidence/self-run-short/run-20261120b/`（samples.jsonl / summary.json / summary.md 三件齐备）。
+- 复现入口：`python scripts/self_run_short_observe.py --duration-seconds 7200 --interval-seconds 60`（真实时钟，不加速；脚本默认写 `.evidence/self-run-short/` 下自设路径，不覆盖 `run-20261120b/` 既有批次）。
+- 目标档位：初赛 24 小时、总决赛 72 小时，属大赛外部要求，**均未验证**，本环境无实测证据。
+- 完整事实要素与口径边界见 `deliverables/指标口径表.md` §2.1 与 §3（单一口径来源）。
+- 口径生效日期：2026-11-20（决议）/ 2026-11-24（文本统一修订）。
+
 ## 12. 自检入口（M13）
 
 - 命令：`python scripts/selfcheck.py [--scope D1,D2,D3,D4,D5] [--dry-run] [--json]`

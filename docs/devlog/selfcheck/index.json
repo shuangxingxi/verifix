@@ -95,6 +95,22 @@
         "D4",
         "D5"
       ]
+    },
+    {
+      "exit_code": 3,
+      "fingerprint": "1a49e20cb45076b4990a8e5adb3452059020c4c29fd882e8c1b83a931ddf5490",
+      "generated_at": "2026-11-24T19:18:44.693477+08:00",
+      "json_sha256": "8f24058f67a35ce1d67d5855ce3d4f7d0679a12a8616a47f3e68cfdffb3fe9a7",
+      "overall": "不通过",
+      "report_sha256": "0d8b6889aad656fda0456cf78f00eada494a195e780dd88485895d8e5a92732b",
+      "run_id": "SC-20261124T191844+0800-v7",
+      "scope": [
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D5"
+      ]
     }
   ]
 }

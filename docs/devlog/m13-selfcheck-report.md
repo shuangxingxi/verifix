@@ -1,13 +1,13 @@
 # M13 自检报告
 
-- 生成时间：2026-11-24T17:57:11.551916+08:00
-- 运行标识：SC-20261124T175711+0800-v6
-- 基线：82a67425e49a1769af3f4fed65a237e79dbaa2f23a695a1325498187e809097f
+- 生成时间：2026-11-24T19:18:44.693477+08:00
+- 运行标识：SC-20261124T191844+0800-v7
+- 基线：5d0e0a501fc09047f546efde20a7082c342f60724908e349a851442eadad17f0
 - 范围：全量
 - 退出码：3
 - 执行域：本机默认环境（不预设 PYTHONUTF8）
 - 只读状态：全量只读成立
-- 指纹：5d0e0a501fc09047f546efde20a7082c342f60724908e349a851442eadad17f0
+- 指纹：1a49e20cb45076b4990a8e5adb3452059020c4c29fd882e8c1b83a931ddf5490
 - 口径版本：v2
 - 口径修订：R1 D4-1 载体四类 → 三类文字载体（演示材料移交 D5-2）；R2 D5-1 去除 D4-1 依赖；definition_version v1 → v2
 
@@ -41,35 +41,35 @@
 
 | 编号 | 状态 | 方式 | 命令/依据 | 输出摘要 | 耗时(s) | 基线变化 | 证据 |
 |---|---|---|---|---|---|---|---|
-| D1-1 | 通过 | AUTO | python -c "<load_config 并打印 config ok>"（CLEAN 环境，清空 PYTHON*） | 干净环境下配置加载成功（无隐式 PYTHON* 依赖）。 | 0.50 | UNCHANGED | 无 |
-| D1-2 | 通过 | AUTO | python -m unittest discover -s backend/tests -p "test_*.py"（默认环境） | Ran 858 tests；errors=0；failures=0 | 87.44 | RESOLVED | 无 |
-| D1-3 | 通过 | AUTO | python scripts/smoke_m0.py | 空转闭环成立（chain_valid=True）。 | 0.61 | UNCHANGED | 无 |
+| D1-1 | 通过 | AUTO | python -c "<load_config 并打印 config ok>"（CLEAN 环境，清空 PYTHON*） | 干净环境下配置加载成功（无隐式 PYTHON* 依赖）。 | 0.30 | UNCHANGED | 无 |
+| D1-2 | 通过 | AUTO | python -m unittest discover -s backend/tests -p "test_*.py"（默认环境） | Ran 858 tests；errors=0；failures=0 | 74.28 | UNCHANGED | 无 |
+| D1-3 | 通过 | AUTO | python scripts/smoke_m0.py | 空转闭环成立（chain_valid=True）。 | 0.52 | UNCHANGED | 无 |
 | D1-4 | 未验证 | AUTO | README §3 五步链路前提检测（默认不执行链路、不写盘） | 默认不执行 15 分钟链路（会写 eval/runs 与指标报告），仅完成前提检测：README §3=存在；如需计时请显式 --allow-writes。 | 0.00 | UNCHANGED | 无 |
-| D1-5 | 通过 | AUTO | node node_modules/vue-tsc/bin/vue-tsc.js --noEmit；node node_modules/vite/bin/vite.js build --outDir <tmp>/dist | 类型检查与构建通过，产物落临时目录（4 项）。 | 2.67 | UNCHANGED | 无 |
-| D1-6 | 未验证 | AUTO | 容器能力探测（docker / WSL docker）+ 最近 VER 包摘要校验（只读，不重跑） | 容器运行时不可用（两次探测均失败），未执行沙箱校验；最后返回：ed while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.… | 5.55 | UNCHANGED | 无 |
+| D1-5 | 通过 | AUTO | node node_modules/vue-tsc/bin/vue-tsc.js --noEmit；node node_modules/vite/bin/vite.js build --outDir <tmp>/dist | 类型检查与构建通过，产物落临时目录（4 项）。 | 3.56 | UNCHANGED | 无 |
+| D1-6 | 未验证 | AUTO | 容器能力探测（docker / WSL docker）+ 最近 VER 包摘要校验（只读，不重跑） | 容器运行时不可用（两次探测均失败），未执行沙箱校验；最后返回：ed while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Get "http://%2Fvar%2Frun%2Fdocker.sock/v1.… | 5.58 | UNCHANGED | 无 |
 | D2-1 | 人工待填 | MANUAL | CLAIM_UNREGISTERED | 可声称 6 条，已登记 6 条，未登记/未确认 6 条。 | 0.00 | UNCHANGED | 无 |
 | D2-2 | 人工待填 | MANUAL | NOT_CONFIRMED | 6 条缺级别：CLM-001, CLM-002, CLM-003, CLM-004, CLM-005；6 条未填 `确认：是`：CLM-001, CLM-002, CLM-003, CLM-004, CLM-005 | 0.00 | UNCHANGED | 无 |
 | D2-3 | 未验证 | AUTO | NO_INPUT | 人工输入中没有 L4 条目，本项无输入可校验。 | 0.00 | UNCHANGED | 无 |
 | D2-4 | 通过 | AUTO | — | 未发现 L2 桩能力被表述为“已集成/已打通/已上线”。 | 0.00 | UNCHANGED | 无 |
-| D2-5 | 通过 | AUTO | — | 未发现同段混级合并表述。 | 0.02 | UNCHANGED | 无 |
+| D2-5 | 通过 | AUTO | — | 未发现同段混级合并表述。 | 0.00 | UNCHANGED | 无 |
 | D2-6 | 人工待填 | AUTO | DEPENDENCY_FAILED | 依赖项未通过：D2-2 | 0.00 | UNCHANGED | 无 |
 | D3-1 | 阻塞 | AUTO | CLAIM_WITHOUT_EVIDENCE | 6 条可声称中 6 条未给出可解析证据标识：690 用例、功能性失败 0；四类缺陷（C01/C02/C03/C05）静态+动态链路可跑通；容器域约束在 WSL2 内核实测：断网、只读、能力集、uid 10001、60s 硬终止、P4-05 62237ms 无残留；靶场真扫 15/15、动态 10/10、对账 15/15… | 0.03 | UNCHANGED | ISO-20261114T164822+0800-3c37, SCAN-20261114T123405+0800-c60… |
-| D3-2 | 通过 | AUTO | — | 证据包 9 个，孤儿 0 个，孤儿率 0.0%（阈值 10%）。 | 0.08 | UNCHANGED | 无 |
-| D3-3 | 通过 | AUTO | — | 9 个证据包逐文件摘要 100% 一致。 | 0.14 | UNCHANGED | ISO-20261114T164822+0800-3c37, SCAN-20261114T123405+0800-c60… |
-| D3-4 | 通过 | AUTO | — | 9 个证据包索引、清单、重算摘要三方一致。 | 0.14 | UNCHANGED | 无 |
-| D3-5 | 通过 | AUTO | — | 9 个证据引用全部可在索引中唯一定位。 | 0.08 | UNCHANGED | 无 |
-| D3-6 | 阻塞 | AUTO | EVIDENCE_INCOMPLETE | 5 个证据包四类内容不完备：ISO-20261114T164822+0800-3c37:缺 runtime_facts.json；SCAN-20261114T123405+0800-c604:缺 runtime_facts.json,raw/；SCAN-20261114T123510+0800-5b8f:缺 runti… | 0.16 | UNCHANGED | 无 |
-| D3-7 | 通过 | AUTO | — | 历史基线 9 项摘要不变；已登记归档 5 个摘要不变。 | 0.03 | UNCHANGED | 无 |
+| D3-2 | 通过 | AUTO | — | 证据包 9 个，孤儿 0 个，孤儿率 0.0%（阈值 10%）。 | 0.06 | UNCHANGED | 无 |
+| D3-3 | 通过 | AUTO | — | 9 个证据包逐文件摘要 100% 一致。 | 0.09 | UNCHANGED | ISO-20261114T164822+0800-3c37, SCAN-20261114T123405+0800-c60… |
+| D3-4 | 通过 | AUTO | — | 9 个证据包索引、清单、重算摘要三方一致。 | 0.08 | UNCHANGED | 无 |
+| D3-5 | 通过 | AUTO | — | 9 个证据引用全部可在索引中唯一定位。 | 0.03 | UNCHANGED | 无 |
+| D3-6 | 阻塞 | AUTO | EVIDENCE_INCOMPLETE | 5 个证据包四类内容不完备：ISO-20261114T164822+0800-3c37:缺 runtime_facts.json；SCAN-20261114T123405+0800-c604:缺 runtime_facts.json,raw/；SCAN-20261114T123510+0800-5b8f:缺 runti… | 0.09 | UNCHANGED | 无 |
+| D3-7 | 通过 | AUTO | — | 历史基线 9 项摘要不变；已登记归档 6 个摘要不变。 | 0.03 | UNCHANGED | 无 |
 | D4-1 | 通过 | AUTO | — | 三类文字载体齐全可读：README（README.md）、收尾与阻塞文档（docs/devlog/m12-closure-and-blockers.md）、交付方案文档（deliverables/CodeArts方案.md） | 0.00 | UNCHANGED | 无 |
-| D4-2 | 阻塞 | AUTO | VALUE_CONFLICT | 4 个字段跨载体取值不一致：覆盖率（54.5% / 80% / 80.68% / 87.08% / 91.86% / 80.68% / 87.08% / 91.86%）；用例数（690 / 851）；连续运行时长（24h / 2h / 24h / 72h）；缺陷类别数（12 / 3） | 0.00 | UNCHANGED | 无 |
-| D4-3 | 阻塞 | AUTO | SAMPLE_MISSING | 17 处百分比无样本量、0 处模糊数值表述；README.md:91.86%；README.md:87.08%；README.md:87.08% | 0.00 | UNCHANGED | 无 |
+| D4-2 | 阻塞 | AUTO | VALUE_CONFLICT | 3 个字段跨载体取值不一致：覆盖率（54.5% / 80% / 80.68% / 87.08% / 91.86% / 80.68% / 87.08% / 91.86%）；用例数（690 / 851）；缺陷类别数（12 / 3） | 0.00 | UNCHANGED | 无 |
+| D4-3 | 阻塞 | AUTO | SAMPLE_MISSING | 17 处百分比无样本量、0 处模糊数值表述；README.md:91.86%；README.md:87.08%；README.md:87.08% | 0.02 | UNCHANGED | 无 |
 | D4-4 | 阻塞 | AUTO | SINGLE_CALIBER | 覆盖率双口径不完整：缺“全模块口径”（自检未重跑度量）。 | 0.00 | UNCHANGED | 无 |
 | D4-5 | 通过 | AUTO | — | 不可声称清单 4 项在各载体均无完成类表述。 | 0.00 | UNCHANGED | 无 |
 | D4-6 | 通过 | AUTO | — | 合并目标分支表述统一为：release/auto。 | 0.00 | UNCHANGED | 无 |
-| D5-1 | 人工待填 | MANUAL | NEED_CONFIRM | 已自动定位模板 10 项；其中 1 项缺章节位置，覆盖度需负责人确认并填写缺口等级。 | 0.02 | UNCHANGED | 无 |
+| D5-1 | 人工待填 | MANUAL | NEED_CONFIRM | 已自动定位模板 10 项；其中 1 项缺章节位置，覆盖度需负责人确认并填写缺口等级。 | 0.00 | UNCHANGED | 无 |
 | D5-2 | 阻塞 | AUTO | DELIVERY_GAP | 模板外必交三件不完备：演示文稿缺失、演示视频缺失 | 0.00 | UNCHANGED | 无 |
-| D5-3 | 人工待填 | MANUAL | MANUAL_INPUT_MISSING | 人工输入中没有已确认的缺口等级与补齐成本，按待填处理。 | 0.00 | UNCHANGED | 无 |
-| D5-4 | 通过 | AUTO | — | 交付方案可打开，正文 19665 字符，无占位特征。 | 0.00 | UNCHANGED | 无 |
+| D5-3 | 人工待填 | MANUAL | MANUAL_INPUT_MISSING | 人工输入中没有已确认的缺口等级与补齐成本，按待填处理。 | 0.02 | UNCHANGED | 无 |
+| D5-4 | 通过 | AUTO | — | 交付方案可打开，正文 20010 字符，无占位特征。 | 0.00 | UNCHANGED | 无 |
 | D5-5 | 人工待填 | MANUAL | NEED_CONFIRM | 自动检索到 55 处痕迹线索，充分性需负责人确认。 | 0.00 | UNCHANGED | 无 |
 
 ## 5. 阻塞与警告清单
@@ -78,7 +78,7 @@
 |---|---|---|---|
 | D3-1 | 阻塞 | CLAIM_WITHOUT_EVIDENCE | 6 条可声称中 6 条未给出可解析证据标识：690 用例、功能性失败 0；四类缺陷（C01/C02/C03/C05）静态+动态链路可跑通；容器域约束在 WSL2 内核实测：断网、只读、能力集、uid 10001、60s 硬终止、P4-05 62237ms 无残留；靶场真扫 15/15、动态 10/10、对账 15/15… |
 | D3-6 | 阻塞 | EVIDENCE_INCOMPLETE | 5 个证据包四类内容不完备：ISO-20261114T164822+0800-3c37:缺 runtime_facts.json；SCAN-20261114T123405+0800-c604:缺 runtime_facts.json,raw/；SCAN-20261114T123510+0800-5b8f:缺 runti… |
-| D4-2 | 阻塞 | VALUE_CONFLICT | 4 个字段跨载体取值不一致：覆盖率（54.5% / 80% / 80.68% / 87.08% / 91.86% / 80.68% / 87.08% / 91.86%）；用例数（690 / 851）；连续运行时长（24h / 2h / 24h / 72h）；缺陷类别数（12 / 3） |
+| D4-2 | 阻塞 | VALUE_CONFLICT | 3 个字段跨载体取值不一致：覆盖率（54.5% / 80% / 80.68% / 87.08% / 91.86% / 80.68% / 87.08% / 91.86%）；用例数（690 / 851）；缺陷类别数（12 / 3） |
 | D4-3 | 阻塞 | SAMPLE_MISSING | 17 处百分比无样本量、0 处模糊数值表述；README.md:91.86%；README.md:87.08%；README.md:87.08% |
 | D4-4 | 阻塞 | SINGLE_CALIBER | 覆盖率双口径不完整：缺“全模块口径”（自检未重跑度量）。 |
 | D5-2 | 阻塞 | DELIVERY_GAP | 模板外必交三件不完备：演示文稿缺失、演示视频缺失 |
@@ -118,7 +118,7 @@
 |---|---|---|---|---|---|
 | 覆盖率 | README.md=80.68% / 87.08% / 91.86%；docs/devlog/m12-closure-and-blockers.md=54.5% / 80% / 80.68% / 87.08% / 91.86% | — | 不一致 | 阻塞 | 先统一口径，禁止只改口径不改数值 |
 | 用例数 | README.md=851；docs/devlog/m12-closure-and-blockers.md=690 | — | 不一致 | 阻塞 | 先统一口径，禁止只改口径不改数值 |
-| 连续运行时长 | docs/devlog/m12-closure-and-blockers.md=24h / 2h；deliverables/CodeArts方案.md=24h / 72h | — | 不一致 | 阻塞 | 先统一口径，禁止只改口径不改数值 |
+| 连续运行时长 | README.md=2h；docs/devlog/m12-closure-and-blockers.md=2h；deliverables/CodeArts方案.md=2h | — | 一致 | — | 保持现状并复核 |
 | 缺陷类别数 | README.md=12；deliverables/CodeArts方案.md=3 | — | 不一致 | 阻塞 | 先统一口径，禁止只改口径不改数值 |
 | 支出口径 | deliverables/CodeArts方案.md=release/auto | — | 一致 | — | 保持现状并复核 |
 | 样本量 | 未出现 | — | 无法比较 | 未验证 | 保持现状并复核 |
@@ -168,7 +168,7 @@
 - 标注“未验证”的项表示环境不可用或执行条件未成立，不得外推为通过。
 
 ## 13. 报告自摘要
-- sha256：f059db1f08c77e4eca124dacc315380141804a6a54773df77d3421ca828daad2
-- 归档路径：SC-20261124T175711+0800-v6/report.md
+- sha256：35d313f16568dbaec7d5c21ccea36a59423832348eddd7df3ea0703d16b89d15
+- 归档路径：SC-20261124T191844+0800-v7/report.md
 
-<!-- archive: SC-20261124T175711+0800-v6 -->
+<!-- archive: SC-20261124T191844+0800-v7 -->
