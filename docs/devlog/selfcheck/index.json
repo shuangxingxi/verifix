@@ -63,6 +63,38 @@
         "D4",
         "D5"
       ]
+    },
+    {
+      "exit_code": 3,
+      "fingerprint": "82a67425e49a1769af3f4fed65a237e79dbaa2f23a695a1325498187e809097f",
+      "generated_at": "2026-11-24T17:51:52.359929+08:00",
+      "json_sha256": "f12dbce8523daa9f630335422c794c58b9e94473f8e8ef09cbc45b67f73e970a",
+      "overall": "不通过",
+      "report_sha256": "8e3c09ac1dc7ee519e298aeac011d65da596f931b4b76484be6bdc1078308a30",
+      "run_id": "SC-20261124T175152+0800-v5",
+      "scope": [
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D5"
+      ]
+    },
+    {
+      "exit_code": 3,
+      "fingerprint": "5d0e0a501fc09047f546efde20a7082c342f60724908e349a851442eadad17f0",
+      "generated_at": "2026-11-24T17:57:11.551916+08:00",
+      "json_sha256": "0068ea593d2c38a6b87f8b5d077ac23fef85cfa4d04640c69e2683d0606be7d8",
+      "overall": "不通过",
+      "report_sha256": "6230e05f8801fba0e3e5f1144d00332dddd91421000e9d79247918398d12e75d",
+      "run_id": "SC-20261124T175711+0800-v6",
+      "scope": [
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D5"
+      ]
     }
   ]
 }

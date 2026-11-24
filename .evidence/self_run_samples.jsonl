@@ -84,3 +84,7 @@
 {"continuous_seconds": 0.0, "heartbeat_ok": true, "interruptions": 0, "manual_interventions": 0, "origin": "runtime", "sampled_at": "2026-11-22T12:33:12.615653+00:00", "tracker_started_at": null}
 {"continuous_seconds": 0.0, "heartbeat_ok": true, "interruptions": 0, "manual_interventions": 0, "origin": "runtime", "sampled_at": "2026-11-24T09:35:28.587189+00:00", "tracker_started_at": null}
 {"continuous_seconds": 0.0, "heartbeat_ok": true, "interruptions": 0, "manual_interventions": 0, "origin": "runtime", "sampled_at": "2026-11-24T09:39:29.975446+00:00", "tracker_started_at": null}
+{"continuous_seconds": 0.0, "heartbeat_ok": true, "interruptions": 0, "manual_interventions": 0, "origin": "runtime", "sampled_at": "2026-11-24T09:50:27.066807+00:00", "tracker_started_at": null}
+{"continuous_seconds": 0.0, "heartbeat_ok": true, "interruptions": 0, "manual_interventions": 0, "origin": "runtime", "sampled_at": "2026-11-24T09:52:07.385958+00:00", "tracker_started_at": null}
+{"continuous_seconds": 0.0, "heartbeat_ok": true, "interruptions": 0, "manual_interventions": 0, "origin": "runtime", "sampled_at": "2026-11-24T09:53:22.081376+00:00", "tracker_started_at": null}
+{"continuous_seconds": 0.0, "heartbeat_ok": true, "interruptions": 0, "manual_interventions": 0, "origin": "runtime", "sampled_at": "2026-11-24T09:55:36.652447+00:00", "tracker_started_at": null}
