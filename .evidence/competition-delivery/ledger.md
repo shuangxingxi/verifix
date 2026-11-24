@@ -1,6 +1,6 @@
 # 大赛交付台账（DoD 判定）
 
-> 判定日期：2026-11-24（2026-11-22 将非赛题必需的 `DLV-E02` 移出本轮范围；2026-11-24 远端仓库落位，`DLV-A02` 转 `DONE`，历史签署证据不删改）
+> 判定日期：2026-11-24（2026-11-22 将非赛题必需的 `DLV-E02` 移出本轮范围；2026-11-24 远端仓库落位 `DLV-A02` 转 `DONE`；同日自检重跑 `SC-v6`，`D1-2` 由 858/0 关闭；历史签署证据不删改）
 > 判定依据：`.codeartsdoer/specs/competition_delivery/spec.md` §1.4（赛题范围守门）、§5.1（交付对象定义）、§5.2（分层路由）
 > 状态枚举：`DONE` / `PARTIAL` / `BLOCKED` / `NOT_STARTED` / `EVIDENCE_GAP`
 > 总判定规则：按最差项收敛，顺序 `BLOCKED > EVIDENCE_GAP > PARTIAL > DONE`。
@@ -20,7 +20,7 @@
 | DLV-D02 | D | L0 | 能力边界说明书与自攻报告 | **DONE** | md/html/pdf 三形态齐全；`capability-boundary.md` 无占位符 |
 | DLV-D03 | D | L0 | 指标口径表 | **DONE** | 本轮产出 `deliverables/指标口径表.md`，覆盖 M1–M9，M9 标"未验证" |
 | DLV-D04 | D | L0 | 演示脚本 | **DONE** | 本轮产出 `deliverables/演示脚本.md`，5 段分镜 + 兜底分支 |
-| DLV-D05 | D | L0 | 自检报告 | **DONE** | `SC-*-v4` + `m13-selfcheck-report.md`；通过 14 / 阻塞 7 / 人工待填 6 / 未验证 3，退出码 3 如实 |
+| DLV-D05 | D | L0 | 自检报告 | **DONE** | 最新 `SC-20261124T175711+0800-v6`：通过 15 / 阻塞 6 / 人工待填 6 / 未验证 3，退出码 3 如实；`D1-2` 已 `RESOLVED`（858 用例，failures=0）；历史 `SC-*-v4`/`v5` 保留 |
 | DLV-D06 | D | L0 | 评审应答口径卡 | **DONE** | 本轮产出 `deliverables/评审应答卡.md`，8 条可声称 + 7 条不可声称 + 8 个高危问答 |
 | DLV-D07 | D | L2 | 演示文稿 PPT | **NOT_STARTED** | 队名已定稿（双星队，2026-11-21）；仍缺真人素材；草案不算成片 |
 | DLV-D08 | D | L2 | 演示视频 | **NOT_STARTED** | 需录屏环境与讲解人 |

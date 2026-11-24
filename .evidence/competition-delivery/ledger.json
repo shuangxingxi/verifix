@@ -21,7 +21,7 @@
     {"id": "DLV-D02", "layer": "L0", "status": "DONE", "evidence": ["deliverables/capability-boundary.md", "deliverables/capability-boundary.html", "deliverables/能力边界说明书.pdf", "deliverables/self-attack-report.html", "deliverables/自攻测试报告.pdf"]},
     {"id": "DLV-D03", "layer": "L0", "status": "DONE", "evidence": "deliverables/指标口径表.md"},
     {"id": "DLV-D04", "layer": "L0", "status": "DONE", "evidence": "deliverables/演示脚本.md"},
-    {"id": "DLV-D05", "layer": "L0", "status": "DONE", "evidence": ["docs/devlog/selfcheck/SC-20261115T165051+0800-v4/report.md", "docs/devlog/m13-selfcheck-report.md"], "note": "pass 14 / blocking 7 / pending-manual 6 / unverified 3; exit code 3"},
+    {"id": "DLV-D05", "layer": "L0", "status": "DONE", "evidence": ["docs/devlog/selfcheck/SC-20261124T175711+0800-v6/report.md", "docs/devlog/selfcheck/SC-20261124T175152+0800-v5/report.md", "docs/devlog/selfcheck/SC-20261115T165051+0800-v4/report.md", "docs/devlog/m13-selfcheck-report.md"], "note": "v6: pass 15 / blocking 6 / pending-manual 6 / unverified 3; exit 3; D1-2 RESOLVED with 858 tests failures=0"},
     {"id": "DLV-D06", "layer": "L0", "status": "DONE", "evidence": "deliverables/评审应答卡.md"},
     {"id": "DLV-D07", "layer": "L2", "status": "NOT_STARTED", "note": "team name settled (双星队, 2026-11-21); still needs real material; draft is not final deliverable"},
     {"id": "DLV-D08", "layer": "L2", "status": "NOT_STARTED", "note": "needs recording environment and narrator"},
