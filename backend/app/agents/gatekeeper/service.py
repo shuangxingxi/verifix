@@ -8,6 +8,7 @@ from app.adapters.pipeline import (
     GateJudger,
     GateParams,
 )
+from app.adapters.pr_evidence import PrEvidence
 from app.adapters.repo import CodeArtsRepoPort
 from app.adapters.types import UpstreamUnavailable
 from app.agents.critic.service import CriticOutcome, CriticStatus
@@ -154,11 +155,14 @@ class GatekeeperService:
                 merged_into = merged.target
                 action = f"merge to {merged.target}"
             else:
-                body = (
-                    f"issue={issue.issue_id} run={gate.gate_run_ref} "
-                    f"red_green={gate.red_green_paired} regression_ok={gate.regression_zero_fail} "
-                    f"rescan_new_alerts={gate.rescan_new_alerts} coverage_delta_pp={gate.coverage_delta_pp}"
-                )
+                body = PrEvidence(
+                    issue_id=issue.issue_id,
+                    run_id=str(gate.gate_run_ref),
+                    red_green_paired=gate.red_green_paired,
+                    regression_zero_fail=gate.regression_zero_fail,
+                    rescan_new_alerts=gate.rescan_new_alerts,
+                    coverage_delta_pp=gate.coverage_delta_pp,
+                ).render()
                 pr = self.repo.open_pull_request(issue.repo, branch, "main", f"[VeriFix] {issue.issue_id}", body)
                 pr_number = pr.number
                 action = f"open pr #{pr.number}"
